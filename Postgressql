@@ -1,0 +1,15 @@
+Database Creation: Creating a PostgreSQL database instance on AWS using Amazon RDS (Relational Database Service) or by provisioning an EC2 instance and installing PostgreSQL manually.
+Database Configuration: Configuring database parameters, such as storage size, instance type, backup retention, and maintenance windows, to meet performance and availability requirements.
+Database Connectivity: Setting up database connectivity by configuring security groups and network access control lists (ACLs) to allow inbound connections to the database.
+Database Backup and Restore: Implementing automated or manual backup and restore strategies to protect data and ensure data availability in case of failure or data loss.
+Database Scaling: Scaling database resources, such as storage, compute, or I/O capacity, to accommodate increased workload demands or optimize performance.
+Database Monitoring: Enabling monitoring features, such as Amazon CloudWatch metrics and alarms, to track database performance, resource utilization, and availability.
+Database High Availability: Configuring high availability options, such as Multi-AZ (availability zone) deployment or database replication, to ensure database availability and resilience.
+Database Patching and Upgrades: Applying patches and performing version upgrades to keep the database instance up to date with the latest security fixes and feature enhancements.
+Database Security: Implementing security best practices, such as encrypting data at rest using AWS Key Management Service (KMS), enforcing secure connections (SSL/TLS), and implementing database access controls and user permissions.
+Database Performance Optimization: Tuning database performance by analyzing query execution plans, optimizing SQL queries, configuring connection pooling, and using database monitoring tools.
+Database Parameter Tuning: Adjusting database parameters and configuration settings, such as shared buffers, work_mem, or max_connections, to optimize performance based on workload characteristics.
+Database Replication and Read Replicas: Configuring replication for PostgreSQL databases to create read replicas for load balancing or disaster recovery purposes.
+Database Schema Management: Managing database schemas, tables, indexes, and constraints to organize and structure data effectively.
+Database Data Migration: Migrating data from on-premises databases or other database systems to AWS PostgreSQL using tools like AWS Database Migration Service (DMS) or pg_dump/pg_restore.
+Database Security Auditing: Conducting regular security audits, vulnerability assessments, and database access reviews to identify and mitigate potential security risks and ensure compliance with industry standards.
