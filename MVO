@@ -1,0 +1,1304 @@
+DevOps - CI/CD
+
+When handing over a CI/CD (Continuous Integration/Continuous Deployment) pipeline to the operations team in a DevOps environment, it's important to ensure a smooth transition and provide the necessary information and resources. Here's a checklist to help you with the handover process:
+
+1. Pipeline Configuration:
+   - Provide documentation and diagrams explaining the pipeline architecture, including its stages, triggers, and dependencies.
+   - Share information about the tools and technologies used in the pipeline, such as Jenkins, GitLab, or AWS CodePipeline.
+   - Document the configuration details for each stage of the pipeline, including build, test, deployment, and release processes.
+
+2. Access and Permissions:
+   - Verify that the operations team has the necessary access and permissions to manage and modify the pipeline.
+   - Ensure that appropriate access controls are in place to restrict access to sensitive information or critical pipeline configurations.
+
+3. Environment Configuration:
+   - Document the target environments (development, staging, production) and their corresponding configurations.
+   - Provide details about the infrastructure setup, including servers, databases, and networking requirements.
+   - Share any environment-specific variables or settings that need to be considered during the deployment process.
+
+4. Deployment Process:
+   - Explain the deployment process and the steps involved in deploying the application to different environments.
+   - Provide instructions on how to trigger a deployment manually or automatically, depending on the pipeline configuration.
+   - Document any pre-deployment or post-deployment tasks that need to be performed, such as database migrations or cache clearing.
+
+5. Integration and Testing:
+   - Share information about the integration and testing frameworks used in the pipeline.
+   - Document the testing process, including unit tests, integration tests, and any other types of tests implemented.
+   - Provide details about the test environments and how to execute tests within the pipeline.
+
+6. Monitoring and Alerting:
+   - Explain how to monitor the pipeline and its stages for any failures or issues.
+   - Document the alerting mechanism and specify the conditions that trigger alerts.
+   - Provide instructions on how to troubleshoot and resolve common pipeline issues.
+
+7. Maintenance and Upgrades:
+   - Share any maintenance tasks or periodic updates required for the pipeline tools and technologies.
+   - Document the process for upgrading or adding new features to the pipeline.
+   - Provide information about version control and release management practices for the pipeline itself.
+
+8. Rollback and Recovery:
+   - Explain the process for rolling back a deployment in case of issues or failures.
+   - Document the steps to recover from pipeline failures or errors.
+   - Provide guidance on how to handle incidents related to the pipeline and its deployments.
+
+9. Training and Support:
+   - Conduct training sessions for the operations team on how to manage and troubleshoot the CI/CD pipeline effectively.
+   - Provide access to relevant documentation, tutorials, and resources to assist the team in their day-to-day operations.
+   - Offer ongoing support and be available for questions or assistance during the initial transition period.
+
+Remember to tailor this checklist to your specific CI/CD pipeline and DevOps practices, as different organizations may have variations in their tooling, processes, and requirements.
+
+
+======================
+
+AWS VPC
+
+Handing over AWS VPC (Virtual Private Cloud) support from the build phase to the production phase involves several important operations to ensure a smooth transition. Here's a checklist you can use:
+
+1. Review VPC Architecture: Verify that the VPC architecture aligns with production requirements and best practices. Check if all necessary subnets, route tables, security groups, and network ACLs are properly configured.
+
+2. Documentation: Gather and update all relevant documentation, including network diagrams, IP address ranges, subnet configurations, routing tables, security group rules, and any other pertinent information. Ensure that the documentation is accurate and up to date.
+
+3. Security and Access Control: Review security configurations and access control measures within the VPC. Check if security groups, network ACLs, and IAM (Identity and Access Management) policies are appropriately configured. Validate that the right users or roles have the necessary access to VPC resources.
+
+4. Network Connectivity: Verify connectivity between the VPC and any external resources, such as on-premises networks or other VPCs. Check if VPN (Virtual Private Network) connections, Direct Connect, or peering connections are functioning correctly.
+
+5. VPC Components: Validate the functionality of various VPC components, including subnets, route tables, NAT (Network Address Translation) gateways, internet gateways, VPC endpoints, and Elastic IP addresses. Ensure that they are properly configured and working as expected.
+
+6. Monitoring and Logging: Ensure that appropriate monitoring and logging mechanisms are in place. Verify that CloudWatch metrics, VPC flow logs, and any other relevant logs are being collected and stored correctly. Set up alerts and alarms for critical VPC components.
+
+7. Testing: Perform thorough testing to verify the functionality of the VPC and its associated services. Test connectivity, security configurations, and any other specific features or requirements. Conduct load testing if necessary to ensure scalability and performance.
+
+8. Disaster Recovery: Review the disaster recovery plan for the VPC. Verify that appropriate backups and replication mechanisms are in place for critical components. Test the recovery procedures to ensure the ability to restore the VPC in the event of a failure.
+
+9. Training and Knowledge Transfer: Provide training and knowledge transfer to the production support team. Familiarize them with the VPC architecture, configurations, and operational procedures. Share the documentation and any other relevant resources.
+
+10. Handover Meeting: Schedule a meeting with the production support team to discuss the handover process, clarify any questions or concerns, and ensure a smooth transition. Provide them with the necessary access credentials and permissions.
+
+11. Ongoing Support: Establish a support mechanism and ensure that the production support team is prepared to handle any issues or incidents related to the VPC. Define escalation procedures and establish communication channels for timely support.
+
+Remember to customize this checklist based on your specific requirements and environment.
+
+
+===================
+
+AWS EC2
+
+Handing over AWS EC2 (Elastic Compute Cloud) support from the build phase to the production phase requires careful attention to detail. Here's a checklist to guide you through the process:
+
+1. Instance Configuration:
+   - Review the EC2 instance configurations, including instance types, sizes, and AMIs (Amazon Machine Images).
+   - Validate that the instances are provisioned with the correct security groups, IAM roles, and tags.
+   - Ensure that the instance volumes (EBS or instance store) are appropriately configured.
+
+2. Security and Access Control:
+   - Review security group configurations to ensure that inbound and outbound traffic rules align with production requirements.
+   - Verify that IAM roles and policies are correctly assigned to instances for proper access control.
+   - Review key pairs and ensure that SSH/RDP access is limited to authorized personnel.
+
+3. Auto Scaling and Load Balancing:
+   - Validate the setup of Auto Scaling groups, launch configurations, and associated scaling policies.
+   - Review the load balancer configuration (such as Elastic Load Balancer or Application Load Balancer) and its integration with instances.
+   - Test scaling events to verify that instances are automatically scaled based on demand.
+
+4. Monitoring and Alerting:
+   - Configure CloudWatch monitoring for EC2 instances, including metrics, logs, and alarms.
+   - Define relevant metrics to monitor, such as CPU utilization, network traffic, and disk space.
+   - Set up appropriate alarms to trigger notifications or automated actions in response to specific thresholds being breached.
+
+5. Networking and Connectivity:
+   - Review VPC (Virtual Private Cloud) settings and ensure that instances are deployed in the correct subnets.
+   - Verify that instances have the necessary Elastic IP addresses or public IP assignments for inbound and outbound connectivity.
+   - Test network connectivity between instances and any external resources or services they interact with.
+
+6. Backups and Disaster Recovery:
+   - Review backup and recovery mechanisms for instances, such as creating regular EBS snapshots or implementing instance AMI backups.
+   - Validate the restoration process for instances from backups to ensure it functions correctly.
+   - Ensure that disaster recovery plans consider instances' role in the overall system architecture.
+
+7. Performance and Optimization:
+   - Validate the performance of instances by conducting load testing or performance benchmarking.
+   - Review instance configurations, including CPU, memory, and network settings, to optimize their performance.
+   - Consider utilizing features like EC2 Auto Scaling, spot instances, or reserved instances to optimize costs and performance.
+
+8. Documentation and Knowledge Transfer:
+   - Gather and update documentation related to EC2 instances, including instance details, configurations, and deployment procedures.
+   - Share the documentation with the production support team and provide any necessary training or knowledge transfer sessions.
+   - Ensure the production support team is familiar with the monitoring and troubleshooting procedures for EC2 instances.
+
+9. Handover Meeting:
+   - Schedule a meeting with the production support team to discuss the handover process, address any questions or concerns, and provide necessary access credentials.
+   - Share information on instance lifecycles, scaling policies, and incident response procedures.
+   - Define communication channels and escalation paths for support requests related to EC2 instances.
+
+10. Ongoing Support:
+    - Establish a support mechanism to handle operational issues or incidents related to EC2 instances.
+    - Define the support team's responsibilities and provide guidance on troubleshooting common issues.
+    - Regularly review and update the support procedures as the system evolves.
+
+Remember to tailor this checklist to your specific requirements and take into account any specific considerations or dependencies in your environment.
+
+
+=============
+
+AWS S3
+
+Handing over AWS S3 (Simple Storage Service) support from the build phase to the production phase involves ensuring proper configuration, access control, and monitoring. Here's a checklist to guide you through the process:
+
+1. Bucket Configuration:
+   - Review the S3 bucket configurations, including bucket names, region, and storage classes (e.g., Standard, Intelligent-Tiering, Glacier).
+   - Validate bucket-level settings, such as versioning, logging, server access logging, and object-level tagging.
+   - Verify that the bucket permissions and policies are correctly configured for proper access control.
+
+2. Security and Access Control:
+   - Review bucket policies and Access Control Lists (ACLs) to ensure they align with production requirements.
+   - Validate IAM roles, users, and groups with appropriate permissions to access and manage the S3 buckets.
+   - Ensure that cross-account access or bucket sharing, if required, is properly configured.
+
+3. Data Replication and Backup:
+   - Review data replication mechanisms, such as cross-region replication or S3 Replication, if applicable.
+   - Validate backup and recovery processes for S3 objects, including versioning and lifecycle policies.
+   - Test the restoration process from backups to ensure it functions correctly.
+
+4. Data Lifecycle Management:
+   - Review and configure lifecycle policies for objects in the S3 buckets, defining rules for transitioning to different storage classes or deleting objects after a specific period.
+   - Validate the lifecycle policies to ensure they align with production data retention requirements.
+
+5. Monitoring and Logging:
+   - Set up appropriate S3 bucket logging to capture access logs and request metrics.
+   - Configure CloudWatch metrics and alarms to monitor S3 bucket health, including storage utilization and request rates.
+   - Enable event notifications to trigger actions or workflows based on specific S3 bucket events.
+
+6. Data Encryption:
+   - Review encryption settings for S3 buckets, ensuring that data at rest and during transit is encrypted.
+   - Validate the use of server-side encryption (SSE) with S3-managed keys (SSE-S3) or customer-provided keys (SSE-C).
+   - Verify the configuration of SSL/TLS for secure data transfer to and from S3 buckets.
+
+7. Cross-Region Replication (if applicable):
+   - If using cross-region replication, review and validate the replication configurations for S3 buckets.
+   - Ensure proper IAM roles and permissions are set up for replication processes.
+   - Test replication functionality to verify that data is correctly replicated to the target region.
+
+8. Documentation and Knowledge Transfer:
+   - Gather and update documentation related to S3 buckets, including bucket details, configurations, and access control policies.
+   - Share the documentation with the production support team and provide necessary training or knowledge transfer sessions.
+   - Ensure the production support team is familiar with S3 bucket monitoring, troubleshooting, and incident response procedures.
+
+9. Handover Meeting:
+   - Schedule a meeting with the production support team to discuss the handover process, address any questions or concerns, and provide necessary access credentials.
+   - Share information on bucket usage, permissions, and incident response procedures.
+   - Define communication channels and escalation paths for support requests related to S3 buckets.
+
+10. Ongoing Support:
+    - Establish a support mechanism to handle operational issues or incidents related to S3 buckets.
+    - Define the support team's responsibilities and provide guidance on troubleshooting common issues.
+    - Regularly review and update the support procedures as the system evolves.
+
+Remember to customize this checklist based on your specific requirements and take into account any specific considerations or dependencies in your environment.
+
+==============
+
+AWS EFS:
+
+Handing over AWS EFS (Elastic File System) support from the build phase to the production phase involves ensuring proper configuration, access control, and monitoring. Here's a checklist to guide you through the process:
+
+1. File System Configuration:
+   - Review the EFS file system configurations, including the file system ID, region, and performance mode (general purpose or Max I/O).
+   - Validate the file system's availability across multiple availability zones (if applicable) for high availability.
+   - Verify the file system's throughput mode (bursting or provisioned) and adjust it based on performance requirements.
+
+2. Security and Access Control:
+   - Review the security group settings for the file system, ensuring that access is restricted to authorized network traffic.
+   - Validate the file system's IAM policies and ensure that appropriate roles, users, or groups have the necessary permissions to access and manage the file system.
+   - Verify that Network File System (NFS) access controls are properly configured for secure access to the file system.
+
+3. Mount Targets:
+   - Review the mount target configurations, ensuring that they are properly associated with the appropriate subnets in the correct availability zones.
+   - Validate the mount target security group settings and ensure that they allow NFS traffic from authorized sources.
+   - Verify that the mount targets are accessible from the intended networks or instances.
+
+4. Performance and Capacity:
+   - Review the file system's performance and capacity requirements to ensure they meet production demands.
+   - Adjust the provisioned throughput or burst credits based on expected workload patterns and I/O requirements.
+   - Monitor and evaluate the file system's performance over time, making adjustments as needed.
+
+5. Backup and Restore:
+   - Review the backup and restore mechanisms for the EFS file system.
+   - Ensure that periodic backups are scheduled and that appropriate retention policies are in place.
+   - Test the restoration process from backups to ensure it functions correctly.
+
+6. Monitoring and Alerting:
+   - Configure CloudWatch metrics and alarms to monitor EFS file system health, including metrics like throughput, burst credits, and file system size.
+   - Set up CloudWatch Logs to capture EFS-related events and logs for troubleshooting purposes.
+   - Establish appropriate alerts and notifications to trigger actions or workflows in response to specific threshold breaches.
+
+7. Data Encryption:
+   - Review encryption settings for EFS, ensuring that data at rest and during transit is encrypted.
+   - Verify the use of encryption options such as EFS default encryption (EFS-DE) or AWS Key Management Service (KMS) keys.
+   - Validate that SSL/TLS is enabled for secure data transfer between clients and the EFS file system.
+
+8. Documentation and Knowledge Transfer:
+   - Gather and update documentation related to the EFS file system, including file system details, configurations, and access control policies.
+   - Share the documentation with the production support team and provide necessary training or knowledge transfer sessions.
+   - Ensure the production support team is familiar with EFS monitoring, troubleshooting, and incident response procedures.
+
+9. Handover Meeting:
+   - Schedule a meeting with the production support team to discuss the handover process, address any questions or concerns, and provide necessary access credentials.
+   - Share information on file system usage, permissions, and incident response procedures.
+   - Define communication channels and escalation paths for support requests related to EFS.
+
+10. Ongoing Support:
+    - Establish a support mechanism to handle operational issues or incidents related to the EFS file system.
+    - Define the support team's responsibilities and provide guidance on troubleshooting common issues.
+    - Regularly review and update the support procedures as the system evolves.
+
+Remember to customize this checklist based on your specific requirements and take into account any specific considerations or dependencies in your environment.
+
+===
+
+AWS ElastiCache:
+
+Handing over AWS ElastiCache support from the build phase to the production phase involves ensuring proper configuration, access control, monitoring, and maintenance. Here's a checklist to guide you through the process:
+
+1. Cache Cluster Configuration:
+   - Review the ElastiCache cluster configurations, including cache engine type (Redis or Memcached), node types, and sizes.
+   - Validate the cluster's availability zones, replication settings, and backup configurations.
+   - Verify the parameter group settings and make adjustments as needed to align with production requirements.
+
+2. Security and Access Control:
+   - Review security group settings for the cache clusters, ensuring that access is restricted to authorized network traffic.
+   - Validate IAM policies and ensure that appropriate roles, users, or groups have the necessary permissions to access and manage the cache clusters.
+   - Verify that encryption in transit and at rest is enabled for secure communication and storage of cache data.
+
+3. Cache Cluster Scaling:
+   - Evaluate the anticipated workload and adjust the cache cluster's size, node type, or shard count as necessary.
+   - Monitor cache cluster metrics to determine if scaling is required based on factors such as CPU utilization, memory usage, or network throughput.
+
+4. Monitoring and Alerting:
+   - Configure CloudWatch metrics and alarms to monitor ElastiCache cluster health and performance.
+   - Set up appropriate alerts and notifications to trigger actions or workflows in response to specific threshold breaches or critical events.
+   - Monitor cache cluster metrics, including CPU utilization, memory usage, evictions, and network throughput.
+
+5. Backups and Disaster Recovery:
+   - Review backup and recovery mechanisms for ElastiCache, such as automatic snapshots or manual backups.
+   - Validate backup retention settings and ensure backups are scheduled at appropriate intervals.
+   - Test the restoration process from backups to ensure it functions correctly.
+
+6. Cache Cluster Maintenance:
+   - Review maintenance schedules for the cache clusters and ensure they align with production maintenance windows.
+   - Validate the cluster's automatic software patching settings and make adjustments as needed.
+   - Plan for cache cluster updates or upgrades and perform them during scheduled maintenance windows to minimize impact.
+
+7. Documentation and Knowledge Transfer:
+   - Gather and update documentation related to the ElastiCache clusters, including cluster details, configurations, and access control policies.
+   - Share the documentation with the production support team and provide necessary training or knowledge transfer sessions.
+   - Ensure the production support team is familiar with monitoring, troubleshooting, and incident response procedures for ElastiCache.
+
+8. Handover Meeting:
+   - Schedule a meeting with the production support team to discuss the handover process, address any questions or concerns, and provide necessary access credentials.
+   - Share information on cache cluster usage, permissions, and incident response procedures.
+   - Define communication channels and escalation paths for support requests related to ElastiCache.
+
+9. Ongoing Support:
+   - Establish a support mechanism to handle operational issues or incidents related to ElastiCache clusters.
+   - Define the support team's responsibilities and provide guidance on troubleshooting common cache-related issues.
+   - Regularly review and update the support procedures as the system evolves.
+
+Remember to customize this checklist based on your specific requirements and take into account any specific considerations or dependencies in your environment.
+
+===
+
+AWS Secrets Manager:
+
+Handing over AWS Secrets Manager support from the build phase to the production phase involves ensuring proper configuration, access control, monitoring, and maintenance. Here's a checklist to guide you through the process:
+
+1. Secret Configuration:
+   - Review the Secrets Manager secret configurations, including secret names, rotation settings, and description.
+   - Validate the secret values and ensure they are up to date and accurate.
+   - Verify that the secrets are associated with the correct resource targets (such as RDS instances, Redshift clusters, or Lambda functions).
+
+2. Access Control:
+   - Review access policies and IAM roles associated with Secrets Manager.
+   - Validate that appropriate roles, users, or groups have the necessary permissions to access and manage secrets.
+   - Ensure that access to secrets is restricted to authorized entities and follow the principle of least privilege.
+
+3. Secret Rotation:
+   - Review the secret rotation settings and ensure they align with production requirements.
+   - Test the secret rotation process to ensure it functions correctly and does not cause any disruptions.
+   - Validate that the rotation process triggers appropriate actions, such as updating credentials in dependent systems.
+
+4. Monitoring and Logging:
+   - Configure CloudWatch metrics and alarms to monitor Secrets Manager usage and health.
+   - Set up appropriate alerts and notifications to trigger actions or workflows in response to specific events or threshold breaches.
+   - Monitor and analyze secret rotation events and logs for any anomalies or issues.
+
+5. Auditing and Compliance:
+   - Review the auditing and compliance requirements for secrets management.
+   - Ensure that Secrets Manager integrates with AWS CloudTrail for logging API activities.
+   - Validate that encryption settings and access controls meet relevant compliance standards.
+
+6. Backup and Recovery:
+   - Review backup and recovery mechanisms for Secrets Manager.
+   - Validate that secret versions are retained for the required duration.
+   - Test the restoration process for secrets to ensure it functions correctly.
+
+7. Documentation and Knowledge Transfer:
+   - Gather and update documentation related to Secrets Manager, including secret details, configurations, and access control policies.
+   - Share the documentation with the production support team and provide necessary training or knowledge transfer sessions.
+   - Ensure the production support team is familiar with monitoring, troubleshooting, and incident response procedures for Secrets Manager.
+
+8. Handover Meeting:
+   - Schedule a meeting with the production support team to discuss the handover process, address any questions or concerns, and provide necessary access credentials.
+   - Share information on secret usage, permissions, and incident response procedures.
+   - Define communication channels and escalation paths for support requests related to Secrets Manager.
+
+9. Ongoing Support:
+   - Establish a support mechanism to handle operational issues or incidents related to Secrets Manager.
+   - Define the support team's responsibilities and provide guidance on troubleshooting common issues.
+   - Regularly review and update the support procedures as the system evolves.
+
+Remember to customize this checklist based on your specific requirements and take into account any specific considerations or dependencies in your environment.
+
+===
+
+AWS SNS support:
+
+Handing over AWS SNS (Simple Notification Service) support from the build phase to the production phase involves ensuring proper configuration, access control, monitoring, and maintenance. Here's a checklist to guide you through the process:
+
+1. Topic Configuration:
+   - Review the SNS topic configurations, including topic names, display names, and delivery policies.
+   - Validate the topic settings, such as message retention period, content-based message filtering, and encryption settings.
+   - Verify that the correct protocols and endpoints are subscribed to the topic.
+
+2. Access Control:
+   - Review access policies and IAM roles associated with SNS.
+   - Validate that appropriate roles, users, or groups have the necessary permissions to publish and subscribe to topics.
+   - Ensure that access to SNS topics is restricted to authorized entities and follow the principle of least privilege.
+
+3. Message Filtering:
+   - If using content-based message filtering, review and validate the filter policies.
+   - Ensure that the filter policies match the expected criteria for message filtering and routing.
+   - Test the filtering functionality to ensure it works as intended.
+
+4. Monitoring and Alerting:
+   - Configure CloudWatch metrics and alarms to monitor SNS usage and health.
+   - Set up appropriate alerts and notifications to trigger actions or workflows in response to specific events or threshold breaches.
+   - Monitor message delivery metrics, such as message publishing rates, successful deliveries, and failures.
+
+5. Message Delivery Retries:
+   - Review the SNS message delivery retries policy and ensure it aligns with production requirements.
+   - Validate the message retry settings, including the number of retries, retry intervals, and dead-letter queue configuration.
+   - Test message delivery and retry scenarios to ensure proper handling and fault tolerance.
+
+6. Cross-Region Replication (if applicable):
+   - If using cross-region replication, review and validate the replication configurations for SNS topics.
+   - Ensure that the topics are correctly replicated to the desired regions.
+   - Test topic subscriptions and message delivery in the replicated regions.
+
+7. Encryption and Data Protection:
+   - Review encryption settings for SNS, ensuring that data in transit and at rest is encrypted.
+   - Verify that the appropriate encryption options, such as SSE-S3 or SSE-KMS, are enabled.
+   - Validate SSL/TLS settings for secure communication with subscribed endpoints.
+
+8. Documentation and Knowledge Transfer:
+   - Gather and update documentation related to SNS, including topic details, configurations, and access control policies.
+   - Share the documentation with the production support team and provide necessary training or knowledge transfer sessions.
+   - Ensure the production support team is familiar with monitoring, troubleshooting, and incident response procedures for SNS.
+
+9. Handover Meeting:
+   - Schedule a meeting with the production support team to discuss the handover process, address any questions or concerns, and provide necessary access credentials.
+   - Share information on topic usage, permissions, and incident response procedures.
+   - Define communication channels and escalation paths for support requests related to SNS.
+
+10. Ongoing Support:
+    - Establish a support mechanism to handle operational issues or incidents related to SNS topics.
+    - Define the support team's responsibilities and provide guidance on troubleshooting common issues.
+    - Regularly review and update the support procedures as the system evolves.
+
+Remember to customize this checklist based on your specific requirements and take into account any specific considerations or dependencies in your environment.
+
+===
+
+AWS SQS support:
+
+Handing over AWS SQS (Simple Queue Service) support from the build phase to the production phase involves ensuring proper configuration, access control, monitoring, and maintenance. Here's a checklist to guide you through the process:
+
+1. Queue Configuration:
+   - Review the SQS queue configurations, including queue names, visibility timeout, message retention period, and maximum message size.
+   - Validate the queue settings, such as message deduplication, content-based message filtering, and encryption options.
+   - Verify that the correct access policies are in place for sending and receiving messages.
+
+2. Access Control:
+   - Review access policies and IAM roles associated with SQS.
+   - Validate that appropriate roles, users, or groups have the necessary permissions to send, receive, and manage messages in the queues.
+   - Ensure that access to SQS queues is restricted to authorized entities and follow the principle of least privilege.
+
+3. Message Retention and Dead-Letter Queues:
+   - Review the message retention period for queues and ensure it aligns with production requirements.
+   - Validate the configuration of dead-letter queues for handling messages that can't be processed successfully.
+   - Test message retention and dead-letter queue functionality to ensure proper handling and fault tolerance.
+
+4. Monitoring and Alerting:
+   - Configure CloudWatch metrics and alarms to monitor SQS usage and health.
+   - Set up appropriate alerts and notifications to trigger actions or workflows in response to specific events or threshold breaches.
+   - Monitor queue metrics, such as message count, visibility timeout, and queue length.
+
+5. Message Visibility and Retry:
+   - Review the visibility timeout setting for messages in the queues.
+   - Validate the retry mechanisms for failed message processing, such as configuring redrive policies or implementing exponential backoff strategies.
+   - Test message processing scenarios to ensure proper visibility timeout and retry behavior.
+
+6. Queue Scaling and Sharding:
+   - Evaluate the anticipated workload and adjust queue capacity based on expected message throughput and processing requirements.
+   - Consider implementing sharding techniques, such as using multiple queues or message groups, to distribute the load.
+   - Monitor queue metrics to determine if scaling or sharding is necessary based on factors like message count or queue length.
+
+7. Encryption and Data Protection:
+   - Review encryption settings for SQS, ensuring that data in transit and at rest is encrypted.
+   - Verify that the appropriate encryption options, such as SSE-SQS or SSE-KMS, are enabled.
+   - Validate SSL/TLS settings for secure communication with the queues.
+
+8. Documentation and Knowledge Transfer:
+   - Gather and update documentation related to SQS, including queue details, configurations, and access control policies.
+   - Share the documentation with the production support team and provide necessary training or knowledge transfer sessions.
+   - Ensure the production support team is familiar with monitoring, troubleshooting, and incident response procedures for SQS.
+
+9. Handover Meeting:
+   - Schedule a meeting with the production support team to discuss the handover process, address any questions or concerns, and provide necessary access credentials.
+   - Share information on queue usage, permissions, and incident response procedures.
+   - Define communication channels and escalation paths for support requests related to SQS.
+
+10. Ongoing Support:
+    - Establish a support mechanism to handle operational issues or incidents related to SQS queues.
+    - Define the support team's responsibilities and provide guidance on troubleshooting common issues.
+    - Regularly review and update the support procedures as the system evolves.
+
+Remember to customize this checklist based on your specific requirements and take into account any specific considerations or dependencies in your environment.
+
+===
+
+AWS Postgresql support:
+
+Handing over AWS RDS PostgreSQL support from the build phase to the production phase involves ensuring proper configuration, access control, monitoring, and maintenance. Here's a checklist to guide you through the process:
+
+1. Database Configuration:
+   - Review the RDS PostgreSQL instance configuration, including instance type, storage, backup retention, and allocated resources.
+   - Validate the database settings, such as character encoding, collation, and timezone.
+   - Verify that the parameter group settings align with production requirements.
+
+2. Security and Access Control:
+   - Review security group settings for the RDS instance, ensuring that access is restricted to authorized network traffic.
+   - Validate IAM policies and ensure that appropriate roles, users, or groups have the necessary permissions to access and manage the database.
+   - Enable SSL/TLS encryption for secure communication with the database.
+
+3. Database Backup and Recovery:
+   - Review backup and recovery mechanisms for the RDS PostgreSQL instance, such as automated backups or database snapshots.
+   - Validate backup retention settings and ensure backups are scheduled at appropriate intervals.
+   - Test the restoration process from backups to ensure it functions correctly.
+
+4. High Availability and Replication:
+   - Review the multi-AZ configuration for high availability, if applicable.
+   - Validate the read replica settings for scaling read operations and offloading the primary database.
+   - Test failover scenarios to ensure that automatic failover and replication function correctly.
+
+5. Monitoring and Alerting:
+   - Configure CloudWatch metrics and alarms to monitor the RDS PostgreSQL instance's performance and health.
+   - Set up appropriate alerts and notifications to trigger actions or workflows in response to specific events or threshold breaches.
+   - Monitor database metrics, such as CPU utilization, storage usage, and replication lag (if applicable).
+
+6. Performance Optimization:
+   - Review the RDS instance's performance parameters and settings.
+   - Validate that the allocated resources, such as CPU and memory, are sufficient for the production workload.
+   - Monitor database performance and query execution to identify and address any performance bottlenecks.
+
+7. Database Maintenance and Patching:
+   - Review maintenance schedules for the RDS instance and ensure they align with production maintenance windows.
+   - Validate the instance's automatic minor version upgrades and patching settings.
+   - Plan for major version upgrades and perform them during scheduled maintenance windows to minimize impact.
+
+8. Documentation and Knowledge Transfer:
+   - Gather and update documentation related to the RDS PostgreSQL instance, including instance details, configurations, and access control policies.
+   - Share the documentation with the production support team and provide necessary training or knowledge transfer sessions.
+   - Ensure the production support team is familiar with monitoring, troubleshooting, and incident response procedures for RDS PostgreSQL.
+
+9. Handover Meeting:
+   - Schedule a meeting with the production support team to discuss the handover process, address any questions or concerns, and provide necessary access credentials.
+   - Share information on database usage, permissions, and incident response procedures.
+   - Define communication channels and escalation paths for support requests related to RDS PostgreSQL.
+
+10. Ongoing Support:
+    - Establish a support mechanism to handle operational issues or incidents related to the RDS PostgreSQL instance.
+    - Define the support team's responsibilities and provide guidance on troubleshooting common database-related issues.
+    - Regularly review and update the support procedures as the system evolves.
+
+Remember to customize this checklist based on your specific requirements and take into account any specific considerations or dependencies in your environment.
+
+===
+
+Azure Event Hubs support:
+
+Handing over Azure Event Hubs support from the build phase to the production phase involves ensuring proper configuration, access control, monitoring, and maintenance. Here's a checklist to guide you through the process:
+
+1. Namespace Configuration:
+   - Review the Azure Event Hubs namespace configuration, including the namespace name, throughput units, and message retention period.
+   - Validate the namespace settings, such as partition count, capture settings, and auto-inflate options.
+   - Verify that the required features like event capture and partitioning are correctly configured.
+
+2. Access Control:
+   - Review access control settings for the Event Hubs namespace, including shared access policies.
+   - Validate that appropriate roles, users, or groups have the necessary permissions to send and receive events.
+   - Ensure that access to Event Hubs is restricted to authorized entities and follow the principle of least privilege.
+
+3. Event Hubs Architecture:
+   - Review the Event Hubs architecture, including the number of event hubs, partitions, and consumer groups.
+   - Validate that the architecture design meets the production requirements for scalability and performance.
+   - Verify that event producers and consumers are connected to the correct event hubs and partitions.
+
+4. Monitoring and Alerting:
+   - Configure Azure Monitor metrics and alerts to monitor Event Hubs usage and health.
+   - Set up appropriate alerts and notifications to trigger actions or workflows in response to specific events or threshold breaches.
+   - Monitor important metrics like incoming/outgoing message counts, throughput, and latency.
+
+5. Data Capture:
+   - If using data capture, review and validate the capture settings for Event Hubs.
+   - Ensure that the capture destination, such as Azure Blob Storage or Azure Data Lake Storage, is correctly configured.
+   - Validate that the captured data is in the expected format and meets the desired retention and archival requirements.
+
+6. Scaling and Throughput:
+   - Evaluate the anticipated workload and adjust the throughput units based on expected message throughput and processing requirements.
+   - Monitor the Event Hubs metrics to determine if scaling is necessary based on factors like ingress/egress rates and size of the event backlog.
+   - Plan for auto-inflate options to automatically scale Event Hubs based on load.
+
+7. Disaster Recovery and High Availability:
+   - Review the disaster recovery and high availability strategy for Event Hubs.
+   - Validate the geo-disaster recovery settings and ensure they are correctly configured.
+   - Test failover and failback scenarios to ensure business continuity and data integrity.
+
+8. Documentation and Knowledge Transfer:
+   - Gather and update documentation related to Azure Event Hubs, including namespace details, configurations, and access control policies.
+   - Share the documentation with the production support team and provide necessary training or knowledge transfer sessions.
+   - Ensure the production support team is familiar with monitoring, troubleshooting, and incident response procedures for Event Hubs.
+
+9. Handover Meeting:
+   - Schedule a meeting with the production support team to discuss the handover process, address any questions or concerns, and provide necessary access credentials.
+   - Share information on Event Hubs usage, permissions, and incident response procedures.
+   - Define communication channels and escalation paths for support requests related to Event Hubs.
+
+10. Ongoing Support:
+    - Establish a support mechanism to handle operational issues or incidents related to Event Hubs.
+    - Define the support team's responsibilities and provide guidance on troubleshooting common issues.
+    - Regularly review and update the support procedures as the system evolves.
+
+Remember to customize this checklist based on your specific requirements and take into account any specific considerations or dependencies in your environment.
+
+===
+
+Azure Key Vaults:
+
+Handing over Azure Key Vaults support from the build phase to the production phase involves ensuring proper configuration, access control, monitoring, and maintenance. Here's a checklist to guide you through the process:
+
+1. Key Vault Configuration:
+   - Review the Azure Key Vault configuration, including the vault name, SKU, access policies, and tenant ID.
+   - Validate the key vault settings, such as the soft delete and purge protection options.
+   - Verify that the required features, such as key management, secret storage, and certificate management, are correctly configured.
+
+2. Access Control:
+   - Review access control settings for the Key Vault, including access policies and Azure Active Directory (AAD) integration.
+   - Validate that appropriate roles, users, or groups have the necessary permissions to manage keys, secrets, and certificates.
+   - Ensure that access to the Key Vault is restricted to authorized entities and follows the principle of least privilege.
+
+3. Key and Secret Management:
+   - Review the keys and secrets stored in the Key Vault.
+   - Validate that the key rotation and secret expiration policies align with the production requirements.
+   - Verify that the stored keys and secrets are correctly categorized and labeled for easy management.
+
+4. Certificate Management:
+   - Review the certificates stored in the Key Vault.
+   - Validate that the certificate expiration and renewal processes are properly configured.
+   - Verify that the certificates are correctly associated with the intended applications or services.
+
+5. Monitoring and Alerting:
+   - Configure Azure Monitor metrics and alerts to monitor Key Vault usage and health.
+   - Set up appropriate alerts and notifications to trigger actions or workflows in response to specific events or threshold breaches.
+   - Monitor important metrics such as key operations, secret retrieval, and certificate management.
+
+6. Backup and Disaster Recovery:
+   - Review the backup and disaster recovery strategy for the Key Vault.
+   - Validate that the Key Vault is backed up regularly and backups are stored securely.
+   - Test the restoration process to ensure it functions correctly.
+
+7. Compliance and Security:
+   - Review the compliance requirements for the Key Vault, such as regulatory standards or industry-specific guidelines.
+   - Validate that the Key Vault's security features, such as network isolation and private endpoint connections, are properly configured.
+   - Ensure that encryption and access logging are enabled for auditing and compliance purposes.
+
+8. Documentation and Knowledge Transfer:
+   - Gather and update documentation related to the Azure Key Vault, including vault details, configurations, and access control policies.
+   - Share the documentation with the production support team and provide necessary training or knowledge transfer sessions.
+   - Ensure the production support team is familiar with monitoring, troubleshooting, and incident response procedures for Key Vaults.
+
+9. Handover Meeting:
+   - Schedule a meeting with the production support team to discuss the handover process, address any questions or concerns, and provide necessary access credentials.
+   - Share information on Key Vault usage, permissions, and incident response procedures.
+   - Define communication channels and escalation paths for support requests related to Key Vaults.
+
+10. Ongoing Support:
+    - Establish a support mechanism to handle operational issues or incidents related to the Key Vault.
+    - Define the support team's responsibilities and provide guidance on troubleshooting common issues.
+    - Regularly review and update the support procedures as the system evolves.
+
+Remember to customize this checklist based on your specific requirements and take into account any specific considerations or dependencies in your environment.
+
+===
+
+ Azure Queue Storage Support:
+ 
+ Handing over Azure Queue Storage support from the build phase to the production phase involves ensuring proper configuration, access control, monitoring, and maintenance. Here's a checklist to guide you through the process:
+
+1. Queue Configuration:
+   - Review the Azure Queue Storage configuration, including queue names, message retention policy, and visibility timeout.
+   - Validate the queue settings, such as maximum message size and time-to-live (TTL) for messages.
+   - Verify that the required features, such as message encoding and metadata, are correctly configured.
+
+2. Access Control:
+   - Review access control settings for the Queue Storage, including shared access policies and Azure Active Directory (AAD) integration.
+   - Validate that appropriate roles, users, or groups have the necessary permissions to send, receive, and manage messages.
+   - Ensure that access to the queues is restricted to authorized entities and follows the principle of least privilege.
+
+3. Message Handling:
+   - Review the message handling process, including message format, encoding, and serialization.
+   - Validate that the processing logic is implemented correctly to handle message retrieval, processing, and deletion.
+   - Verify that error handling and retry mechanisms are in place to handle failed message processing.
+
+4. Monitoring and Alerting:
+   - Configure Azure Monitor metrics and alerts to monitor Queue Storage usage and health.
+   - Set up appropriate alerts and notifications to trigger actions or workflows in response to specific events or threshold breaches.
+   - Monitor metrics such as queue length, message count, and request latency.
+
+5. Scaling and Throughput:
+   - Evaluate the anticipated workload and adjust the queue capacity based on expected message throughput and processing requirements.
+   - Monitor the Queue Storage metrics to determine if scaling is necessary based on factors like message count or request rate.
+   - Consider implementing message batching or parallel processing techniques to optimize throughput.
+
+6. Error Handling and Dead-Letter Queues:
+   - Review error handling mechanisms for failed message processing.
+   - Validate that dead-letter queues are set up correctly to capture messages that cannot be processed successfully.
+   - Test error scenarios and validate the process of moving messages to dead-letter queues for further analysis.
+
+7. Security and Encryption:
+   - Review the security features for Queue Storage, such as encrypted transmission and encrypted at rest options.
+   - Validate SSL/TLS settings for secure communication with the queues.
+   - Ensure that sensitive data is appropriately encrypted before being placed in the messages.
+
+8. Documentation and Knowledge Transfer:
+   - Gather and update documentation related to the Azure Queue Storage, including queue details, configurations, and access control policies.
+   - Share the documentation with the production support team and provide necessary training or knowledge transfer sessions.
+   - Ensure the production support team is familiar with monitoring, troubleshooting, and incident response procedures for Queue Storage.
+
+9. Handover Meeting:
+   - Schedule a meeting with the production support team to discuss the handover process, address any questions or concerns, and provide necessary access credentials.
+   - Share information on Queue Storage usage, permissions, and incident response procedures.
+   - Define communication channels and escalation paths for support requests related to Queue Storage.
+
+10. Ongoing Support:
+    - Establish a support mechanism to handle operational issues or incidents related to Queue Storage.
+    - Define the support team's responsibilities and provide guidance on troubleshooting common issues.
+    - Regularly review and update the support procedures as the system evolves.
+
+Remember to customize this checklist based on your specific requirements and take into account any specific considerations or dependencies in your environment.
+
+===
+
+Azure Redis Cache support:
+
+Handing over Azure Redis Cache support from the build phase to the production phase involves ensuring proper configuration, access control, monitoring, and maintenance. Here's a checklist to guide you through the process:
+
+1. Redis Cache Configuration:
+   - Review the Azure Redis Cache configuration, including cache size, eviction policy, and data persistence options.
+   - Validate the cache settings, such as the maximum memory limit, timeout values, and shard count.
+   - Verify that the required features, such as SSL encryption and clustering, are correctly configured.
+
+2. Access Control:
+   - Review access control settings for the Redis Cache, including access keys and Azure Active Directory (AAD) integration.
+   - Validate that appropriate roles, users, or groups have the necessary permissions to access and manage the cache.
+   - Ensure that access to the cache is restricted to authorized entities and follows the principle of least privilege.
+
+3. Cache Usage and Data Management:
+   - Review the usage patterns and data management practices for the Redis Cache.
+   - Validate that the cache is used appropriately for caching frequently accessed data or session information.
+   - Ensure that the cache eviction and expiration policies align with the production requirements.
+
+4. Monitoring and Alerting:
+   - Configure Azure Monitor metrics and alerts to monitor Redis Cache usage and health.
+   - Set up appropriate alerts and notifications to trigger actions or workflows in response to specific events or threshold breaches.
+   - Monitor important metrics such as cache hits/misses, memory usage, and CPU utilization.
+
+5. Scaling and Performance Optimization:
+   - Evaluate the anticipated workload and adjust the cache size and shard count based on expected traffic and performance requirements.
+   - Monitor the Redis Cache metrics to determine if scaling is necessary based on factors like cache hits/misses or CPU usage.
+   - Consider using Redis clustering or partitioning techniques to distribute the load and optimize performance.
+
+6. Backup and Disaster Recovery:
+   - Review the backup and disaster recovery strategy for the Redis Cache.
+   - Validate that data persistence options, such as RDB snapshots or AOF logs, are properly configured.
+   - Test the restoration process to ensure it functions correctly.
+
+7. Security and Encryption:
+   - Review the security features for Redis Cache, such as access restrictions, encryption in transit, and encryption at rest.
+   - Validate SSL/TLS settings for secure communication with the cache.
+   - Ensure that sensitive data stored in the cache is properly protected and encrypted.
+
+8. Documentation and Knowledge Transfer:
+   - Gather and update documentation related to the Azure Redis Cache, including cache details, configurations, and access control policies.
+   - Share the documentation with the production support team and provide necessary training or knowledge transfer sessions.
+   - Ensure the production support team is familiar with monitoring, troubleshooting, and incident response procedures for Redis Cache.
+
+9. Handover Meeting:
+   - Schedule a meeting with the production support team to discuss the handover process, address any questions or concerns, and provide necessary access credentials.
+   - Share information on Redis Cache usage, permissions, and incident response procedures.
+   - Define communication channels and escalation paths for support requests related to Redis Cache.
+
+10. Ongoing Support:
+    - Establish a support mechanism to handle operational issues or incidents related to Redis Cache.
+    - Define the support team's responsibilities and provide guidance on troubleshooting common issues.
+    - Regularly review and update the support procedures as the system evolves.
+
+Remember to customize this checklist based on your specific requirements and take into account any specific considerations or dependencies in your environment.
+
+===
+
+Azure Resource Groups support:
+
+Handing over Azure Resource Groups support from the build phase to the production phase involves ensuring proper configuration, access control, monitoring, and maintenance. Here's a checklist to guide you through the process:
+
+1. Resource Group Configuration:
+   - Review the Azure Resource Group configuration, including the resource group name, location, and tags.
+   - Validate that the resource group contains all the necessary Azure resources required for the production environment.
+   - Verify that the resource group's settings align with the production requirements, such as resource naming conventions and resource group hierarchy.
+
+2. Access Control:
+   - Review access control settings for the Resource Group, including role assignments and Azure Active Directory (AAD) integration.
+   - Validate that appropriate roles, users, or groups have the necessary permissions to manage and monitor the resources within the group.
+   - Ensure that access to the Resource Group is restricted to authorized entities and follows the principle of least privilege.
+
+3. Resource Group Structure:
+   - Review the resource group structure and ensure that it follows a logical organization of resources.
+   - Validate that resources are properly categorized and organized within the resource group for easy management and maintenance.
+   - Verify that resources are appropriately tagged to facilitate cost allocation, monitoring, and governance.
+
+4. Monitoring and Alerting:
+   - Configure Azure Monitor metrics and alerts to monitor the health and performance of resources within the Resource Group.
+   - Set up appropriate alerts and notifications to trigger actions or workflows in response to specific events or threshold breaches.
+   - Monitor important metrics such as resource utilization, availability, and performance.
+
+5. Resource Group Cleanup:
+   - Review the resource lifecycle and evaluate the need for any obsolete or unused resources within the Resource Group.
+   - Identify and remove any resources that are no longer required in the production environment.
+   - Validate that resource deletion and cleanup processes do not have any unintended dependencies or impact on the production environment.
+
+6. Compliance and Security:
+   - Review the compliance requirements for the Resource Group, such as regulatory standards or industry-specific guidelines.
+   - Validate that security features, such as Azure Security Center recommendations, network security groups, or firewall rules, are properly configured.
+   - Ensure that resource configurations align with security best practices and any required compliance controls.
+
+7. Documentation and Knowledge Transfer:
+   - Gather and update documentation related to the Azure Resource Group, including resource group details, configurations, and access control policies.
+   - Share the documentation with the production support team and provide necessary training or knowledge transfer sessions.
+   - Ensure the production support team is familiar with monitoring, troubleshooting, and incident response procedures for Resource Groups.
+
+8. Handover Meeting:
+   - Schedule a meeting with the production support team to discuss the handover process, address any questions or concerns, and provide necessary access credentials.
+   - Share information on Resource Group usage, permissions, and incident response procedures.
+   - Define communication channels and escalation paths for support requests related to Resource Groups.
+
+9. Ongoing Support:
+   - Establish a support mechanism to handle operational issues or incidents related to Resource Groups.
+   - Define the support team's responsibilities and provide guidance on troubleshooting common issues.
+   - Regularly review and update the support procedures as the system evolves.
+
+Remember to customize this checklist based on your specific requirements and take into account any specific considerations or dependencies in your environment.
+
+===
+
+Azure SQL Servers support:
+
+Handing over Azure SQL Servers support from the build phase to the production phase involves ensuring proper configuration, access control, monitoring, and maintenance. Here's a checklist to guide you through the process:
+
+1. SQL Server Configuration:
+   - Review the Azure SQL Server configuration, including server name, location, and server-level settings.
+   - Validate that the server settings align with the production requirements, such as collation, firewall rules, and server-level auditing.
+   - Verify that the desired SQL Server version and edition are correctly provisioned.
+
+2. Access Control:
+   - Review access control settings for the SQL Server, including server-level firewall rules and Azure Active Directory (AAD) integration.
+   - Validate that appropriate roles, users, or groups have the necessary permissions to manage and access the SQL Server.
+   - Ensure that access to the SQL Server is restricted to authorized entities and follows the principle of least privilege.
+
+3. Database Creation and Configuration:
+   - Review the database creation process and ensure that the necessary databases for the production environment are provisioned.
+   - Validate database-level settings such as collation, compatibility level, and database-level auditing.
+   - Verify that the required database options, such as transparent data encryption or advanced threat protection, are correctly configured.
+
+4. Monitoring and Alerting:
+   - Configure Azure Monitor metrics and alerts to monitor SQL Server performance, health, and database usage.
+   - Set up appropriate alerts and notifications to trigger actions or workflows in response to specific events or threshold breaches.
+   - Monitor key metrics such as CPU usage, database connections, storage utilization, and query performance.
+
+5. Backup and Disaster Recovery:
+   - Review the backup and disaster recovery strategy for the SQL Server databases.
+   - Validate that automated backups and retention policies are properly configured.
+   - Test the restoration process to ensure it functions correctly and verify that backups are regularly tested for integrity and recoverability.
+
+6. Security and Encryption:
+   - Review the security features for the SQL Server, such as authentication methods, access controls, and encryption options.
+   - Validate SSL/TLS settings for secure communication with the SQL Server.
+   - Ensure that sensitive data stored in the databases is appropriately encrypted and protected.
+
+7. High Availability and Scaling:
+   - Evaluate the high availability requirements for the production environment and configure options such as failover groups, availability sets, or elastic pools.
+   - Validate the scaling options based on expected workload and performance requirements, such as adjusting database DTUs or utilizing Azure SQL Elastic Pools.
+
+8. Documentation and Knowledge Transfer:
+   - Gather and update documentation related to the Azure SQL Server, including server details, configurations, and access control policies.
+   - Share the documentation with the production support team and provide necessary training or knowledge transfer sessions.
+   - Ensure the production support team is familiar with monitoring, troubleshooting, and incident response procedures for Azure SQL Servers.
+
+9. Handover Meeting:
+   - Schedule a meeting with the production support team to discuss the handover process, address any questions or concerns, and provide necessary access credentials.
+   - Share information on SQL Server usage, permissions, and incident response procedures.
+   - Define communication channels and escalation paths for support requests related to Azure SQL Servers.
+
+10. Ongoing Support:
+    - Establish a support mechanism to handle operational issues or incidents related to Azure SQL Servers.
+    - Define the support team's responsibilities and provide guidance on troubleshooting common issues.
+    - Regularly review and update the support procedures as the system evolves.
+
+Remember to customize this checklist based on your specific requirements and take into account any specific considerations or dependencies in your environment.
+
+===
+
+Azure VM support:
+
+Handing over Azure VM (Virtual Machine) support from the build phase to the production phase involves ensuring proper configuration, access control, monitoring, and maintenance. Here's a checklist to guide you through the process:
+
+1. VM Configuration:
+   - Review the Azure VM configuration, including VM size, operating system, disk configuration, and networking settings.
+   - Validate that the VM settings align with the production requirements, such as CPU, memory, storage capacity, and network bandwidth.
+   - Verify that the desired VM image or custom image is correctly provisioned.
+
+2. Access Control:
+   - Review access control settings for the VM, including network security groups (NSGs), firewalls, and Azure Active Directory (AAD) integration.
+   - Validate that appropriate roles, users, or groups have the necessary permissions to manage and access the VM.
+   - Ensure that access to the VM is restricted to authorized entities and follows the principle of least privilege.
+
+3. Networking and Connectivity:
+   - Review the network configuration of the VM, including virtual networks, subnets, and IP addresses.
+   - Validate that the VM has the necessary network connectivity to communicate with other resources in the production environment.
+   - Verify that any required load balancers, application gateways, or network security appliances are properly configured.
+
+4. Monitoring and Alerting:
+   - Configure Azure Monitor metrics and alerts to monitor the VM's performance, health, and availability.
+   - Set up appropriate alerts and notifications to trigger actions or workflows in response to specific events or threshold breaches.
+   - Monitor key metrics such as CPU usage, memory utilization, disk I/O, and network traffic.
+
+5. Backup and Disaster Recovery:
+   - Review the backup and disaster recovery strategy for the VM, including regular backups and recovery point objectives (RPOs).
+   - Validate that the backup mechanism, such as Azure Backup or Azure Site Recovery, is properly configured.
+   - Test the restoration process to ensure it functions correctly and verify that backups are regularly tested for integrity and recoverability.
+
+6. Security and Encryption:
+   - Review the security features for the VM, such as encryption at rest, disk encryption, and Azure Security Center recommendations.
+   - Validate SSL/TLS settings for secure communication with the VM.
+   - Ensure that appropriate security patches and updates are applied regularly to the VM's operating system and software.
+
+7. Scaling and Performance Optimization:
+   - Evaluate the anticipated workload and adjust the VM size or scale set configuration based on expected traffic and performance requirements.
+   - Monitor the VM's performance metrics to determine if scaling is necessary based on factors such as CPU usage, memory utilization, or network traffic.
+   - Consider implementing autoscaling or load balancing techniques to optimize resource utilization.
+
+8. Documentation and Knowledge Transfer:
+   - Gather and update documentation related to the Azure VM, including VM details, configurations, and access control policies.
+   - Share the documentation with the production support team and provide necessary training or knowledge transfer sessions.
+   - Ensure the production support team is familiar with monitoring, troubleshooting, and incident response procedures for Azure VMs.
+
+9. Handover Meeting:
+   - Schedule a meeting with the production support team to discuss the handover process, address any questions or concerns, and provide necessary access credentials.
+   - Share information on VM usage, permissions, and incident response procedures.
+   - Define communication channels and escalation paths for support requests related to Azure VMs.
+
+10. Ongoing Support:
+    - Establish a support mechanism to handle operational issues or incidents related to Azure VMs.
+    - Define the support team's responsibilities and provide guidance on troubleshooting common VM-related issues.
+    - Regularly review and update the support procedures as the system evolves.
+
+Remember to customize this checklist based on your specific requirements and take into account any specific considerations or dependencies in your environment.
+
+===
+
+Azure Vnets support:
+
+Handing over Azure Virtual Network (VNet) support from the build phase to the production phase involves ensuring proper configuration, access control, monitoring, and maintenance. Here's a checklist to guide you through the process:
+
+1. VNet Configuration:
+   - Review the Azure Virtual Network configuration, including VNet name, address space, subnets, and DNS settings.
+   - Validate that the VNet settings align with the production requirements, such as IP address ranges, subnet sizes, and DNS resolution.
+   - Verify that the desired peering or VPN connections are correctly provisioned.
+
+2. Access Control:
+   - Review access control settings for the VNet, including network security groups (NSGs), service endpoints, and Azure Active Directory (AAD) integration.
+   - Validate that appropriate roles, users, or groups have the necessary permissions to manage and access the VNet.
+   - Ensure that access to the VNet is restricted to authorized entities and follows the principle of least privilege.
+
+3. Subnet Configuration:
+   - Review the subnet configuration within the VNet, including subnet names, IP address ranges, and network security settings.
+   - Validate that subnets are properly sized to accommodate the anticipated workload and connectivity requirements.
+   - Verify that subnets are correctly associated with network security groups and route tables, if applicable.
+
+4. Network Connectivity:
+   - Review the network connectivity requirements for the production environment, such as VPN gateways, ExpressRoute connections, or peering configurations.
+   - Validate that the necessary connections are established and functioning correctly.
+   - Verify that network routing is properly configured to allow traffic flow between subnets or across different VNets, if required.
+
+5. Monitoring and Alerting:
+   - Configure Azure Network Watcher or Azure Monitor to monitor the health and performance of the VNet.
+   - Set up appropriate alerts and notifications to trigger actions or workflows in response to specific network-related events or threshold breaches.
+   - Monitor key metrics such as network latency, throughput, and packet loss.
+
+6. Network Security:
+   - Review the network security features for the VNet, such as network security groups (NSGs), firewall rules, and distributed denial-of-service (DDoS) protection.
+   - Validate that NSGs and firewall rules are correctly configured to restrict inbound and outbound traffic.
+   - Ensure that DDoS protection is enabled for the VNet to mitigate potential attacks.
+
+7. Documentation and Knowledge Transfer:
+   - Gather and update documentation related to the Azure Virtual Network, including VNet details, configurations, and access control policies.
+   - Share the documentation with the production support team and provide necessary training or knowledge transfer sessions.
+   - Ensure the production support team is familiar with monitoring, troubleshooting, and incident response procedures for Azure VNets.
+
+8. Handover Meeting:
+   - Schedule a meeting with the production support team to discuss the handover process, address any questions or concerns, and provide necessary access credentials.
+   - Share information on VNet usage, permissions, and incident response procedures.
+   - Define communication channels and escalation paths for support requests related to Azure VNets.
+
+9. Ongoing Support:
+   - Establish a support mechanism to handle operational issues or incidents related to Azure VNets.
+   - Define the support team's responsibilities and provide guidance on troubleshooting common VNet-related issues.
+   - Regularly review and update the support procedures as the system evolves.
+
+Remember to customize this checklist based on your specific requirements and take into account any specific considerations or dependencies in your environment.
+
+===
+
+Azure AKS support:
+
+Handing over Azure AKS (Azure Kubernetes Service) support from the build phase to the production phase involves ensuring proper configuration, access control, monitoring, and maintenance. Here's a checklist to guide you through the process:
+
+1. AKS Cluster Configuration:
+   - Review the Azure AKS cluster configuration, including cluster name, node pool configuration, Kubernetes version, and network settings.
+   - Validate that the AKS cluster settings align with the production requirements, such as the number of nodes, node size, and networking configuration.
+   - Verify that any required add-ons or extensions, such as Azure Container Registry integration or Azure Monitor for containers, are correctly provisioned.
+
+2. Access Control:
+   - Review access control settings for the AKS cluster, including RBAC (Role-Based Access Control) roles, Azure AD integration, and Kubernetes namespaces.
+   - Validate that appropriate roles, users, or groups have the necessary permissions to manage and access the AKS cluster.
+   - Ensure that access to the AKS cluster is restricted to authorized entities and follows the principle of least privilege.
+
+3. Networking and Ingress Configuration:
+   - Review the networking configuration for the AKS cluster, including virtual networks, subnets, and Azure Load Balancer settings.
+   - Validate that the AKS cluster has the necessary network connectivity to communicate with other resources in the production environment.
+   - Verify that any required ingress controllers, such as Azure Application Gateway or Azure API Management, are properly configured.
+
+4. Monitoring and Logging:
+   - Configure monitoring and logging for the AKS cluster, such as Azure Monitor for containers or third-party monitoring solutions.
+   - Set up appropriate alerts and notifications to trigger actions or workflows in response to specific events or threshold breaches.
+   - Monitor key metrics such as cluster health, node utilization, pod performance, and container logs.
+
+5. Backup and Disaster Recovery:
+   - Review the backup and disaster recovery strategy for the AKS cluster and the applications running on it.
+   - Validate that appropriate mechanisms, such as Azure Backup or Kubernetes-native backup solutions, are in place to protect critical data.
+   - Test the restoration process for applications and verify that backups are regularly tested for integrity and recoverability.
+
+6. Security and Secrets Management:
+   - Review the security features for the AKS cluster, including pod security policies, network policies, and secrets management.
+   - Validate that pod security policies and network policies are configured to enforce security best practices and isolate workloads.
+   - Ensure that sensitive data, such as API keys or database credentials, are properly managed using Azure Key Vault or other secrets management solutions.
+
+7. Scaling and Auto Scaling:
+   - Evaluate the anticipated workload and adjust the AKS cluster's node pool size or use auto-scaling mechanisms based on expected traffic and performance requirements.
+   - Monitor the AKS cluster's performance metrics to determine if scaling is necessary based on factors such as CPU usage, memory utilization, or pod saturation.
+
+8. Documentation and Knowledge Transfer:
+   - Gather and update documentation related to the Azure AKS cluster, including cluster details, configurations, and access control policies.
+   - Share the documentation with the production support team and provide necessary training or knowledge transfer sessions.
+   - Ensure the production support team is familiar with monitoring, troubleshooting, and incident response procedures for Azure AKS clusters.
+
+9. Handover Meeting:
+   - Schedule a meeting with the production support team to discuss the handover process, address any questions or concerns, and provide necessary access credentials.
+   - Share information on AKS cluster usage, permissions, and incident response procedures.
+   - Define communication channels and escalation paths for support requests related to Azure AKS clusters.
+
+10. Ongoing Support:
+    - Establish a support mechanism to handle operational issues or incidents related to Azure AKS clusters and the applications running on them.
+
+
+    - Define the support team's responsibilities and provide guidance on troubleshooting common AKS-related issues.
+    - Regularly review and update the support procedures as the system evolves.
+
+Remember to customize this checklist based on your specific requirements and take into account any specific considerations or dependencies in your environment.
+
+===
+
+Azure Blob Storage support:
+
+Handing over Azure Blob Storage support from the build phase to the production phase involves ensuring proper configuration, access control, monitoring, and maintenance. Here's a checklist to guide you through the process:
+
+1. Blob Storage Configuration:
+   - Review the Azure Blob Storage account configuration, including storage account name, performance tier, redundancy options, and access tiers.
+   - Validate that the Blob Storage settings align with the production requirements, such as the desired performance level and data redundancy.
+   - Verify that any required containers, directories, or hierarchical namespaces are correctly provisioned.
+
+2. Access Control:
+   - Review access control settings for the Blob Storage account, including shared access signatures (SAS), access policies, and Azure Active Directory (AAD) integration.
+   - Validate that appropriate roles, users, or groups have the necessary permissions to manage and access the Blob Storage account.
+   - Ensure that access to the Blob Storage account is restricted to authorized entities and follows the principle of least privilege.
+
+3. Blob Storage Containers:
+   - Review the container configuration within the Blob Storage account, including container names, access policies, and public access settings.
+   - Validate that containers are properly organized and named according to the desired structure and access requirements.
+   - Verify that access policies are correctly configured to control access to containers and their content.
+
+4. Data Replication and Redundancy:
+   - Review the data replication and redundancy options for Blob Storage, such as locally redundant storage (LRS), zone-redundant storage (ZRS), or geo-redundant storage (GRS).
+   - Validate that the chosen redundancy option aligns with the desired durability and availability requirements.
+   - Ensure that data replication is functioning as expected and regularly monitor the storage account's replication status.
+
+5. Monitoring and Alerting:
+   - Configure Azure Monitor or other monitoring solutions to track the health, performance, and availability of the Blob Storage account.
+   - Set up appropriate alerts and notifications to trigger actions or workflows in response to specific events or threshold breaches.
+   - Monitor key metrics such as storage capacity, ingress/egress rates, and latency.
+
+6. Data Lifecycle Management:
+   - Review the data lifecycle management settings for Blob Storage, including blob tiering, retention policies, and archiving.
+   - Validate that data is appropriately classified and assigned the correct storage tier based on access patterns and cost considerations.
+   - Implement retention policies and archival mechanisms for compliance and long-term data retention requirements.
+
+7. Backup and Disaster Recovery:
+   - Review the backup and disaster recovery strategy for Blob Storage, including point-in-time snapshots, geo-replication, or backup to another storage account.
+   - Validate that backups are regularly taken and tested for integrity and recoverability.
+   - Verify that disaster recovery mechanisms, such as failover to a secondary region, are correctly configured and tested.
+
+8. Security and Encryption:
+   - Review the security features for Blob Storage, such as encryption at rest, Azure Private Link, and firewall rules.
+   - Validate that encryption is enabled for data at rest and in transit.
+   - Ensure that appropriate firewall rules are in place to restrict access to the Blob Storage account.
+
+9. Documentation and Knowledge Transfer:
+   - Gather and update documentation related to the Azure Blob Storage account, including account details, configurations, and access control policies.
+   - Share the documentation with the production support team and provide necessary training or knowledge transfer sessions.
+   - Ensure the production support team is familiar with monitoring, troubleshooting, and incident response procedures for Azure Blob Storage.
+
+10. Handover Meeting:
+    - Schedule a meeting with the production support team to discuss the handover process, address any questions or concerns, and provide necessary access credentials.
+    - Share information on Blob Storage usage, permissions, and incident response procedures.
+    - Define communication channels and
+
+ escalation paths for support requests related to Azure Blob Storage.
+
+11. Ongoing Support:
+    - Establish a support mechanism to handle operational issues or incidents related to Azure Blob Storage and the data stored within.
+    - Define the support team's responsibilities and provide guidance on troubleshooting common Blob Storage-related issues.
+    - Regularly review and update the support procedures as the system evolves.
+
+Remember to customize this checklist based on your specific requirements and take into account any specific considerations or dependencies in your environment.
+
+===
+
+Azure Cosmos DB support;
+
+Handing over Azure Cosmos DB support from the build phase to the production phase involves ensuring proper configuration, access control, monitoring, and maintenance. Here's a checklist to guide you through the process:
+
+1. Cosmos DB Configuration:
+   - Review the Azure Cosmos DB account configuration, including account name, consistency level, partitioning scheme, and throughput settings.
+   - Validate that the Cosmos DB settings align with the production requirements, such as the desired performance level, data replication, and partitioning strategy.
+   - Verify that any required databases, containers, or collections are correctly provisioned.
+
+2. Access Control:
+   - Review access control settings for the Cosmos DB account, including resource-level access control (RBAC), virtual network service endpoints, and Azure Active Directory (AAD) integration.
+   - Validate that appropriate roles, users, or groups have the necessary permissions to manage and access the Cosmos DB account.
+   - Ensure that access to the Cosmos DB account is restricted to authorized entities and follows the principle of least privilege.
+
+3. Database and Collection Configuration:
+   - Review the database and collection configuration within the Cosmos DB account, including names, partition keys, indexing policies, and throughput settings.
+   - Validate that databases and collections are properly organized and named according to the desired structure and access requirements.
+   - Verify that indexing policies are correctly configured to optimize query performance and minimize storage costs.
+
+4. Data Replication and Availability:
+   - Review the data replication and availability options for Cosmos DB, such as multi-region replication, read regions, and failover policies.
+   - Validate that the chosen replication options align with the desired durability and availability requirements.
+   - Ensure that data replication is functioning as expected and regularly monitor the Cosmos DB account's replication status.
+
+5. Monitoring and Alerting:
+   - Configure Azure Monitor or other monitoring solutions to track the health, performance, and availability of the Cosmos DB account.
+   - Set up appropriate alerts and notifications to trigger actions or workflows in response to specific events or threshold breaches.
+   - Monitor key metrics such as request rate, throughput, latency, and storage usage.
+
+6. Backup and Restore:
+   - Review the backup and restore strategy for Cosmos DB, including automated backups, point-in-time restore, and data retention policies.
+   - Validate that backups are regularly taken and tested for integrity and recoverability.
+   - Verify that restore procedures are documented and tested to ensure data can be recovered in case of accidental deletion or corruption.
+
+7. Security and Encryption:
+   - Review the security features for Cosmos DB, such as encryption at rest, Azure Private Link, and firewall rules.
+   - Validate that encryption is enabled for data at rest and in transit.
+   - Ensure that appropriate firewall rules are in place to restrict access to the Cosmos DB account.
+
+8. Scaling and Performance:
+   - Evaluate the anticipated workload and adjust the Cosmos DB account's throughput or partitioning strategy based on expected traffic and performance requirements.
+   - Monitor the account's performance metrics to determine if scaling or optimization is necessary based on factors such as request rate, response time, and storage usage.
+
+9. Documentation and Knowledge Transfer:
+   - Gather and update documentation related to the Azure Cosmos DB account, including account details, configurations, and access control policies.
+   - Share the documentation with the production support team and provide necessary training or knowledge transfer sessions.
+   - Ensure the production support team is familiar with monitoring, troubleshooting, and incident response procedures for Azure Cosmos DB.
+
+10. Handover Meeting:
+    - Schedule a meeting with the production support team to discuss the handover process, address any questions or concerns, and provide necessary access credentials.
+    - Share information on Cosmos DB usage, permissions, and incident response procedures.
+    - Define communication channels and escalation paths for support requests related to Azure Cosmos DB.
+
+11. Ongoing Support:
+
+
+    - Establish a support mechanism to handle operational issues or incidents related to Azure Cosmos DB and the applications using it.
+    - Define the support team's responsibilities and provide guidance on troubleshooting common Cosmos DB-related issues.
+    - Regularly review and update the support procedures as the system evolves.
+
+Remember to customize this checklist based on your specific requirements and take into account any specific considerations or dependencies in your environment.
+
+===
+
+ Azure Databricks support:
+ 
+ Handing over Azure Databricks support from the build phase to the production phase involves ensuring proper configuration, access control, monitoring, and maintenance. Here's a checklist to guide you through the process:
+
+1. Databricks Workspace Configuration:
+   - Review the Azure Databricks workspace configuration, including workspace name, cluster configurations, libraries, and access control settings.
+   - Validate that the Databricks workspace settings align with the production requirements, such as the desired cluster sizes, configurations, and network settings.
+   - Verify that any required libraries or dependencies are correctly provisioned within the workspace.
+
+2. Access Control:
+   - Review access control settings for the Databricks workspace, including workspace-level access control, user and group permissions, and Azure Active Directory (AAD) integration.
+   - Validate that appropriate roles, users, or groups have the necessary permissions to manage and access the Databricks workspace.
+   - Ensure that access to the workspace and associated resources is restricted to authorized entities and follows the principle of least privilege.
+
+3. Cluster Configuration:
+   - Review the cluster configurations within the Databricks workspace, including cluster types, sizes, auto-scaling settings, and network configurations.
+   - Validate that the cluster configurations align with the production requirements, such as the desired compute power, memory, and network connectivity.
+   - Verify that any required customizations or specific runtime versions are correctly set up for the clusters.
+
+4. Integration and Data Sources:
+   - Review the integration and data source configurations within the Databricks workspace, including data connectors, database connections, and storage account settings.
+   - Validate that the required integrations with other Azure services or external systems are properly configured.
+   - Verify that data connectors and data sources are correctly set up and accessible for the production environment.
+
+5. Monitoring and Alerting:
+   - Configure monitoring and alerting for the Databricks workspace and clusters, using Azure Monitor or other monitoring solutions.
+   - Set up appropriate alerts and notifications to track resource utilization, job statuses, errors, and performance bottlenecks.
+   - Monitor key metrics such as cluster health, CPU and memory usage, job execution time, and data ingestion rates.
+
+6. Job Scheduling and Automation:
+   - Review the job scheduling and automation within the Databricks workspace, including notebooks, workflows, and data pipelines.
+   - Validate that the required notebooks, jobs, and scheduled workflows are set up correctly for production use.
+   - Verify that dependencies and dependencies management are appropriately handled within the workflows or data pipelines.
+
+7. Security and Data Protection:
+   - Review the security features for Databricks, including encryption at rest, network security, secret management, and data access controls.
+   - Validate that encryption is enabled for data at rest and in transit.
+   - Ensure that appropriate network security settings and firewall rules are in place to restrict access to the Databricks workspace.
+
+8. Documentation and Knowledge Transfer:
+   - Gather and update documentation related to the Databricks workspace, including workspace details, configurations, access control policies, and job scheduling details.
+   - Share the documentation with the production support team and provide necessary training or knowledge transfer sessions.
+   - Ensure the production support team is familiar with monitoring, troubleshooting, and incident response procedures for Azure Databricks.
+
+9. Handover Meeting:
+   - Schedule a meeting with the production support team to discuss the handover process, address any questions or concerns, and provide necessary access credentials.
+   - Share information on Databricks usage, permissions, job scheduling, and incident response procedures.
+   - Define communication channels and escalation paths for support requests related to Azure Databricks.
+
+10. Ongoing Support:
+    - Establish a support mechanism to handle operational issues or incidents related to Azure Databricks and the workloads running on it.
+   
+
+ - Define the support team's responsibilities and provide guidance on troubleshooting common Databricks-related issues.
+    - Regularly review and update the support procedures as the system evolves.
+
+Remember to customize this checklist based on your specific requirements and take into account any specific considerations or dependencies in your environment.
+
+===
+
+Azure NGINX on AKS support:
+
+Handing over Azure NGINX on AKS (Azure Kubernetes Service) support from the build phase to the production phase involves ensuring proper configuration, access control, monitoring, and maintenance. Here's a checklist to guide you through the process:
+
+1. AKS Cluster Configuration:
+   - Review the Azure Kubernetes Service (AKS) cluster configuration, including cluster name, node pool sizes, networking settings, and RBAC (Role-Based Access Control) configuration.
+   - Validate that the AKS cluster settings align with the production requirements, such as the desired number of nodes, node sizes, and network policies.
+   - Verify that RBAC is properly configured to control access to the AKS cluster resources.
+
+2. NGINX Ingress Controller Deployment:
+   - Review the NGINX Ingress Controller deployment within the AKS cluster, including the deployment manifest, configuration settings, and integration with Azure Load Balancer or Azure Application Gateway.
+   - Validate that the NGINX Ingress Controller is deployed correctly and can route traffic to the appropriate backend services.
+   - Verify that any customizations or specific configurations required for production are properly set up.
+
+3. Networking and Ingress Configuration:
+   - Review the networking and ingress configuration for the NGINX Ingress Controller, including ingress rules, TLS termination, and load balancing settings.
+   - Validate that ingress rules are correctly defined to route incoming traffic to the desired backend services.
+   - Verify that TLS termination and SSL certificates are properly configured to enable secure communication.
+
+4. Access Control and Authentication:
+   - Review the access control and authentication mechanisms for the NGINX Ingress Controller, such as basic authentication, OAuth, or Azure Active Directory integration.
+   - Validate that the desired authentication mechanisms are in place to secure access to the services exposed through NGINX Ingress Controller.
+   - Ensure that appropriate access control rules and policies are defined to restrict access to sensitive resources.
+
+5. Monitoring and Alerting:
+   - Configure monitoring and alerting for the NGINX Ingress Controller and the backend services, using Azure Monitor or other monitoring solutions.
+   - Set up appropriate alerts and notifications to track health, performance, and availability of the NGINX Ingress Controller and detect any issues or failures.
+   - Monitor key metrics such as request rate, latency, error rates, and resource utilization.
+
+6. Logging and Troubleshooting:
+   - Configure logging for the NGINX Ingress Controller and the backend services, leveraging Azure Monitor Logs or other logging solutions.
+   - Ensure that logs are collected and retained for troubleshooting purposes, allowing you to investigate issues or errors.
+   - Define troubleshooting procedures and guidelines to handle common NGINX Ingress Controller or application-level issues.
+
+7. Scaling and High Availability:
+   - Review the scaling and high availability strategy for the NGINX Ingress Controller and the AKS cluster.
+   - Validate that the AKS cluster can scale horizontally to accommodate increased traffic and that the NGINX Ingress Controller can handle the load.
+   - Verify that the AKS cluster is configured for high availability with multiple nodes and that the NGINX Ingress Controller is resilient to node failures.
+
+8. Security and SSL Certificates:
+   - Review the security features for the NGINX Ingress Controller, such as SSL/TLS encryption, secure headers, and web application firewall (WAF) integration.
+   - Validate that SSL certificates are properly installed and configured for secure communication.
+   - Ensure that appropriate security measures, such as secure headers and WAF rules, are implemented to protect against common web vulnerabilities.
+
+9. Documentation and Knowledge Transfer:
+   - Gather and update documentation related to the NGINX Ingress Controller deployment, including configuration details, access control policies, and troubleshooting procedures.
+   - Share the documentation with the production support team and
+
+ provide necessary training or knowledge transfer sessions.
+   - Ensure the production support team is familiar with monitoring, troubleshooting, and incident response procedures for NGINX on AKS.
+
+10. Handover Meeting:
+    - Schedule a meeting with the production support team to discuss the handover process, address any questions or concerns, and provide necessary access credentials.
+    - Share information on NGINX Ingress Controller usage, configuration details, and incident response procedures.
+    - Define communication channels and escalation paths for support requests related to NGINX on AKS.
+
+11. Ongoing Support:
+    - Establish a support mechanism to handle operational issues or incidents related to NGINX Ingress Controller and the services deployed on AKS.
+    - Define the support team's responsibilities and provide guidance on troubleshooting common NGINX or AKS-related issues.
+    - Regularly review and update the support procedures as the system evolves.
+
+Remember to customize this checklist based on your specific requirements and take into account any specific considerations or dependencies in your environment.
+
+===
+
+
