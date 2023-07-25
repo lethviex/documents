@@ -1,0 +1,60 @@
+Testing AWS EC2 (Elastic Compute Cloud) redundancy is crucial to ensure high availability and fault tolerance of your applications and services. Redundancy testing aims to verify that the system can handle failures and automatically recover without any significant impact on the application's functionality. Below are some test cases for AWS EC2 redundancy testing:
+
+1. **Instance Failure and Auto-Recovery Test:**
+   - Description: Verify that a failed EC2 instance is automatically recovered by AWS.
+   - Test Steps:
+     1. Launch an EC2 instance with the desired configuration.
+     2. Monitor the instance's health status.
+     3. Simulate an instance failure (e.g., stop the instance from the AWS Management Console).
+     4. Observe if AWS automatically starts a new instance to replace the failed one.
+     5. Ensure the new instance has the same configurations and data as the original one.
+     6. Verify the application's functionality after the recovery process.
+
+2. **Load Balancer Health Check Test:**
+   - Description: Ensure that the load balancer detects unhealthy instances and redirects traffic to healthy instances.
+   - Test Steps:
+     1. Set up a load balancer with the EC2 instances registered in it.
+     2. Monitor the health status of the instances through the load balancer.
+     3. Simulate an instance becoming unhealthy (e.g., by stopping the web server on the instance).
+     4. Verify that the load balancer detects the unhealthy instance.
+     5. Ensure the load balancer redirects traffic only to healthy instances.
+     6. Verify the application's functionality through the load balancer.
+
+3. **Multi-AZ Failover Test:**
+   - Description: Validate that an EC2 instance automatically fails over to another Availability Zone (AZ) in case of AZ failure.
+   - Test Steps:
+     1. Deploy EC2 instances across multiple AZs within the same region.
+     2. Monitor the AZ distribution of instances.
+     3. Simulate an AZ failure (e.g., by intentionally stopping all instances in an AZ).
+     4. Observe if the instances in the failed AZ are automatically replaced in the remaining healthy AZs.
+     5. Verify that the application continues to function properly after the failover.
+
+4. **Elastic IP Address Reassignment Test:**
+   - Description: Ensure that an Elastic IP (EIP) address is reassociated with a new instance after instance failure.
+   - Test Steps:
+     1. Allocate an Elastic IP address to an EC2 instance.
+     2. Ensure the Elastic IP address is correctly associated with the instance.
+     3. Simulate an instance failure and automatic recovery (as tested in Test Case 1).
+     4. Verify that the Elastic IP address is automatically reassociated with the new instance.
+     5. Confirm that the application remains accessible through the Elastic IP address.
+
+5. **Auto Scaling Group (ASG) Test:**
+   - Description: Test the auto-scaling functionality to ensure EC2 instances are automatically added or removed based on demand.
+   - Test Steps:
+     1. Create an Auto Scaling Group with desired launch configuration and scaling policies.
+     2. Set up a CloudWatch alarm to trigger scaling based on a metric (e.g., CPU utilization).
+     3. Generate a load on the instances to trigger the scaling event.
+     4. Verify that new instances are added to the group to handle the increased load.
+     5. Reduce the load to trigger scaling down and ensure excess instances are removed.
+     6. Verify that the Auto Scaling Group maintains the desired number of instances during the entire process.
+
+6. **Scheduled Instance Reboot Test:**
+   - Description: Validate the behavior of EC2 instances during a scheduled reboot.
+   - Test Steps:
+     1. Schedule a maintenance window for an EC2 instance for a specific reboot time.
+     2. Monitor the instance's status leading up to the scheduled reboot.
+     3. Confirm that the instance is gracefully shut down and rebooted at the specified time.
+     4. Verify that the instance returns to the running state after the reboot.
+     5. Ensure the application hosted on the instance remains functional after the reboot.
+
+Remember that redundancy testing should be performed in a controlled environment, preferably a staging or testing environment, to avoid affecting the production system during testing. Additionally, the scope of testing may vary based on the complexity of your EC2 setup and the criticality of your application.
