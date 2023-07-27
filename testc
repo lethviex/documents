@@ -1,60 +1,222 @@
-Testing AWS EC2 (Elastic Compute Cloud) redundancy is crucial to ensure high availability and fault tolerance of your applications and services. Redundancy testing aims to verify that the system can handle failures and automatically recover without any significant impact on the application's functionality. Below are some test cases for AWS EC2 redundancy testing:
+A Minimum Viable Operations Support Readiness Checklist for AWS ECS (Elastic Container Service) is a condensed list of critical tasks and considerations to ensure the smooth operation and management of containerized applications on the AWS platform. Here's a checklist to get you started:
 
-1. **Instance Failure and Auto-Recovery Test:**
-   - Description: Verify that a failed EC2 instance is automatically recovered by AWS.
-   - Test Steps:
-     1. Launch an EC2 instance with the desired configuration.
-     2. Monitor the instance's health status.
-     3. Simulate an instance failure (e.g., stop the instance from the AWS Management Console).
-     4. Observe if AWS automatically starts a new instance to replace the failed one.
-     5. Ensure the new instance has the same configurations and data as the original one.
-     6. Verify the application's functionality after the recovery process.
+1. **Security and Access Control:**
+   - Configure AWS Identity and Access Management (IAM) roles for ECS tasks and services.
+   - Set up proper permissions for accessing AWS resources, such as EC2 instances, S3 buckets, and CloudWatch logs.
 
-2. **Load Balancer Health Check Test:**
-   - Description: Ensure that the load balancer detects unhealthy instances and redirects traffic to healthy instances.
-   - Test Steps:
-     1. Set up a load balancer with the EC2 instances registered in it.
-     2. Monitor the health status of the instances through the load balancer.
-     3. Simulate an instance becoming unhealthy (e.g., by stopping the web server on the instance).
-     4. Verify that the load balancer detects the unhealthy instance.
-     5. Ensure the load balancer redirects traffic only to healthy instances.
-     6. Verify the application's functionality through the load balancer.
+2. **Networking:**
+   - Create a Virtual Private Cloud (VPC) to isolate ECS resources.
+   - Set up security groups and network ACLs to control inbound/outbound traffic to containers.
 
-3. **Multi-AZ Failover Test:**
-   - Description: Validate that an EC2 instance automatically fails over to another Availability Zone (AZ) in case of AZ failure.
-   - Test Steps:
-     1. Deploy EC2 instances across multiple AZs within the same region.
-     2. Monitor the AZ distribution of instances.
-     3. Simulate an AZ failure (e.g., by intentionally stopping all instances in an AZ).
-     4. Observe if the instances in the failed AZ are automatically replaced in the remaining healthy AZs.
-     5. Verify that the application continues to function properly after the failover.
+3. **Cluster Configuration:**
+   - Design your ECS cluster based on the expected workload and resource requirements.
+   - Choose the appropriate instance types and sizes for your EC2 container instances.
+   - Ensure that you have a minimum of two instances spread across different Availability Zones for high availability.
 
-4. **Elastic IP Address Reassignment Test:**
-   - Description: Ensure that an Elastic IP (EIP) address is reassociated with a new instance after instance failure.
-   - Test Steps:
-     1. Allocate an Elastic IP address to an EC2 instance.
-     2. Ensure the Elastic IP address is correctly associated with the instance.
-     3. Simulate an instance failure and automatic recovery (as tested in Test Case 1).
-     4. Verify that the Elastic IP address is automatically reassociated with the new instance.
-     5. Confirm that the application remains accessible through the Elastic IP address.
+4. **Container Images and Registries:**
+   - Store container images in Amazon Elastic Container Registry (ECR) or other container registries.
+   - Implement a versioning strategy for your container images.
 
-5. **Auto Scaling Group (ASG) Test:**
-   - Description: Test the auto-scaling functionality to ensure EC2 instances are automatically added or removed based on demand.
-   - Test Steps:
-     1. Create an Auto Scaling Group with desired launch configuration and scaling policies.
-     2. Set up a CloudWatch alarm to trigger scaling based on a metric (e.g., CPU utilization).
-     3. Generate a load on the instances to trigger the scaling event.
-     4. Verify that new instances are added to the group to handle the increased load.
-     5. Reduce the load to trigger scaling down and ensure excess instances are removed.
-     6. Verify that the Auto Scaling Group maintains the desired number of instances during the entire process.
+5. **Task Definitions:**
+   - Create task definitions that specify container configurations, including CPU, memory, and container links.
+   - Define container logging options for centralized log management.
 
-6. **Scheduled Instance Reboot Test:**
-   - Description: Validate the behavior of EC2 instances during a scheduled reboot.
-   - Test Steps:
-     1. Schedule a maintenance window for an EC2 instance for a specific reboot time.
-     2. Monitor the instance's status leading up to the scheduled reboot.
-     3. Confirm that the instance is gracefully shut down and rebooted at the specified time.
-     4. Verify that the instance returns to the running state after the reboot.
-     5. Ensure the application hosted on the instance remains functional after the reboot.
+6. **Auto Scaling:**
+   - Configure Auto Scaling policies to automatically adjust the number of container instances based on CPU or custom metrics.
 
-Remember that redundancy testing should be performed in a controlled environment, preferably a staging or testing environment, to avoid affecting the production system during testing. Additionally, the scope of testing may vary based on the complexity of your EC2 setup and the criticality of your application.
+7. **Service Deployment:**
+   - Deploy services using the desired count and minimum healthy percentage settings.
+   - Implement a blue/green or rolling deployment strategy for zero-downtime updates.
+
+8. **Monitoring and Logging:**
+   - Enable CloudWatch metrics and alarms to monitor ECS cluster performance and resource utilization.
+   - Set up log collection and analysis using CloudWatch Logs or a third-party tool.
+
+9. **Health Checks:**
+   - Define health checks for your ECS tasks and services to ensure automatic recovery in case of failures.
+
+10. **Backup and Recovery:**
+    - Establish a backup and recovery strategy for critical data and configurations.
+    - Consider snapshotting or backing up ECR repositories, if needed.
+
+11. **Cost Optimization:**
+    - Utilize AWS Cost Explorer and other cost management tools to optimize ECS-related expenses.
+    - Consider using Spot Instances for non-critical workloads to reduce costs.
+
+12. **Documentation and Knowledge Sharing:**
+    - Document your ECS architecture, configurations, and procedures for future reference.
+    - Foster knowledge sharing among team members to enhance overall expertise.
+
+Remember that this checklist provides a minimum viable foundation for ECS operations support readiness. Depending on your specific use case and requirements, you may need to expand and customize this checklist further. Regularly review and update the checklist as your application and infrastructure evolve.
+
+
+A Minimum Viable Operations Support Readiness Checklist for AWS ECR (Elastic Container Registry) ensures that your container image registry is set up securely and efficiently. Here's a checklist to help you get started:
+
+1. **Access Control and Security:**
+   - Set up AWS Identity and Access Management (IAM) policies to control user access to ECR.
+   - Define IAM roles and permissions to allow ECS tasks and services to pull images from ECR securely.
+   - Implement multi-factor authentication (MFA) for ECR repository access, if required.
+
+2. **Repository Structure and Organization:**
+   - Plan a clear and structured repository naming convention.
+   - Consider creating separate repositories for different types of container images (e.g., production, development, testing).
+
+3. **Image Lifecycle Management:**
+   - Establish a retention policy to manage the lifecycle of container images.
+   - Define rules for image expiration and cleanup to prevent unnecessary storage costs.
+
+4. **Image Vulnerability Scanning:**
+   - Integrate ECR with AWS Security Hub or other third-party security scanning tools.
+   - Implement regular vulnerability scanning of container images to identify potential security risks.
+
+5. **Monitoring and Logging:**
+   - Enable CloudWatch logs for ECR to capture API calls and repository events.
+   - Set up CloudWatch alarms to alert on specific ECR events or metrics, such as high image push rates.
+
+6. **Backup and Disaster Recovery:**
+   - Consider implementing a backup strategy for critical container images.
+   - Ensure that your ECR data is replicated to multiple AWS Availability Zones for improved availability.
+
+7. **Tagging and Metadata:**
+   - Utilize tags to categorize and organize images for easier management and searching.
+   - Leverage metadata to provide additional context about the images stored in ECR.
+
+8. **Monitoring Image Sizes and Push Frequency:**
+   - Monitor the size of container images to control storage costs.
+   - Keep track of image push frequency to identify unusual activity or potential security issues.
+
+9. **Compliance and Governance:**
+   - Ensure compliance with relevant regulatory requirements and industry standards.
+   - Implement auditing and logging mechanisms to maintain governance and accountability.
+
+10. **Documentation and Training:**
+    - Document ECR configurations, policies, and procedures for reference.
+    - Provide training to relevant team members on ECR best practices and security guidelines.
+
+11. **Cost Optimization:**
+    - Use AWS Cost Explorer and other cost management tools to optimize ECR-related expenses.
+    - Consider lifecycle policies to move older images to lower-cost storage tiers or delete unused images.
+
+Remember that this checklist provides a minimum viable foundation for ECR operations support readiness. Depending on your organization's specific needs and compliance requirements, you may need to expand and customize this checklist further. Regularly review and update the checklist as your container image registry usage evolves.
+
+
+
+A Minimum Viable Operations Support Readiness Checklist for Azure Load Balancer helps ensure that your load balancer is set up correctly, optimized for performance, and ready for operational support. Here's a checklist to guide you:
+
+1. **Load Balancer Configuration:**
+   - Determine the type of load balancer: Standard Load Balancer or Basic Load Balancer.
+   - Choose the appropriate SKU based on your traffic requirements and feature needs.
+
+2. **Backend Pool Configuration:**
+   - Define backend pools and add virtual machines or virtual machine scale sets to them.
+   - Ensure that the health probes are properly configured for the backend pool resources.
+
+3. **Frontend Configuration:**
+   - Create frontend IP configurations, specifying either public or internal IP addresses.
+   - Configure inbound NAT rules if needed for specific services running on backend VMs.
+
+4. **Load Balancing Rules:**
+   - Set up load balancing rules to distribute traffic to backend VMs based on your requirements.
+   - Choose the appropriate load balancing algorithm (e.g., round-robin, least connections).
+
+5. **Health Probes and Probing Interval:**
+   - Define health probes to monitor the health of backend VM instances.
+   - Adjust the probing interval and timeout settings based on the characteristics of your application.
+
+6. **Availability Zones and Redundancy:**
+   - Select the appropriate availability zones for high availability and redundancy.
+   - Ensure that your backend VMs are distributed across different zones.
+
+7. **Network Security Groups (NSGs):**
+   - Associate NSGs with backend subnets to control traffic to and from the backend VMs.
+   - Create NSGs to restrict access to the frontend of the load balancer, if required.
+
+8. **Network Security Group Flow Logs:**
+   - Enable flow logs on NSGs to capture and analyze network traffic for security monitoring.
+
+9. **Monitoring and Logging:**
+   - Enable diagnostics settings to send load balancer logs to Azure Monitor or Log Analytics.
+   - Create alerts for critical events, such as backend health probe failures or high load balancer latency.
+
+10. **Traffic Manager (If Needed):**
+    - If using Traffic Manager for global load balancing, ensure it's configured correctly and integrated with the load balancer.
+
+11. **Scaling and Performance:**
+    - Monitor load balancer performance metrics like throughput, connection counts, and latency.
+    - Scale your load balancer or backend pool resources if needed to meet growing demands.
+
+12. **Backup and Disaster Recovery:**
+    - Implement backup and recovery procedures for the load balancer configuration.
+    - Ensure you have a disaster recovery plan in place in case of any issues.
+
+13. **Documentation and Knowledge Sharing:**
+    - Document the load balancer configuration, rules, and procedures for future reference.
+    - Foster knowledge sharing among team members to enhance overall expertise.
+
+14. **Compliance and Governance:**
+    - Ensure compliance with relevant regulations and security best practices.
+    - Implement auditing mechanisms to maintain governance and accountability.
+
+Remember that this checklist provides a minimum viable foundation for Azure Load Balancer operations support readiness. Depending on your specific use case and requirements, you may need to expand and customize this checklist further. Regularly review and update the checklist as your load balancing needs evolve.
+
+
+A Minimum Viable Operations Support Readiness Checklist for Azure Application Gateway helps ensure that your application gateway is properly configured, secure, and ready for operational support. Here's a checklist to guide you:
+
+1. **Application Gateway Configuration:**
+   - Determine the type of application gateway: Web Application Firewall (WAF) or standard.
+   - Choose the appropriate SKU based on your traffic requirements and feature needs.
+
+2. **Backend Pool Configuration:**
+   - Define backend pools and add backend instances (e.g., virtual machines, virtual machine scale sets).
+   - Ensure that the health probes are properly configured for the backend pool resources.
+
+3. **Frontend Configuration:**
+   - Create frontend IP configurations, specifying either public or private IP addresses.
+   - Configure listeners and rules to route traffic to appropriate backend pools based on the URL path or host header.
+
+4. **HTTP Settings:**
+   - Set up HTTP settings to define how the application gateway communicates with backend instances.
+   - Specify the port, protocol, and other settings based on your application requirements.
+
+5. **SSL Termination and Certificates:**
+   - Configure SSL termination for secure communication with clients.
+   - Upload and manage SSL certificates for HTTPS listeners, if required.
+
+6. **Web Application Firewall (WAF):**
+   - If using the WAF SKU, configure WAF rules and settings to protect your web applications from common web exploits and attacks.
+
+7. **Authentication and Authorization:**
+   - Implement authentication and authorization mechanisms for your application endpoints, if needed.
+
+8. **Request and Response Limits:**
+   - Set appropriate request and response limits to handle the expected workload and prevent abuse.
+
+9. **Monitoring and Logging:**
+   - Enable diagnostics settings to send application gateway logs to Azure Monitor or Log Analytics.
+   - Create alerts for critical events, such as backend health probe failures or high request failure rates.
+
+10. **Performance and Autoscaling:**
+    - Monitor application gateway performance metrics like throughput and connection counts.
+    - Configure autoscaling based on performance or request metrics to handle traffic fluctuations.
+
+11. **Network Security Groups (NSGs):**
+    - Associate NSGs with backend subnets to control traffic to and from the backend instances.
+    - Create NSGs to restrict access to the frontend of the application gateway, if required.
+
+12. **Network Security Group Flow Logs:**
+    - Enable flow logs on NSGs to capture and analyze network traffic for security monitoring.
+
+13. **Backup and Disaster Recovery:**
+    - Implement backup and recovery procedures for the application gateway configuration.
+    - Ensure you have a disaster recovery plan in place in case of any issues.
+
+14. **Documentation and Knowledge Sharing:**
+    - Document the application gateway configuration, rules, and procedures for future reference.
+    - Foster knowledge sharing among team members to enhance overall expertise.
+
+15. **Compliance and Governance:**
+    - Ensure compliance with relevant regulations and security best practices.
+    - Implement auditing mechanisms to maintain governance and accountability.
+
+Remember that this checklist provides a minimum viable foundation for Azure Application Gateway operations support readiness. Depending on your specific use case and requirements, you may need to expand and customize this checklist further. Regularly review and update the checklist as your application gateway usage evolves.
+
