@@ -1,44 +1,41 @@
-Nonfunctional requirements, also known as quality attributes or system qualities, define the characteristics and constraints that the application must adhere to in order to meet the desired performance, security, and usability standards. When hosting an application in VMware Cloud on AWS (VMC), the following nonfunctional requirements should be considered:
+Certainly! Measurement criteria help in objectively assessing and verifying whether the nonfunctional requirements have been met. Below are the measurement criteria for each of the nonfunctional requirements listed earlier:
 
 1. **Performance and Scalability:**
-   - Response Time: Specify the maximum acceptable response time for critical operations to ensure the application is responsive and performs well.
-   - Throughput: Define the number of concurrent users or transactions the system should handle efficiently.
-   - Scalability: Describe how the application should scale in response to increased workload or user demands, both vertically (adding resources to a single instance) and horizontally (adding more instances).
+   - Response Time: Define specific response time targets for critical operations, such as "95% of requests should be responded to within 500 milliseconds."
+   - Throughput: Specify the number of concurrent users or transactions the system should handle, like "The system should support a minimum of 1000 concurrent users."
 
 2. **Availability and Reliability:**
-   - Uptime and Downtime: Specify the minimum required uptime (e.g., 99.99%) and allowable downtime for maintenance and updates.
-   - Failover and Redundancy: Define the mechanisms for handling failures and ensuring high availability, including failover strategies and data redundancy.
+   - Uptime and Downtime: Define uptime as a percentage, such as "The system should have at least 99.99% uptime, allowing a maximum of 52 minutes of downtime per year."
+   - Failover and Redundancy: Measure the time it takes for the system to recover from a failure and switch to redundant resources, for example, "Failover should occur within 1 minute."
 
 3. **Security:**
-   - Authentication and Authorization: Define the authentication mechanisms (e.g., OAuth, SAML, etc.) and authorization rules to control access to the application and its resources.
-   - Data Security: Specify the encryption standards and protocols for data at rest and data in transit to safeguard sensitive information.
-   - Auditability: Define the requirement for audit logs to track and monitor user activities and system changes.
+   - Authentication and Authorization: Specify the authentication success rate and access control rules, like "Authentication success rate should be 99.9%," and "Only authorized users with specific roles can access certain functionalities."
+   - Data Security: Define encryption standards and protocols used, for instance, "Data at rest should be encrypted using AES-256," and "Data in transit should use TLS 1.3."
 
 4. **Compliance:**
-   - Regulatory Compliance: Identify any specific regulations or standards that the application must comply with (e.g., GDPR, HIPAA, PCI DSS, etc.).
-   - VMC Best Practices: Ensure adherence to VMware Cloud on AWS best practices and guidelines for security, networking, and performance.
+   - Regulatory Compliance: Determine whether the application adheres to specific regulations by conducting audits and assessments against the relevant compliance standards.
 
 5. **Scalability and Resource Management:**
-   - Resource Utilization: Define acceptable thresholds for CPU, memory, and storage usage to optimize resource allocation and avoid performance bottlenecks.
-   - Auto-scaling: Specify the conditions under which the application should automatically scale up or down based on demand.
+   - Resource Utilization: Set thresholds for resource utilization, like "CPU usage should not exceed 80% during peak load," and "Memory usage should be maintained below 90%."
+   - Auto-scaling: Specify conditions for auto-scaling, such as "The application should automatically scale up when CPU usage exceeds 70% for more than 5 minutes."
 
 6. **Maintainability and Manageability:**
-   - Logging and Monitoring: Specify the logging and monitoring requirements to aid in debugging, troubleshooting, and performance analysis.
-   - Error Handling: Define the approach for handling errors and exceptions to ensure graceful degradation and improved user experience.
+   - Logging and Monitoring: Define the percentage of error-free logs and monitoring data retention period, like "Logs should be error-free for at least 90% of entries," and "Monitoring data should be retained for at least 30 days."
+   - Error Handling: Measure the number of unhandled errors or exceptions, aiming for "Less than 1% of errors should be unhandled."
 
 7. **Usability and User Experience:**
-   - Accessibility: Specify accessibility standards to ensure the application is usable by people with disabilities.
-   - User Interface Guidelines: Define user interface design principles and guidelines for consistency and ease of use.
+   - Accessibility: Validate compliance with accessibility standards using accessibility testing tools and guidelines.
+   - User Interface Guidelines: Conduct usability testing with users to ensure compliance with UI design principles.
 
 8. **Integration and Interoperability:**
-   - API Requirements: Specify the API standards and formats for integration with other systems or third-party applications.
-   - Data Exchange Formats: Define the acceptable data exchange formats to facilitate interoperability.
+   - API Requirements: Verify adherence to API documentation and standards, such as RESTful API guidelines and status code usage.
+   - Data Exchange Formats: Measure the success rate of data exchanges between the application and external systems, targeting 99% success rate.
 
 9. **Backup and Disaster Recovery:**
-   - Backup Policy: Define the frequency and retention period for backups, as well as the backup storage location.
-   - Disaster Recovery Plan: Specify the procedures and protocols for recovering the application and data in case of a catastrophic event.
+   - Backup Policy: Ensure backups are performed according to the defined schedule and stored in the specified location.
+   - Disaster Recovery Plan: Conduct drills or simulations to verify the effectiveness of the disaster recovery plan.
 
 10. **Cost Constraints:**
-    - Resource Optimization: Define cost-saving measures, such as optimizing resource usage and using reserved instances when appropriate.
+    - Resource Optimization: Monitor resource usage and cost metrics regularly to optimize resource allocation and cost-efficiency.
 
-Remember that nonfunctional requirements are just as important as functional requirements, as they directly impact the overall performance, security, and usability of the application. These requirements need to be well-defined, measurable, and testable to ensure the successful deployment and operation of the application on VMC on AWS.
+Remember that the measurement criteria should be specific, measurable, achievable, relevant, and time-bound (SMART) to facilitate effective testing and evaluation of the nonfunctional requirements. Additionally, consider conducting performance testing, security assessments, and other relevant evaluations to ensure compliance with these criteria.
