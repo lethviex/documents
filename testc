@@ -1,222 +1,44 @@
-A Minimum Viable Operations Support Readiness Checklist for AWS ECS (Elastic Container Service) is a condensed list of critical tasks and considerations to ensure the smooth operation and management of containerized applications on the AWS platform. Here's a checklist to get you started:
+Nonfunctional requirements, also known as quality attributes or system qualities, define the characteristics and constraints that the application must adhere to in order to meet the desired performance, security, and usability standards. When hosting an application in VMware Cloud on AWS (VMC), the following nonfunctional requirements should be considered:
 
-1. **Security and Access Control:**
-   - Configure AWS Identity and Access Management (IAM) roles for ECS tasks and services.
-   - Set up proper permissions for accessing AWS resources, such as EC2 instances, S3 buckets, and CloudWatch logs.
+1. **Performance and Scalability:**
+   - Response Time: Specify the maximum acceptable response time for critical operations to ensure the application is responsive and performs well.
+   - Throughput: Define the number of concurrent users or transactions the system should handle efficiently.
+   - Scalability: Describe how the application should scale in response to increased workload or user demands, both vertically (adding resources to a single instance) and horizontally (adding more instances).
 
-2. **Networking:**
-   - Create a Virtual Private Cloud (VPC) to isolate ECS resources.
-   - Set up security groups and network ACLs to control inbound/outbound traffic to containers.
+2. **Availability and Reliability:**
+   - Uptime and Downtime: Specify the minimum required uptime (e.g., 99.99%) and allowable downtime for maintenance and updates.
+   - Failover and Redundancy: Define the mechanisms for handling failures and ensuring high availability, including failover strategies and data redundancy.
 
-3. **Cluster Configuration:**
-   - Design your ECS cluster based on the expected workload and resource requirements.
-   - Choose the appropriate instance types and sizes for your EC2 container instances.
-   - Ensure that you have a minimum of two instances spread across different Availability Zones for high availability.
+3. **Security:**
+   - Authentication and Authorization: Define the authentication mechanisms (e.g., OAuth, SAML, etc.) and authorization rules to control access to the application and its resources.
+   - Data Security: Specify the encryption standards and protocols for data at rest and data in transit to safeguard sensitive information.
+   - Auditability: Define the requirement for audit logs to track and monitor user activities and system changes.
 
-4. **Container Images and Registries:**
-   - Store container images in Amazon Elastic Container Registry (ECR) or other container registries.
-   - Implement a versioning strategy for your container images.
+4. **Compliance:**
+   - Regulatory Compliance: Identify any specific regulations or standards that the application must comply with (e.g., GDPR, HIPAA, PCI DSS, etc.).
+   - VMC Best Practices: Ensure adherence to VMware Cloud on AWS best practices and guidelines for security, networking, and performance.
 
-5. **Task Definitions:**
-   - Create task definitions that specify container configurations, including CPU, memory, and container links.
-   - Define container logging options for centralized log management.
+5. **Scalability and Resource Management:**
+   - Resource Utilization: Define acceptable thresholds for CPU, memory, and storage usage to optimize resource allocation and avoid performance bottlenecks.
+   - Auto-scaling: Specify the conditions under which the application should automatically scale up or down based on demand.
 
-6. **Auto Scaling:**
-   - Configure Auto Scaling policies to automatically adjust the number of container instances based on CPU or custom metrics.
+6. **Maintainability and Manageability:**
+   - Logging and Monitoring: Specify the logging and monitoring requirements to aid in debugging, troubleshooting, and performance analysis.
+   - Error Handling: Define the approach for handling errors and exceptions to ensure graceful degradation and improved user experience.
 
-7. **Service Deployment:**
-   - Deploy services using the desired count and minimum healthy percentage settings.
-   - Implement a blue/green or rolling deployment strategy for zero-downtime updates.
+7. **Usability and User Experience:**
+   - Accessibility: Specify accessibility standards to ensure the application is usable by people with disabilities.
+   - User Interface Guidelines: Define user interface design principles and guidelines for consistency and ease of use.
 
-8. **Monitoring and Logging:**
-   - Enable CloudWatch metrics and alarms to monitor ECS cluster performance and resource utilization.
-   - Set up log collection and analysis using CloudWatch Logs or a third-party tool.
+8. **Integration and Interoperability:**
+   - API Requirements: Specify the API standards and formats for integration with other systems or third-party applications.
+   - Data Exchange Formats: Define the acceptable data exchange formats to facilitate interoperability.
 
-9. **Health Checks:**
-   - Define health checks for your ECS tasks and services to ensure automatic recovery in case of failures.
+9. **Backup and Disaster Recovery:**
+   - Backup Policy: Define the frequency and retention period for backups, as well as the backup storage location.
+   - Disaster Recovery Plan: Specify the procedures and protocols for recovering the application and data in case of a catastrophic event.
 
-10. **Backup and Recovery:**
-    - Establish a backup and recovery strategy for critical data and configurations.
-    - Consider snapshotting or backing up ECR repositories, if needed.
+10. **Cost Constraints:**
+    - Resource Optimization: Define cost-saving measures, such as optimizing resource usage and using reserved instances when appropriate.
 
-11. **Cost Optimization:**
-    - Utilize AWS Cost Explorer and other cost management tools to optimize ECS-related expenses.
-    - Consider using Spot Instances for non-critical workloads to reduce costs.
-
-12. **Documentation and Knowledge Sharing:**
-    - Document your ECS architecture, configurations, and procedures for future reference.
-    - Foster knowledge sharing among team members to enhance overall expertise.
-
-Remember that this checklist provides a minimum viable foundation for ECS operations support readiness. Depending on your specific use case and requirements, you may need to expand and customize this checklist further. Regularly review and update the checklist as your application and infrastructure evolve.
-
-
-A Minimum Viable Operations Support Readiness Checklist for AWS ECR (Elastic Container Registry) ensures that your container image registry is set up securely and efficiently. Here's a checklist to help you get started:
-
-1. **Access Control and Security:**
-   - Set up AWS Identity and Access Management (IAM) policies to control user access to ECR.
-   - Define IAM roles and permissions to allow ECS tasks and services to pull images from ECR securely.
-   - Implement multi-factor authentication (MFA) for ECR repository access, if required.
-
-2. **Repository Structure and Organization:**
-   - Plan a clear and structured repository naming convention.
-   - Consider creating separate repositories for different types of container images (e.g., production, development, testing).
-
-3. **Image Lifecycle Management:**
-   - Establish a retention policy to manage the lifecycle of container images.
-   - Define rules for image expiration and cleanup to prevent unnecessary storage costs.
-
-4. **Image Vulnerability Scanning:**
-   - Integrate ECR with AWS Security Hub or other third-party security scanning tools.
-   - Implement regular vulnerability scanning of container images to identify potential security risks.
-
-5. **Monitoring and Logging:**
-   - Enable CloudWatch logs for ECR to capture API calls and repository events.
-   - Set up CloudWatch alarms to alert on specific ECR events or metrics, such as high image push rates.
-
-6. **Backup and Disaster Recovery:**
-   - Consider implementing a backup strategy for critical container images.
-   - Ensure that your ECR data is replicated to multiple AWS Availability Zones for improved availability.
-
-7. **Tagging and Metadata:**
-   - Utilize tags to categorize and organize images for easier management and searching.
-   - Leverage metadata to provide additional context about the images stored in ECR.
-
-8. **Monitoring Image Sizes and Push Frequency:**
-   - Monitor the size of container images to control storage costs.
-   - Keep track of image push frequency to identify unusual activity or potential security issues.
-
-9. **Compliance and Governance:**
-   - Ensure compliance with relevant regulatory requirements and industry standards.
-   - Implement auditing and logging mechanisms to maintain governance and accountability.
-
-10. **Documentation and Training:**
-    - Document ECR configurations, policies, and procedures for reference.
-    - Provide training to relevant team members on ECR best practices and security guidelines.
-
-11. **Cost Optimization:**
-    - Use AWS Cost Explorer and other cost management tools to optimize ECR-related expenses.
-    - Consider lifecycle policies to move older images to lower-cost storage tiers or delete unused images.
-
-Remember that this checklist provides a minimum viable foundation for ECR operations support readiness. Depending on your organization's specific needs and compliance requirements, you may need to expand and customize this checklist further. Regularly review and update the checklist as your container image registry usage evolves.
-
-
-
-A Minimum Viable Operations Support Readiness Checklist for Azure Load Balancer helps ensure that your load balancer is set up correctly, optimized for performance, and ready for operational support. Here's a checklist to guide you:
-
-1. **Load Balancer Configuration:**
-   - Determine the type of load balancer: Standard Load Balancer or Basic Load Balancer.
-   - Choose the appropriate SKU based on your traffic requirements and feature needs.
-
-2. **Backend Pool Configuration:**
-   - Define backend pools and add virtual machines or virtual machine scale sets to them.
-   - Ensure that the health probes are properly configured for the backend pool resources.
-
-3. **Frontend Configuration:**
-   - Create frontend IP configurations, specifying either public or internal IP addresses.
-   - Configure inbound NAT rules if needed for specific services running on backend VMs.
-
-4. **Load Balancing Rules:**
-   - Set up load balancing rules to distribute traffic to backend VMs based on your requirements.
-   - Choose the appropriate load balancing algorithm (e.g., round-robin, least connections).
-
-5. **Health Probes and Probing Interval:**
-   - Define health probes to monitor the health of backend VM instances.
-   - Adjust the probing interval and timeout settings based on the characteristics of your application.
-
-6. **Availability Zones and Redundancy:**
-   - Select the appropriate availability zones for high availability and redundancy.
-   - Ensure that your backend VMs are distributed across different zones.
-
-7. **Network Security Groups (NSGs):**
-   - Associate NSGs with backend subnets to control traffic to and from the backend VMs.
-   - Create NSGs to restrict access to the frontend of the load balancer, if required.
-
-8. **Network Security Group Flow Logs:**
-   - Enable flow logs on NSGs to capture and analyze network traffic for security monitoring.
-
-9. **Monitoring and Logging:**
-   - Enable diagnostics settings to send load balancer logs to Azure Monitor or Log Analytics.
-   - Create alerts for critical events, such as backend health probe failures or high load balancer latency.
-
-10. **Traffic Manager (If Needed):**
-    - If using Traffic Manager for global load balancing, ensure it's configured correctly and integrated with the load balancer.
-
-11. **Scaling and Performance:**
-    - Monitor load balancer performance metrics like throughput, connection counts, and latency.
-    - Scale your load balancer or backend pool resources if needed to meet growing demands.
-
-12. **Backup and Disaster Recovery:**
-    - Implement backup and recovery procedures for the load balancer configuration.
-    - Ensure you have a disaster recovery plan in place in case of any issues.
-
-13. **Documentation and Knowledge Sharing:**
-    - Document the load balancer configuration, rules, and procedures for future reference.
-    - Foster knowledge sharing among team members to enhance overall expertise.
-
-14. **Compliance and Governance:**
-    - Ensure compliance with relevant regulations and security best practices.
-    - Implement auditing mechanisms to maintain governance and accountability.
-
-Remember that this checklist provides a minimum viable foundation for Azure Load Balancer operations support readiness. Depending on your specific use case and requirements, you may need to expand and customize this checklist further. Regularly review and update the checklist as your load balancing needs evolve.
-
-
-A Minimum Viable Operations Support Readiness Checklist for Azure Application Gateway helps ensure that your application gateway is properly configured, secure, and ready for operational support. Here's a checklist to guide you:
-
-1. **Application Gateway Configuration:**
-   - Determine the type of application gateway: Web Application Firewall (WAF) or standard.
-   - Choose the appropriate SKU based on your traffic requirements and feature needs.
-
-2. **Backend Pool Configuration:**
-   - Define backend pools and add backend instances (e.g., virtual machines, virtual machine scale sets).
-   - Ensure that the health probes are properly configured for the backend pool resources.
-
-3. **Frontend Configuration:**
-   - Create frontend IP configurations, specifying either public or private IP addresses.
-   - Configure listeners and rules to route traffic to appropriate backend pools based on the URL path or host header.
-
-4. **HTTP Settings:**
-   - Set up HTTP settings to define how the application gateway communicates with backend instances.
-   - Specify the port, protocol, and other settings based on your application requirements.
-
-5. **SSL Termination and Certificates:**
-   - Configure SSL termination for secure communication with clients.
-   - Upload and manage SSL certificates for HTTPS listeners, if required.
-
-6. **Web Application Firewall (WAF):**
-   - If using the WAF SKU, configure WAF rules and settings to protect your web applications from common web exploits and attacks.
-
-7. **Authentication and Authorization:**
-   - Implement authentication and authorization mechanisms for your application endpoints, if needed.
-
-8. **Request and Response Limits:**
-   - Set appropriate request and response limits to handle the expected workload and prevent abuse.
-
-9. **Monitoring and Logging:**
-   - Enable diagnostics settings to send application gateway logs to Azure Monitor or Log Analytics.
-   - Create alerts for critical events, such as backend health probe failures or high request failure rates.
-
-10. **Performance and Autoscaling:**
-    - Monitor application gateway performance metrics like throughput and connection counts.
-    - Configure autoscaling based on performance or request metrics to handle traffic fluctuations.
-
-11. **Network Security Groups (NSGs):**
-    - Associate NSGs with backend subnets to control traffic to and from the backend instances.
-    - Create NSGs to restrict access to the frontend of the application gateway, if required.
-
-12. **Network Security Group Flow Logs:**
-    - Enable flow logs on NSGs to capture and analyze network traffic for security monitoring.
-
-13. **Backup and Disaster Recovery:**
-    - Implement backup and recovery procedures for the application gateway configuration.
-    - Ensure you have a disaster recovery plan in place in case of any issues.
-
-14. **Documentation and Knowledge Sharing:**
-    - Document the application gateway configuration, rules, and procedures for future reference.
-    - Foster knowledge sharing among team members to enhance overall expertise.
-
-15. **Compliance and Governance:**
-    - Ensure compliance with relevant regulations and security best practices.
-    - Implement auditing mechanisms to maintain governance and accountability.
-
-Remember that this checklist provides a minimum viable foundation for Azure Application Gateway operations support readiness. Depending on your specific use case and requirements, you may need to expand and customize this checklist further. Regularly review and update the checklist as your application gateway usage evolves.
-
+Remember that nonfunctional requirements are just as important as functional requirements, as they directly impact the overall performance, security, and usability of the application. These requirements need to be well-defined, measurable, and testable to ensure the successful deployment and operation of the application on VMC on AWS.
