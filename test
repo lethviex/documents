@@ -1,1 +1,5 @@
-"The displayed stretched cluster capacity appears to be twice the actual size due to the presence of nodes in two availability zones for enhanced redundancy. Therefore, to determine the true available capacity, it should be divided by two."
+| parse-json "your_response_field" as json_data
+| jsondata "json_data.name" as resource_name
+| jsondata "json_data.resource_config.region" as region
+| jsondata "json_data.resource_config.cluster[*].cluster_name" as cluster_name
+| jsondata "json_data.resource_config.cluster[*].esx_list[*].esx_name" as esx_name
