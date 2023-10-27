@@ -1,5 +1,1 @@
-| parse-json "your_response_field" as json_data
-| jsondata "json_data.name" as resource_name
-| jsondata "json_data.resource_config.region" as region
-| jsondata "json_data.resource_config.cluster[*].cluster_name" as cluster_name
-| jsondata "json_data.resource_config.cluster[*].esx_list[*].esx_name" as esx_name
+"We currently have a set of standard Minimum Viable Operations (MVO) outlined in our JIRA system for AWS Cloud native operations. I kindly request your thorough review of the existing MVO and suggest any necessary enhancements or modifications to tasks that are pivotal for taking over cloud-native support. Attached, you will find the relevant JIRA tasks. Once you've made the updates, please share them, and I will take care of importing them into JIRA."
