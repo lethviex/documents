@@ -1,1 +1,11 @@
-"We currently have a set of standard Minimum Viable Operations (MVO) outlined in our JIRA system for AWS Cloud native operations. I kindly request your thorough review of the existing MVO and suggest any necessary enhancements or modifications to tasks that are pivotal for taking over cloud-native support. Attached, you will find the relevant JIRA tasks. Once you've made the updates, please share them, and I will take care of importing them into JIRA."
+Write a CICD infrastructure summary in five lines, we have Self service portal, Git, Jfrog, Jenkins, Blackduck, AWS Cloudformation
+
+AWS CICD infrastructure is driven by a self-service portal for streamlined user interaction, Git serves as the version control system, managing code repositories. JFrog facilitates artifact management, ensuring efficient storage and distribution of build artifacts. Jenkins orchestrates continuous integration, automating the testing and building processes. Blackduck integrates seamlessly for security scanning, identifying and mitigating potential vulnerabilities. AWS CloudFormation plays a pivotal role in automating infrastructure provisioning, allowing for consistent and reproducible deployments across our AWS environment. Together, these components form a robust pipeline, promoting collaboration, automation, and security in our software development lifecycle.
+
+
+Write a Azure CICD infrastructure summary in five lines, we have Azure Devops, Git, Jfrog, Helm charrts, terragrunt and ansible for 
+
+
+Our Azure CICD infrastructure is powered by Azure DevOps, serving as the central hub for collaboration and automation. Git manages version control, ensuring code integrity throughout the development process. JFrog oversees artifact management, facilitating the storage and distribution of build artifacts. Helm charts streamline Kubernetes deployment, and Terragrunt automates infrastructure provisioning, creating a cohesive and efficient pipeline for continuous integration and delivery within the Azure ecosystem.
+
+In our Azure CICD infrastructure, Azure DevOps acts as the central platform for collaboration and automation. Git handles version control to ensure code integrity, while JFrog manages artifact storage and distribution. Helm charts simplify Kubernetes deployment, and Terragrunt automates infrastructure provisioning. Ansible streamlines configuration management, creating a comprehensive and efficient pipeline for continuous integration and delivery within the Azure environment.
