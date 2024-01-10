@@ -1,41 +1,36 @@
-Certainly! Measurement criteria help in objectively assessing and verifying whether the nonfunctional requirements have been met. Below are the measurement criteria for each of the nonfunctional requirements listed earlier:
+import requests
+import time
 
-1. **Performance and Scalability:**
-   - Response Time: Define specific response time targets for critical operations, such as "95% of requests should be responded to within 500 milliseconds."
-   - Throughput: Specify the number of concurrent users or transactions the system should handle, like "The system should support a minimum of 1000 concurrent users."
+api_url = "your_api_url_here"
+max_running_time = 30 * 60  # 30 minutes in seconds
+query_interval = 5 * 60  # 5 minutes in seconds
 
-2. **Availability and Reliability:**
-   - Uptime and Downtime: Define uptime as a percentage, such as "The system should have at least 99.99% uptime, allowing a maximum of 52 minutes of downtime per year."
-   - Failover and Redundancy: Measure the time it takes for the system to recover from a failure and switch to redundant resources, for example, "Failover should occur within 1 minute."
+start_time = time.time()
 
-3. **Security:**
-   - Authentication and Authorization: Specify the authentication success rate and access control rules, like "Authentication success rate should be 99.9%," and "Only authorized users with specific roles can access certain functionalities."
-   - Data Security: Define encryption standards and protocols used, for instance, "Data at rest should be encrypted using AES-256," and "Data in transit should use TLS 1.3."
+while True:
+    # Query the API
+    response = requests.get(api_url)
+    
+    if response.status_code == 200:
+        # Check the status in the API response
+        status = response.json().get('status')
 
-4. **Compliance:**
-   - Regulatory Compliance: Determine whether the application adheres to specific regulations by conducting audits and assessments against the relevant compliance standards.
+        # Check if the status is 'running'
+        if status == 'running':
+            elapsed_time = time.time() - start_time
 
-5. **Scalability and Resource Management:**
-   - Resource Utilization: Set thresholds for resource utilization, like "CPU usage should not exceed 80% during peak load," and "Memory usage should be maintained below 90%."
-   - Auto-scaling: Specify conditions for auto-scaling, such as "The application should automatically scale up when CPU usage exceeds 70% for more than 5 minutes."
+            # Check if it has been running for more than 30 minutes
+            if elapsed_time >= max_running_time:
+                print("Task has been running for more than 30 minutes. Exiting.")
+                break
+            else:
+                print(f"Task is still running. Elapsed time: {elapsed_time} seconds.")
+        else:
+            print(f"Task status is not 'running'. Exiting.")
+            break
+    else:
+        print(f"Failed to query the API. Status code: {response.status_code}. Exiting.")
+        break
 
-6. **Maintainability and Manageability:**
-   - Logging and Monitoring: Define the percentage of error-free logs and monitoring data retention period, like "Logs should be error-free for at least 90% of entries," and "Monitoring data should be retained for at least 30 days."
-   - Error Handling: Measure the number of unhandled errors or exceptions, aiming for "Less than 1% of errors should be unhandled."
-
-7. **Usability and User Experience:**
-   - Accessibility: Validate compliance with accessibility standards using accessibility testing tools and guidelines.
-   - User Interface Guidelines: Conduct usability testing with users to ensure compliance with UI design principles.
-
-8. **Integration and Interoperability:**
-   - API Requirements: Verify adherence to API documentation and standards, such as RESTful API guidelines and status code usage.
-   - Data Exchange Formats: Measure the success rate of data exchanges between the application and external systems, targeting 99% success rate.
-
-9. **Backup and Disaster Recovery:**
-   - Backup Policy: Ensure backups are performed according to the defined schedule and stored in the specified location.
-   - Disaster Recovery Plan: Conduct drills or simulations to verify the effectiveness of the disaster recovery plan.
-
-10. **Cost Constraints:**
-    - Resource Optimization: Monitor resource usage and cost metrics regularly to optimize resource allocation and cost-efficiency.
-
-Remember that the measurement criteria should be specific, measurable, achievable, relevant, and time-bound (SMART) to facilitate effective testing and evaluation of the nonfunctional requirements. Additionally, consider conducting performance testing, security assessments, and other relevant evaluations to ensure compliance with these criteria.
+    # Wait for the next query interval
+    time.sleep(query_interval)
