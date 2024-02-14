@@ -1,14 +1,24 @@
-Introduction:
+import os
+import pandas as pd
 
-Disaster Recovery (DR) planning is a critical aspect of ensuring business continuity in the face of unforeseen events. VMWare SRM is a powerful tool for orchestrating the failover and failback of virtualized environments, providing a systematic approach to disaster recovery. However, to further enhance this process, this automation solution leverages the flexibility and extensibility of SRM API using Python, Ansible and AaaS
+# Set the directory containing your JSON files
+json_dir = 'path/to/json/files'
 
+# Initialize an empty list to store DataFrames
+dfs = []
 
-Simplified Failover: Reduce manual intervention by automating the failover process, ensuring a swift response to potential disasters.
-Customization: Tailor the automation scripts to fit the unique requirements of your VMWare SRM deployment and infrastructure.
+# Loop through each file in the directory
+for file_name in os.listdir(json_dir):
+    if file_name.endswith('.json'):
+        # Read JSON file into a DataFrame
+        df = pd.read_json(os.path.join(json_dir, file_name))
+        dfs.append(df)
 
-Python Modules used:
+# Concatenate all DataFrames into one
+combined_df = pd.concat(dfs, ignore_index=True)
 
-pyvmomi
-requests
-pandas
+# Write combined DataFrame to Excel
+excel_file = 'combined_data.xlsx'
+combined_df.to_excel(excel_file, index=False)
 
+print(f"Combined data has been saved to {excel_file}")
