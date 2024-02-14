@@ -1,24 +1,12 @@
-import os
-import pandas as pd
+Code review team responsibility;
 
-# Set the directory containing your JSON files
-json_dir = 'path/to/json/files'
-
-# Initialize an empty list to store DataFrames
-dfs = []
-
-# Loop through each file in the directory
-for file_name in os.listdir(json_dir):
-    if file_name.endswith('.json'):
-        # Read JSON file into a DataFrame
-        df = pd.read_json(os.path.join(json_dir, file_name))
-        dfs.append(df)
-
-# Concatenate all DataFrames into one
-combined_df = pd.concat(dfs, ignore_index=True)
-
-# Write combined DataFrame to Excel
-excel_file = 'combined_data.xlsx'
-combined_df.to_excel(excel_file, index=False)
-
-print(f"Combined data has been saved to {excel_file}")
+1. Reviewing code changes submitted by developers.
+2. Identifying bugs, errors, and defects in the code.
+3. Ensuring adherence to coding standards and best practices.
+4. Enhancing code quality, readability, and performance.
+5. Providing constructive feedback to developers.
+6. Promoting knowledge sharing and learning among team members.
+7. Ensuring security measures are implemented in the code.
+8. Contributing to documentation and codebase maintenance.
+9. Facilitating collaboration and issue resolution.
+10. Actively participating in the improvement of the code review process.
