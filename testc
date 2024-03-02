@@ -1,12 +1,94 @@
-Code review team responsibility;
+// Import necessary modules
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Route, Link, Redirect, useHistory } from 'react-router-dom';
 
-1. Reviewing code changes submitted by developers.
-2. Identifying bugs, errors, and defects in the code.
-3. Ensuring adherence to coding standards and best practices.
-4. Enhancing code quality, readability, and performance.
-5. Providing constructive feedback to developers.
-6. Promoting knowledge sharing and learning among team members.
-7. Ensuring security measures are implemented in the code.
-8. Contributing to documentation and codebase maintenance.
-9. Facilitating collaboration and issue resolution.
-10. Actively participating in the improvement of the code review process.
+// Define your form components
+const StepOne = ({ onNext }) => {
+  const [name, setName] = useState('');
+
+  const handleNext = () => {
+    onNext({ name });
+  };
+
+  return (
+    <div>
+      <h2>Step One</h2>
+      <input type="text" value={name} onChange={(e) => setName(e.target.value)} />
+      <button onClick={handleNext}>Next</button>
+    </div>
+  );
+};
+
+const StepTwo = ({ data, onNext }) => {
+  const [email, setEmail] = useState('');
+
+  const handleNext = () => {
+    onNext({ ...data, email });
+  };
+
+  return (
+    <div>
+      <h2>Step Two</h2>
+      <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} />
+      <button onClick={handleNext}>Next</button>
+    </div>
+  );
+};
+
+const StepThree = ({ data }) => {
+  return (
+    <div>
+      <h2>Step Three</h2>
+      <p>Name: {data.name}</p>
+      <p>Email: {data.email}</p>
+    </div>
+  );
+};
+
+// Define your form component
+const MultiPageForm = () => {
+  const [formData, setFormData] = useState({});
+  const history = useHistory();
+
+  const handleNext = (data) => {
+    setFormData({ ...formData, ...data });
+    history.push(`/${Object.keys(formData).length + 1}`);
+  };
+
+  const renderFormStep = (step) => {
+    switch (step) {
+      case '1':
+        return <StepOne onNext={handleNext} />;
+      case '2':
+        return <StepTwo data={formData} onNext={handleNext} />;
+      case '3':
+        return <StepThree data={formData} />;
+      default:
+        return <Redirect to="/1" />;
+    }
+  };
+
+  return (
+    <Router>
+      <div>
+        <nav>
+          <ul>
+            <li>
+              <Link to="/1">Step 1</Link>
+            </li>
+            <li>
+              <Link to="/2">Step 2</Link>
+            </li>
+            <li>
+              <Link to="/3">Step 3</Link>
+            </li>
+          </ul>
+        </nav>
+        <hr />
+        <Route path="/:step" render={({ match }) => renderFormStep(match.params.step)} />
+      </div>
+    </Router>
+  );
+};
+
+export default MultiPageForm;
