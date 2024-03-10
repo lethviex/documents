@@ -34,3 +34,17 @@ def check_host(hostname):
 
 hostname = "example.com"
 check_host(hostname)
+
+import re
+
+def is_valid_ip(ip):
+    ip_pattern = r"^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$"
+    return re.match(ip_pattern, ip) is not None
+
+# Test the function
+ip_address = "192.168.1.1"
+if is_valid_ip(ip_address):
+    print(f"{ip_address} is a valid IP address")
+else:
+    print(f"{ip_address} is not a valid IP address")
+
