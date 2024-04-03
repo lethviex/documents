@@ -1,38 +1,40 @@
-import requests
+from html.parser import HTMLParser
+from xml.etree.ElementTree import Element, SubElement, tostring
 
-# Authentication details
-username = 'your_username'
-password = 'your_password'
-base_url = 'https://your-confluence-domain.com/rest/api/content'
+class HTMLtoXHTMLParser(HTMLParser):
+    def __init__(self):
+        super().__init__()
+        self.xhtml = Element('html')
+        self.stack = [self.xhtml]
 
-# Page ID of the page you want to update
-page_id = '123456789'
+    def handle_starttag(self, tag, attrs):
+        elem = SubElement(self.stack[-1], tag, dict(attrs))
+        self.stack.append(elem)
 
-# New content for the page
-new_content = """
-<h1>New Content</h1>
-<p>This is the updated content of the page.</p>
+    def handle_endtag(self, tag):
+        self.stack.pop()
+
+    def handle_data(self, data):
+        if data.strip():
+            self.stack[-1].text = (self.stack[-1].text or '') + data
+
+def html_to_xhtml(html):
+    parser = HTMLtoXHTMLParser()
+    parser.feed(html)
+    return tostring(parser.xhtml, encoding='unicode', method='xml')
+
+# Example usage
+html_content = """
+<html>
+<head>
+<title>Sample HTML Document</title>
+</head>
+<body>
+<h1>This is a heading</h1>
+<p>This is a paragraph with <b>bold</b> and <i>italic</i> text.</p>
+</body>
+</html>
 """
 
-# Prepare the data to send
-data = {
-    "id": page_id,
-    "type": "page",
-    "title": "Updated Page Title",
-    "body": {
-        "storage": {
-            "value": new_content,
-            "representation": "storage"
-        }
-    }
-}
-
-# Make the request to update the page
-response = requests.put(f"{base_url}/{page_id}", json=data, auth=(username, password))
-
-# Check if the request was successful
-if response.status_code == 200:
-    print("Page updated successfully!")
-else:
-    print(f"Failed to update page. Status code: {response.status_code}")
-    print(response.text)
+xhtml_content = html_to_xhtml(html_content)
+print(xhtml_content)
