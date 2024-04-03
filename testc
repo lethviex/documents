@@ -1,40 +1,14 @@
-from html.parser import HTMLParser
-from xml.etree.ElementTree import Element, SubElement, tostring
-
-class HTMLtoXHTMLParser(HTMLParser):
-    def __init__(self):
-        super().__init__()
-        self.xhtml = Element('html')
-        self.stack = [self.xhtml]
-
-    def handle_starttag(self, tag, attrs):
-        elem = SubElement(self.stack[-1], tag, dict(attrs))
-        self.stack.append(elem)
-
-    def handle_endtag(self, tag):
-        self.stack.pop()
-
-    def handle_data(self, data):
-        if data.strip():
-            self.stack[-1].text = (self.stack[-1].text or '') + data
-
-def html_to_xhtml(html):
-    parser = HTMLtoXHTMLParser()
-    parser.feed(html)
-    return tostring(parser.xhtml, encoding='unicode', method='xml')
+def read_html_file(file_path):
+    try:
+        with open(file_path, 'r', encoding='utf-8') as file:
+            html_content = file.read()
+        return html_content
+    except FileNotFoundError:
+        print(f"File '{file_path}' not found.")
+        return None
 
 # Example usage
-html_content = """
-<html>
-<head>
-<title>Sample HTML Document</title>
-</head>
-<body>
-<h1>This is a heading</h1>
-<p>This is a paragraph with <b>bold</b> and <i>italic</i> text.</p>
-</body>
-</html>
-"""
-
-xhtml_content = html_to_xhtml(html_content)
-print(xhtml_content)
+file_path = 'example.html'
+html_content = read_html_file(file_path)
+if html_content:
+    print(html_content)
