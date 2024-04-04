@@ -1,14 +1,7 @@
-def read_html_file(file_path):
-    try:
-        with open(file_path, 'r', encoding='utf-8') as file:
-            html_content = file.read()
-        return html_content
-    except FileNotFoundError:
-        print(f"File '{file_path}' not found.")
-        return None
+Implement self-service SRM disaster recovery automation for the application support team, resulting in reduced turnaround time for executing DR failovers and enabling seamless DR failover operations without depending on the support team
 
-# Example usage
-file_path = 'example.html'
-html_content = read_html_file(file_path)
-if html_content:
-    print(html_content)
+Current disaster recovery processes rely heavily on manual intervention from the support team, leading to prolonged turnaround times and potential disruptions during failover events. There is a pressing need to implement self-service SRM disaster recovery automation for the application support team to streamline failover procedures, minimize dependencies on support personnel, and ensure seamless continuity of critical business operations in the event of a disaster.
+
+Certainly! Here's a problem statement based on the provided context:
+
+"Current disaster recovery processes within the organization rely heavily on manual intervention from the support team, leading to prolonged turnaround times and potential dependencies on support personnel availability. This inefficiency not only delays critical failover operations but also introduces risks associated with human error. To address these challenges, there is a need to implement self-service SRM (Site Recovery Manager) disaster recovery automation for the application support team. By doing so, the organization aims to streamline the DR failover process, reduce turnaround times, and minimize dependencies on support personnel, thus enhancing the overall resilience and reliability of the disaster recovery system."
