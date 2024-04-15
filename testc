@@ -1,7 +1,17 @@
-Implement self-service SRM disaster recovery automation for the application support team, resulting in reduced turnaround time for executing DR failovers and enabling seamless DR failover operations without depending on the support team
+import socket
 
-Current disaster recovery processes rely heavily on manual intervention from the support team, leading to prolonged turnaround times and potential disruptions during failover events. There is a pressing need to implement self-service SRM disaster recovery automation for the application support team to streamline failover procedures, minimize dependencies on support personnel, and ensure seamless continuity of critical business operations in the event of a disaster.
+def check_dns_entry(hostname, entry):
+    try:
+        ip_addresses = socket.gethostbyname_ex(hostname)[2]
+        if entry in ip_addresses:
+            return True
+        else:
+            return False
+    except socket.gaierror:
+        return False
 
-Certainly! Here's a problem statement based on the provided context:
-
-"Current disaster recovery processes within the organization rely heavily on manual intervention from the support team, leading to prolonged turnaround times and potential dependencies on support personnel availability. This inefficiency not only delays critical failover operations but also introduces risks associated with human error. To address these challenges, there is a need to implement self-service SRM (Site Recovery Manager) disaster recovery automation for the application support team. By doing so, the organization aims to streamline the DR failover process, reduce turnaround times, and minimize dependencies on support personnel, thus enhancing the overall resilience and reliability of the disaster recovery system."
+# Example usage
+hostname = "abc.com"
+entry_to_check = "abc-dr"
+result = check_dns_entry(hostname, entry_to_check)
+print(f"DNS entry '{entry_to_check}' exists for {hostname}: {result}")
