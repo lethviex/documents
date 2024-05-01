@@ -1,17 +1,42 @@
-import socket
+from pyVim.connect import SmartConnectNoSSL, Disconnect
+from pyVmomi import vim
+from pyVmomi import vmodl
 
-def check_dns_entry(hostname, entry):
+def get_cluster_tags(service_instance, cluster_name):
+    """
+    Retrieve tags associated with a specified cluster in vSphere.
+
+    :param service_instance: vSphere service instance (session)
+    :param cluster_name: The name of the cluster to retrieve tags for
+    :return: List of tags associated with the cluster
+    """
+
     try:
-        ip_addresses = socket.gethostbyname_ex(hostname)[2]
-        if entry in ip_addresses:
-            return True
-        else:
-            return False
-    except socket.gaierror:
-        return False
+        # Get the content and search for the cluster by name
+        content = service_instance.RetrieveContent()
+        search_index = content.searchIndex
+        
+        # Find the cluster by its name
+        cluster = None
+        for datacenter in content.rootFolder.childEntity:
+            cluster = datacenter.hostFolder.childEntity
+            cluster = next((c for c in cluster if c.name == cluster_name), None)
+            if cluster:
+                break
 
-# Example usage
-hostname = "abc.com"
-entry_to_check = "abc-dr"
-result = check_dns_entry(hostname, entry_to_check)
-print(f"DNS entry '{entry_to_check}' exists for {hostname}: {result}")
+        if cluster is None:
+            return f"Cluster '{cluster_name}' not found"
+
+        # Get the tag manager
+        tag_manager = content.tagManager
+
+        # Get the tags associated with the cluster
+        tags = tag_manager.ListTagsAssociatedWithEntity(cluster)
+
+        # Retrieve tag names from the tag objects
+        tag_names = [tag.name for tag in tags]
+
+        return tag_names
+
+    except vmodl.MethodFault as error:
+        return f"Error: {error.msg}"
