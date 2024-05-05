@@ -1,62 +1,64 @@
-import atexit
-import ssl
-from pyVim import connect
-from pyVmomi import vim
+import pandas as pd
 
-# Set up connection information
-vcenter_host = "your_vcenter_host"  # e.g., "vcenter.example.com"
-vcenter_user = "your_vcenter_user"  # e.g., "administrator@vsphere.local"
-vcenter_password = "your_vcenter_password"  # Your vCenter password
-cluster_name = input("Enter the cluster name: ")
+# Function to place VMs in clusters
+def place_vms_in_clusters(clusters, vms):
+    # Add current usage columns to clusters to keep track of used capacity
+    clusters['used_cpu'] = 0
+    clusters['used_memory'] = 0
+    clusters['used_storage'] = 0
 
-# Create a secure SSL context to avoid certificate issues
-ssl_context = ssl._create_unverified_context()
+    # Create a list to store the VM to cluster mapping
+    placement = []
 
-# Connect to vCenter
-service_instance = connect.SmartConnect(
-    host=vcenter_host,
-    user=vcenter_user,
-    pwd=vcenter_password,
-    sslContext=ssl_context,
-)
-# Ensure disconnection from vCenter upon script exit
-atexit.register(connect.Disconnect, service_instance)
+    # Sort VMs by total resource requirement for a consistent placement approach
+    # Here, we are sorting by CPU + Memory + Storage
+    vms['total_resources'] = vms['cpu'] + vms['memory'] + vms['storage']
+    vms = vms.sort_values(by='total_resources', ascending=False)
 
-# Retrieve the content of the ServiceInstance
-content = service_instance.RetrieveContent()
-
-# Get the data center
-datacenters = content.rootFolder.childEntity  # Top-level entities, usually data centers
-datastore_details = []
-
-# Iterate through datacenters and clusters to find the specified cluster
-for datacenter in datacenters:
-    if hasattr(datacenter, "hostFolder"):
-        host_folder = datacenter.hostFolder
-        clusters = host_folder.childEntity  # Get all clusters in the data center
-
-        for cluster in clusters:
-            if cluster.name == cluster_name:
-                # Get the datastores associated with the cluster
-                datastores = cluster.datastore
-                for datastore in datastores:
-                    datastore_details.append({
-                        "Name": datastore.name,
-                        "Capacity": datastore.summary.capacity,
-                        "Free Space": datastore.summary.freeSpace,
-                        "Type": datastore.summary.type,
-                    })
+    # Iterate over each VM
+    for i, vm in vms.iterrows():
+        placed = False
+        # Iterate over each cluster to find a suitable one
+        for j, cluster in clusters.iterrows():
+            # Check if the cluster can accommodate the VM
+            if (
+                (cluster['cpu'] - cluster['used_cpu'] >= vm['cpu']) and
+                (cluster['memory'] - cluster['used_memory'] >= vm['memory']) and
+                (cluster['storage'] - cluster['used_storage'] >= vm['storage'])
+            ):
+                # If the cluster has enough capacity, place the VM here
+                clusters.at[j, 'used_cpu'] += vm['cpu']
+                clusters.at[j, 'used_memory'] += vm['memory']
+                clusters.at[j, 'used_storage'] += vm['storage']
+                
+                # Record the placement
+                placement.append({'vm_id': vm['vm_id'], 'cluster_id': cluster['cluster_id']})
+                
+                placed = True
                 break
+        
+        if not placed:
+            # If the VM could not be placed in any cluster, return a message or handle as needed
+            print(f"VM with ID {vm['vm_id']} could not be placed in any cluster.")
+    
+    return pd.DataFrame(placement)
 
-# Output the details of the datastores
-if datastore_details:
-    print("Datastore details for cluster", cluster_name, ":")
-    for ds in datastore_details:
-        print("Name:", ds["Name"])
-        print("Capacity (bytes):", ds["Capacity"])
-        print("Free Space (bytes):", ds["Free Space"])
-        print("Type:", ds["Type"])
-        print()
-else:
-    print("Cluster not found or no datastores associated with the cluster.")
+# Example DataFrames for clusters and VMs
+clusters_df = pd.DataFrame({
+    'cluster_id': [1, 2, 3],
+    'cpu': [100, 200, 300],
+    'memory': [500, 1000, 1500],
+    'storage': [2000, 4000, 6000],
+})
 
+vms_df = pd.DataFrame({
+    'vm_id': [101, 102, 103, 104],
+    'cpu': [30, 50, 70, 20],
+    'memory': [100, 200, 300, 50],
+    'storage': [500, 1000, 2000, 200],
+})
+
+# Call the function to place VMs in clusters
+placement_df = place_vms_in_clusters(clusters_df, vms_df)
+print("VM Placement:")
+print(placement_df)
