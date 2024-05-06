@@ -1,21 +1,121 @@
-Certainly, here are ten best practices for automation development:
+import pandas as pd
+import math
 
-1. **Clear Requirements:** Clearly define the requirements and objectives of the automation project to ensure alignment with business needs and expectations.
+# Constants for node capacity and cluster limits
+CPU_PER_NODE = 500  # CPU capacity added by one node
+MEMORY_PER_NODE = 2000  # Memory capacity added by one node (in GB)
+STORAGE_PER_NODE = 20000  # Storage capacity added by one node (in GB)
+MAX_NODES = 16  # Maximum nodes allowed per cluster
+MIN_NODES_NEW_CLUSTER = 2  # Minimum nodes required to create a new cluster
 
-2. **Modular Design:** Break down automation tasks into smaller, reusable modules or functions to promote maintainability and scalability.
+# Function to suggest VM placement and identify new cluster requirements
+def suggest_vm_placement_and_new_clusters(clusters, vms):
+    recommendations = []  # To store the placement recommendations
+    new_clusters = []  # To store the new cluster requirements
+    
+    for _, vm in vms.iterrows():
+        # Find clusters that match the VM's attributes
+        compatible_clusters = clusters[
+            (clusters['Region'] == vm['Region']) &
+            (clusters['ServerType'] == vm['ServerType']) &
+            (clusters['Environment'] == vm['Environment'])
+        ]
 
-3. **Code Review:** Conduct regular code reviews to ensure code quality, consistency, and adherence to coding standards.
+        if compatible_clusters.empty:
+            # If no clusters match, suggest creating a new cluster
+            new_clusters.append({
+                'Region': vm['Region'],
+                'ServerType': vm['ServerType'],
+                'Environment': vm['Environment'],
+                'InitialNodes': MIN_NODES_NEW_CLUSTER,
+                'Reason': f"No existing clusters for VM {vm['VM']}.",
+            })
+            continue
 
-4. **Error Handling:** Implement robust error handling mechanisms to gracefully handle exceptions and failures, preventing automation from crashing unexpectedly.
+        placed = False
+        
+        for _, cluster in compatible_clusters.iterrows():
+            # Check if the cluster has enough capacity
+            if (
+                cluster['CPU'] >= vm['CPU'] and
+                cluster['Memory'] >= vm['Memory'] and
+                cluster['Storage'] >= vm['Storage']
+            ):
+                recommendations.append(f"VM {vm['VM']} can be placed in {cluster['Cluster']}.")
+                placed = True
+                break
+            
+            # Calculate additional nodes required to meet capacity
+            additional_cpu = max(0, vm['CPU'] - cluster['CPU'])
+            additional_memory = max(0, vm['Memory'] - cluster['Memory'])
+            additional_storage = max(0, vm['Storage'] - cluster['Storage'])
 
-5. **Logging and Monitoring:** Incorporate logging and monitoring capabilities into your automation code to track execution, capture errors, and facilitate troubleshooting.
+            nodes_needed_for_cpu = math.ceil(additional_cpu / CPU_PER_NODE)
+            nodes_needed_for_memory = math.ceil(additional_memory / MEMORY_PER_NODE)
+            nodes_needed_for_storage = math.ceil(additional_storage / STORAGE_PER_NODE)
 
-6. **Testing:** Develop automated tests to validate the functionality of your automation scripts, covering different scenarios and edge cases.
+            additional_nodes_needed = max(
+                nodes_needed_for_cpu, nodes_needed_for_memory, nodes_needed_for_storage
+            )
 
-7. **Version Control:** Store automation code in a version control system like Git to track changes, collaborate with team members, and facilitate rollback if necessary.
+            # If adding nodes exceeds the cluster's limit, suggest a new cluster
+            if cluster['NodeCount'] + additional_nodes_needed > MAX_NODES:
+                new_clusters.append({
+                    'Region': cluster['Region'],
+                    'ServerType': cluster['ServerType'],
+                    'Environment': cluster['Environment'],
+                    'InitialNodes': MIN_NODES_NEW_CLUSTER,
+                    'Reason': f"Cluster {cluster['Cluster']} has reached the node limit. Consider creating a new cluster for VM {vm['VM']}.",
+                })
+                break
 
-8. **Documentation:** Maintain clear and up-to-date documentation for your automation code, including usage instructions, dependencies, and known issues.
+            # If additional nodes can fit within the existing cluster
+            if cluster['NodeCount'] + additional_nodes_needed <= MAX_NODES:
+                recommendations.append(
+                    f"VM {vm['VM']} requires {additional_nodes_needed} additional nodes for placement in {cluster['Cluster']}."
+                )
+                placed = True
+                break
 
-9. **Security Awareness:** Follow security best practices when developing automation code, including handling sensitive data securely and implementing appropriate access controls.
+        if not placed:
+            new_clusters.append({
+                'Region': vm['Region'],
+                'ServerType': vm['ServerType'],
+                'Environment': vm['Environment'],
+                'InitialNodes': MIN_NODES_NEW_CLUSTER,
+                'Reason': f"Existing clusters could not accommodate VM {vm['VM']}.",
+            })
 
-10. **Continuous Improvement:** Continuously evaluate and refine your automation processes to identify areas for optimization, efficiency gains, and technological advancements.
+    return recommendations, pd.DataFrame(new_clusters)
+
+# Example usage
+clusters = pd.DataFrame({
+    'Cluster': ['Cluster1', 'Cluster2', 'Cluster3'],
+    'VCenter': ['VCenter1', 'VCenter2', 'VCenter3'],
+    'NodeCount': [10, 12, 16],
+    'ServerType': ['Type1', 'Type2', 'Type1'],
+    'Environment': ['Prod', 'Test', 'Prod'],
+    'Region': ['US-East', 'US-West', 'EU'],
+    'CPU': [5000, 6000, 8000],  # Total CPU
+    'Memory': [20000, 24000, 32000],  # Total Memory in GB
+    'Storage': [100000, 120000, 160000],  # Total Storage in GB
+})
+
+vms = pd.DataFrame({
+    'VM': ['VM1', 'VM2', 'VM3'],
+    'Region': ['US-East', 'US-West', 'EU'],
+    'ServerType': ['Type1', 'Type2', 'Type1'],
+    'Environment': ['Prod', 'Test', 'Prod'],
+    'CPU': [1000, 2000, 3000],  # CPU required by VM
+    'Memory': [4000, 8000, 12000],  # Memory required by VM
+    'Storage': [20000, 40000, 60000],  # Storage required by VM
+})
+
+recommendations, new_clusters = suggest_vm_placement_and_new_clusters(clusters, vms)
+
+print("Recommendations:")
+for rec in recommendations:
+    print(rec)
+
+print("\nNew Cluster Requirements:")
+print(new_clusters)
