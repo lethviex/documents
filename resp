@@ -8,10 +8,10 @@ STORAGE_PER_NODE = 20000  # Storage capacity added by one node (in GB)
 MAX_NODES = 16  # Maximum nodes allowed per cluster
 MIN_NODES_NEW_CLUSTER = 2  # Minimum nodes required to create a new cluster
 
-# Function to suggest VM placement and identify new cluster requirements
-def suggest_vm_placement_and_new_clusters(clusters, vms):
-    recommendations = []  # To store the placement recommendations
-    new_clusters = []  # To store the new cluster requirements
+# Function to determine VM placement and new cluster requirements
+def determine_cluster_and_node_requirements(clusters, vms):
+    recommendations = []  # To store placement recommendations
+    new_clusters = []  # To store new cluster requirements
     
     for _, vm in vms.iterrows():
         # Find clusters that match the VM's attributes
@@ -22,20 +22,30 @@ def suggest_vm_placement_and_new_clusters(clusters, vms):
         ]
 
         if compatible_clusters.empty:
-            # If no clusters match, suggest creating a new cluster
+            # If no suitable clusters, suggest a new cluster
+            new_cluster_nodes = math.ceil(vm['CPU'] / CPU_PER_NODE)
+            new_cluster_nodes = max(
+                new_cluster_nodes,
+                math.ceil(vm['Memory'] / MEMORY_PER_NODE),
+                math.ceil(vm['Storage'] / STORAGE_PER_NODE)
+            )
+            
+            # Ensure the new cluster has at least the minimum number of nodes
+            new_cluster_nodes = max(new_cluster_nodes, MIN_NODES_NEW_CLUSTER)
+            
             new_clusters.append({
                 'Region': vm['Region'],
                 'ServerType': vm['ServerType'],
                 'Environment': vm['Environment'],
-                'InitialNodes': MIN_NODES_NEW_CLUSTER,
-                'Reason': f"No existing clusters for VM {vm['VM']}.",
+                'NodeCount': new_cluster_nodes,
+                'Reason': f"No existing clusters for VM {vm['VM']}. New cluster required.",
             })
             continue
 
-        placed = False
+        placed = False  # Flag to indicate if the VM is placed
         
         for _, cluster in compatible_clusters.iterrows():
-            # Check if the cluster has enough capacity
+            # Check if the cluster has enough capacity for the VM
             if (
                 cluster['CPU'] >= vm['CPU'] and
                 cluster['Memory'] >= vm['Memory'] and
@@ -45,11 +55,12 @@ def suggest_vm_placement_and_new_clusters(clusters, vms):
                 placed = True
                 break
             
-            # Calculate additional nodes required to meet capacity
+            # Calculate the additional capacity needed
             additional_cpu = max(0, vm['CPU'] - cluster['CPU'])
             additional_memory = max(0, vm['Memory'] - cluster['Memory'])
             additional_storage = max(0, vm['Storage'] - cluster['Storage'])
 
+            # Determine the number of additional nodes required
             nodes_needed_for_cpu = math.ceil(additional_cpu / CPU_PER_NODE)
             nodes_needed_for_memory = math.ceil(additional_memory / MEMORY_PER_NODE)
             nodes_needed_for_storage = math.ceil(additional_storage / STORAGE_PER_NODE)
@@ -58,23 +69,23 @@ def suggest_vm_placement_and_new_clusters(clusters, vms):
                 nodes_needed_for_cpu, nodes_needed_for_memory, nodes_needed_for_storage
             )
 
-            # If adding nodes exceeds the cluster's limit, suggest a new cluster
-            if cluster['NodeCount'] + additional_nodes_needed > MAX_NODES:
-                new_clusters.append({
-                    'Region': cluster['Region'],
-                    'ServerType': cluster['ServerType'],
-                    'Environment': cluster['Environment'],
-                    'InitialNodes': MIN_NODES_NEW_CLUSTER,
-                    'Reason': f"Cluster {cluster['Cluster']} has reached the node limit. Consider creating a new cluster for VM {vm['VM']}.",
-                })
-                break
-
-            # If additional nodes can fit within the existing cluster
+            # If the cluster has room for additional nodes
             if cluster['NodeCount'] + additional_nodes_needed <= MAX_NODES:
                 recommendations.append(
                     f"VM {vm['VM']} requires {additional_nodes_needed} additional nodes for placement in {cluster['Cluster']}."
                 )
                 placed = True
+                break
+            else:
+                # If the cluster has reached the node limit
+                new_cluster_nodes = max(MIN_NODES_NEW_CLUSTER, additional_nodes_needed)
+                new_clusters.append({
+                    'Region': cluster['Region'],
+                    'ServerType': cluster['ServerType'],
+                    'Environment': cluster['Environment'],
+                    'NodeCount': new_cluster_nodes,
+                    'Reason': f"Cluster {cluster['Cluster']} reached node limit. New cluster required for VM {vm['VM']}.",
+                })
                 break
 
         if not placed:
@@ -82,7 +93,7 @@ def suggest_vm_placement_and_new_clusters(clusters, vms):
                 'Region': vm['Region'],
                 'ServerType': vm['ServerType'],
                 'Environment': vm['Environment'],
-                'InitialNodes': MIN_NODES_NEW_CLUSTER,
+                'NodeCount': MIN_NODES_NEW_CLUSTER,
                 'Reason': f"Existing clusters could not accommodate VM {vm['VM']}.",
             })
 
@@ -107,11 +118,11 @@ vms = pd.DataFrame({
     'ServerType': ['Type1', 'Type2', 'Type1'],
     'Environment': ['Prod', 'Test', 'Prod'],
     'CPU': [1000, 2000, 3000],  # CPU required by VM
-    'Memory': [4000, 8000, 12000],  # Memory required by VM
-    'Storage': [20000, 40000, 60000],  # Storage required by VM
+    'Memory': [4000, 8000, 12000],  # Memory required by VM (in GB)
+    'Storage': [20000, 40000, 60000],  # Storage required by VM (in GB)
 })
 
-recommendations, new_clusters = suggest_vm_placement_and_new_clusters(clusters, vms)
+recommendations, new_clusters = determine_cluster_and_node_requirements(clusters, vms)
 
 print("Recommendations:")
 for rec in recommendations:
