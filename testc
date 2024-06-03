@@ -1,64 +1,55 @@
-import pandas as pd
+// Get the date range
+Set(StartDate, DatePickerStart.SelectedDate);
+Set(EndDate, DatePickerEnd.SelectedDate);
 
-# Function to place VMs in clusters
-def place_vms_in_clusters(clusters, vms):
-    # Add current usage columns to clusters to keep track of used capacity
-    clusters['used_cpu'] = 0
-    clusters['used_memory'] = 0
-    clusters['used_storage'] = 0
+// Collect reserved desks grouped by location
+ClearCollect(ReservedDesksByLocation,
+  GroupBy(
+    Filter(
+      DeskReservationList,
+      ReservationDate >= StartDate && ReservationDate <= EndDate
+    ),
+    "DeskID",
+    "Reservations"
+  )
+);
 
-    # Create a list to store the VM to cluster mapping
-    placement = []
+// Collect available desks grouped by location
+ClearCollect(DeskAvailability,
+  AddColumns(
+    DeskDetailsList,
+    "ReservedCount",
+    CountRows(
+      Filter(
+        ReservedDesksByLocation,
+        DeskID = DeskDetailsList[@DeskID]
+      )
+    ),
+    "AvailableCount",
+    If(
+      CountRows(
+        Filter(
+          ReservedDesksByLocation,
+          DeskID = DeskDetailsList[@DeskID]
+        )
+      ) = 0,
+      1,
+      0
+    )
+  )
+);
 
-    # Sort VMs by total resource requirement for a consistent placement approach
-    # Here, we are sorting by CPU + Memory + Storage
-    vms['total_resources'] = vms['cpu'] + vms['memory'] + vms['storage']
-    vms = vms.sort_values(by='total_resources', ascending=False)
-
-    # Iterate over each VM
-    for i, vm in vms.iterrows():
-        placed = False
-        # Iterate over each cluster to find a suitable one
-        for j, cluster in clusters.iterrows():
-            # Check if the cluster can accommodate the VM
-            if (
-                (cluster['cpu'] - cluster['used_cpu'] >= vm['cpu']) and
-                (cluster['memory'] - cluster['used_memory'] >= vm['memory']) and
-                (cluster['storage'] - cluster['used_storage'] >= vm['storage'])
-            ):
-                # If the cluster has enough capacity, place the VM here
-                clusters.at[j, 'used_cpu'] += vm['cpu']
-                clusters.at[j, 'used_memory'] += vm['memory']
-                clusters.at[j, 'used_storage'] += vm['storage']
-                
-                # Record the placement
-                placement.append({'vm_id': vm['vm_id'], 'cluster_id': cluster['cluster_id']})
-                
-                placed = True
-                break
-        
-        if not placed:
-            # If the VM could not be placed in any cluster, return a message or handle as needed
-            print(f"VM with ID {vm['vm_id']} could not be placed in any cluster.")
-    
-    return pd.DataFrame(placement)
-
-# Example DataFrames for clusters and VMs
-clusters_df = pd.DataFrame({
-    'cluster_id': [1, 2, 3],
-    'cpu': [100, 200, 300],
-    'memory': [500, 1000, 1500],
-    'storage': [2000, 4000, 6000],
-})
-
-vms_df = pd.DataFrame({
-    'vm_id': [101, 102, 103, 104],
-    'cpu': [30, 50, 70, 20],
-    'memory': [100, 200, 300, 50],
-    'storage': [500, 1000, 2000, 200],
-})
-
-# Call the function to place VMs in clusters
-placement_df = place_vms_in_clusters(clusters_df, vms_df)
-print("VM Placement:")
-print(placement_df)
+// Summarize data by location
+ClearCollect(SummaryByLocation,
+  AddColumns(
+    GroupBy(
+      DeskAvailability,
+      "Location",
+      "Desks"
+    ),
+    "BookedDesks",
+    Sum(Desks, ReservedCount),
+    "AvailableDesks",
+    Sum(Desks, AvailableCount)
+  )
+);
