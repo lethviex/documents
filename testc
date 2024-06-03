@@ -2,54 +2,69 @@
 Set(StartDate, DatePickerStart.SelectedDate);
 Set(EndDate, DatePickerEnd.SelectedDate);
 
-// Collect reserved desks grouped by location
-ClearCollect(ReservedDesksByLocation,
-  GroupBy(
-    Filter(
-      DeskReservationList,
-      ReservationDate >= StartDate && ReservationDate <= EndDate
-    ),
-    "DeskID",
-    "Reservations"
+// Generate date range
+ClearCollect(DateRange, 
+  ForAll(
+    Sequence(DateDiff(StartDate, EndDate) + 1, 0, 1), 
+    {
+      Date: DateAdd(StartDate, Value, Days)
+    }
   )
 );
 
-// Collect available desks grouped by location
-ClearCollect(DeskAvailability,
+// Collect reserved desks by location and date
+ClearCollect(ReservationData,
   AddColumns(
-    DeskDetailsList,
-    "ReservedCount",
-    CountRows(
-      Filter(
-        ReservedDesksByLocation,
-        DeskID = DeskDetailsList[@DeskID]
-      )
-    ),
-    "AvailableCount",
-    If(
-      CountRows(
+    DateRange,
+    "ReservedDesks", 
+    ForAll(
+      GroupBy(
         Filter(
-          ReservedDesksByLocation,
-          DeskID = DeskDetailsList[@DeskID]
-        )
-      ) = 0,
-      1,
-      0
+          DeskReservationList, 
+          ReservationDate = Date
+        ),
+        "DeskID",
+        "Reservations"
+      ),
+      {
+        Location: LookUp(DeskDetailsList, DeskID = Reservations.DeskID).Location,
+        ReservedCount: CountRows(Reservations)
+      }
     )
   )
 );
 
-// Summarize data by location
-ClearCollect(SummaryByLocation,
+// Collect available desks by location and date
+ClearCollect(AvailabilityData,
+  AddColumns(
+    ReservationData,
+    "AvailableDesks",
+    ForAll(
+      GroupBy(
+        DeskDetailsList,
+        "Location",
+        "Desks"
+      ),
+      {
+        Date: Date,
+        Location: Location,
+        AvailableCount: CountRows(Desks) - LookUp(ReservationData, Date = Date && Location = Location).ReservedCount
+      }
+    )
+  )
+);
+
+// Summarize data by location and date
+ClearCollect(SummaryData,
   AddColumns(
     GroupBy(
-      DeskAvailability,
-      "Location",
-      "Desks"
+      AvailabilityData,
+      "Date",
+      "Data"
     ),
     "BookedDesks",
-    Sum(Desks, ReservedCount),
-    "AvailableDesks",
-    Sum(Desks, AvailableCount)
+    Sum(Data, ReservedCount),
+    "FreeDesks",
+    Sum(Data, AvailableCount)
   )
 );
