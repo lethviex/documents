@@ -14,57 +14,64 @@ ClearCollect(DateRange,
 
 // Collect reserved desks by location and date
 ClearCollect(ReservationData,
-  AddColumns(
+  ForAll(
     DateRange,
-    "ReservedDesks", 
-    ForAll(
+    AddColumns(
       GroupBy(
         Filter(
-          DeskReservationList, 
-          ReservationDate = Date
+          'Desk Reservations', 
+          'Check Out From' = Date
         ),
-        "DeskID",
+        "DeskText",
         "Reservations"
       ),
-      {
-        Location: LookUp(DeskDetailsList, DeskID = Reservations.DeskID).Location,
-        ReservedCount: CountRows(Reservations)
-      }
+      "Location",
+      LookUp(Desks, Title = DeskText).Description,
+      "ReservedCount",
+      CountRows(Reservations)
     )
   )
 );
 
 // Collect available desks by location and date
 ClearCollect(AvailabilityData,
-  AddColumns(
-    ReservationData,
-    "AvailableDesks",
-    ForAll(
+  ForAll(
+    DateRange,
+    AddColumns(
       GroupBy(
-        DeskDetailsList,
-        "Location",
+        Desks,
+        "Description",
         "Desks"
       ),
-      {
-        Date: Date,
-        Location: Location,
-        AvailableCount: CountRows(Desks) - LookUp(ReservationData, Date = Date && Location = Location).ReservedCount
-      }
+      "Date",
+      Date,
+      "AvailableCount",
+      CountRows(Desks) - CountRows(
+        Filter(
+          'Desk Reservations',
+          'DeskText' in Desks[@Title] && 'Check Out From' = Date
+        )
+      )
     )
   )
 );
 
 // Summarize data by location and date
 ClearCollect(SummaryData,
-  AddColumns(
-    GroupBy(
-      AvailabilityData,
+  ForAll(
+    DateRange,
+    AddColumns(
+      GroupBy(
+        Filter(AvailabilityData, Date = Date),
+        "Description",
+        "Data"
+      ),
       "Date",
-      "Data"
-    ),
-    "BookedDesks",
-    Sum(Data, ReservedCount),
-    "FreeDesks",
-    Sum(Data, AvailableCount)
+      Date,
+      "BookedDesks",
+      Sum(Data, ReservedCount),
+      "FreeDesks",
+      Sum(Data, AvailableCount)
+    )
   )
 );
