@@ -1,40 +1,33 @@
-import pandas as pd
+import csv
 
-# Load the Excel sheet into a DataFrame
-excel_file = 'path/to/your/excel/file.xlsx'
-df = pd.read_excel(excel_file)
+def extract_table(file_path, headers):
+    table_data = []
+    header_found = False
 
-# Display the DataFrame to inspect it
-print(df)
+    with open(file_path, 'r') as file:
+        reader = csv.reader(file)
+        for row in reader:
+            if header_found:
+                table_data.append(row)
+            elif row == headers:
+                header_found = True
+                table_data.append(row)
+    
+    return table_data
 
-# Define the column headers for the tables
-table_headers = ["IP", "Network", "DNS", "NetBIOS"]
+# Path to the CSV file
+file_path = 'path_to_your_file.csv'
 
-# Initialize variables
-table_count = 0
-start_row = None
-end_row = None
+# Headers we are looking for
+headers = ["IP", "Network", "DNS", "NetBIOS"]
 
-# Iterate through the rows to find the third table
-for index, row in df.iterrows():
-    if list(row.dropna())[:len(table_headers)] == table_headers:  # Detect the header row
-        table_count += 1
-        if table_count == 3:
-            start_row = index
-            break
+# Extracting the table
+table_data = extract_table(file_path, headers)
 
-# Find the end of the third table
-if start_row is not None:
-    for index in range(start_row + 1, len(df)):
-        if list(df.iloc[index].dropna())[:len(table_headers)] == table_headers:
-            end_row = index - 1
-            break
-    if end_row is None:  # If the third table is the last table in the sheet
-        end_row = len(df) - 1
+# Saving the extracted table to a new CSV file
+output_file_path = 'extracted_table.csv'
+with open(output_file_path, 'w', newline='') as file:
+    writer = csv.writer(file)
+    writer.writerows(table_data)
 
-# Extract the third table if found
-if table_count >= 3:
-    third_table = df.iloc[start_row:end_row + 1].reset_index(drop=True)
-    print(third_table)
-else:
-    print("The third table was not found in the sheet.")
+print(f"Table extracted and saved to {output_file_path}")
