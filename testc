@@ -1,77 +1,40 @@
-// Get the date range
-Set(StartDate, DatePickerStart.SelectedDate);
-Set(EndDate, DatePickerEnd.SelectedDate);
+import pandas as pd
 
-// Generate date range
-ClearCollect(DateRange, 
-  ForAll(
-    Sequence(DateDiff(StartDate, EndDate) + 1, 0, 1), 
-    {
-      Date: DateAdd(StartDate, Value, Days)
-    }
-  )
-);
+# Load the Excel sheet into a DataFrame
+excel_file = 'path/to/your/excel/file.xlsx'
+df = pd.read_excel(excel_file)
 
-// Collect reserved desks by location and date
-ClearCollect(ReservationData,
-  ForAll(
-    DateRange,
-    AddColumns(
-      GroupBy(
-        Filter(
-          'Desk Reservations', 
-          'Check Out From' = Date
-        ),
-        "DeskText",
-        "Reservations"
-      ),
-      "Location",
-      LookUp(Desks, Title = DeskText).Description,
-      "ReservedCount",
-      CountRows(Reservations)
-    )
-  )
-);
+# Display the DataFrame to inspect it
+print(df)
 
-// Collect available desks by location and date
-ClearCollect(AvailabilityData,
-  ForAll(
-    DateRange,
-    AddColumns(
-      GroupBy(
-        Desks,
-        "Description",
-        "Desks"
-      ),
-      "Date",
-      Date,
-      "AvailableCount",
-      CountRows(Desks) - CountRows(
-        Filter(
-          'Desk Reservations',
-          'DeskText' in Desks[@Title] && 'Check Out From' = Date
-        )
-      )
-    )
-  )
-);
+# Define the column headers for the tables
+table_headers = ["IP", "Network", "DNS", "NetBIOS"]
 
-// Summarize data by location and date
-ClearCollect(SummaryData,
-  ForAll(
-    DateRange,
-    AddColumns(
-      GroupBy(
-        Filter(AvailabilityData, Date = Date),
-        "Description",
-        "Data"
-      ),
-      "Date",
-      Date,
-      "BookedDesks",
-      Sum(Data, ReservedCount),
-      "FreeDesks",
-      Sum(Data, AvailableCount)
-    )
-  )
-);
+# Initialize variables
+table_count = 0
+start_row = None
+end_row = None
+
+# Iterate through the rows to find the third table
+for index, row in df.iterrows():
+    if list(row.dropna())[:len(table_headers)] == table_headers:  # Detect the header row
+        table_count += 1
+        if table_count == 3:
+            start_row = index
+            break
+
+# Find the end of the third table
+if start_row is not None:
+    for index in range(start_row + 1, len(df)):
+        if list(df.iloc[index].dropna())[:len(table_headers)] == table_headers:
+            end_row = index - 1
+            break
+    if end_row is None:  # If the third table is the last table in the sheet
+        end_row = len(df) - 1
+
+# Extract the third table if found
+if table_count >= 3:
+    third_table = df.iloc[start_row:end_row + 1].reset_index(drop=True)
+    print(third_table)
+else:
+    print("The third table was not found in the sheet.")
