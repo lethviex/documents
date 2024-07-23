@@ -12,11 +12,17 @@ def split_multiline_results(input_csv, output_csv, chunksize=10000):
                 # Split the multiline results into separate lines
                 results = str(row['results']).split('\n')
                 
-                # Create a new row for each line in the results
-                for result in results:
+                # If more than 5 lines, replace with 'TBD'
+                if len(results) > 5:
                     new_row = row.copy()
-                    new_row['results'] = result
+                    new_row['results'] = 'TBD'
                     expanded_rows.append(new_row)
+                else:
+                    # Create a new row for each line in the results
+                    for result in results:
+                        new_row = row.copy()
+                        new_row['results'] = result
+                        expanded_rows.append(new_row)
             
             # Create a DataFrame from the expanded rows
             expanded_chunk = pd.DataFrame(expanded_rows)
