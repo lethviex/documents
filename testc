@@ -1,1 +1,33 @@
-Girish effectively managed Unix support for multiple waves of VMC on AWS migration, in addition to handling private cloud BAU responsibilities. He actively participated in web server performance testing, which was crucial for proceeding with upgrades. He significantly enhanced the patching documentation, making it more comprehensive and user-friendly. Girish also performed thorough prechecks for private cloud patching, ensuring a smooth and efficient patching process. His efforts contributed to the successful implementation of various upgrades and migrations.
+import pandas as pd
+
+def split_multiline_results(input_csv, output_csv, chunksize=10000):
+    # Initialize the CSV writer
+    with pd.read_csv(input_csv, chunksize=chunksize) as reader:
+        for i, chunk in enumerate(reader):
+            # Create an empty DataFrame to hold the expanded rows
+            expanded_rows = []
+
+            # Iterate over each row in the chunk
+            for index, row in chunk.iterrows():
+                # Split the multiline results into separate lines
+                results = str(row['results']).split('\n')
+                
+                # Create a new row for each line in the results
+                for result in results:
+                    new_row = row.copy()
+                    new_row['results'] = result
+                    expanded_rows.append(new_row)
+            
+            # Create a DataFrame from the expanded rows
+            expanded_chunk = pd.DataFrame(expanded_rows)
+
+            # Write to the output CSV file in append mode
+            if i == 0:
+                expanded_chunk.to_csv(output_csv, index=False, mode='w')
+            else:
+                expanded_chunk.to_csv(output_csv, index=False, mode='a', header=False)
+
+# Example usage
+input_csv = 'input.csv'
+output_csv = 'output.csv'
+split_multiline_results(input_csv, output_csv, chunksize=10000)
