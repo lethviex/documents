@@ -1,39 +1,35 @@
 import pandas as pd
 
-def split_multiline_results(input_csv, output_csv, chunksize=10000):
-    # Initialize the CSV writer
-    with pd.read_csv(input_csv, chunksize=chunksize) as reader:
-        for i, chunk in enumerate(reader):
-            # Create an empty DataFrame to hold the expanded rows
-            expanded_rows = []
+def process_csv(input_file, output_file):
+    # Read the CSV file into a DataFrame
+    df = pd.read_csv(input_file)
 
-            # Iterate over each row in the chunk
-            for index, row in chunk.iterrows():
-                # Split the multiline results into separate lines
-                results = str(row['results']).split('\n')
-                
-                # If more than 5 lines, replace with 'TBD'
-                if len(results) > 5:
-                    new_row = row.copy()
-                    new_row['results'] = 'TBD'
-                    expanded_rows.append(new_row)
-                else:
-                    # Create a new row for each line in the results
-                    for result in results:
-                        new_row = row.copy()
-                        new_row['results'] = result
-                        expanded_rows.append(new_row)
-            
-            # Create a DataFrame from the expanded rows
-            expanded_chunk = pd.DataFrame(expanded_rows)
+    # Function to process each row
+    def process_row(row):
+        results = row['results'].split('\n')
+        
+        # Filter out the "Service Name     Image Path" line
+        results = [line for line in results if line.strip() != "Service Name     Image Path"]
 
-            # Write to the output CSV file in append mode
-            if i == 0:
-                expanded_chunk.to_csv(output_csv, index=False, mode='w')
-            else:
-                expanded_chunk.to_csv(output_csv, index=False, mode='a', header=False)
+        # If results have more than 5 lines, replace with "TBD"
+        if len(results) > 5:
+            return ["TBD"]
+        
+        # If a line starts with "KB" and ends with "is not installed", merge with pipe delimiter
+        if any(line.startswith("KB") and line.endswith("is not installed") for line in results):
+            return [" | ".join(results)]
+        
+        # Return the split lines otherwise
+        return results
 
-# Example usage
-input_csv = 'input.csv'
-output_csv = 'output.csv'
-split_multiline_results(input_csv, output_csv, chunksize=10000)
+    # Apply the processing to each row and explode the DataFrame
+    df['results'] = df.apply(process_row, axis=1)
+    df = df.explode('results').reset_index(drop=True)
+
+    # Save the processed DataFrame to a new CSV file
+    df.to_csv(output_file, index=False)
+
+# Usage
+input_file = 'input.csv'
+output_file = 'output.csv'
+process_csv(input_file, output_file)
