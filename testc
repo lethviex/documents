@@ -1,35 +1,61 @@
 import pandas as pd
 
-def process_csv(input_file, output_file):
-    # Read the CSV file into a DataFrame
-    df = pd.read_csv(input_file)
-
-    # Function to process each row
-    def process_row(row):
-        results = row['results'].split('\n')
+def process_results_column(results):
+    lines = results.split('\n')
+    
+    # Condition 1: Replace value with "TBD" if more than 5 lines
+    if len(lines) > 5:
+        return ["TBD"]
+    
+    processed_lines = []
+    kb_lines = []
+    
+    for line in lines:
+        # Condition 2: Ignore specific line
+        if line.strip() == "Service Name     Image Path":
+            continue
         
-        # Filter out the "Service Name     Image Path" line
-        results = [line for line in results if line.strip() != "Service Name     Image Path"]
+        # Condition 3: Merge lines starting with "KB" and ending with "is not installed"
+        if line.startswith("KB") and line.endswith("is not installed"):
+            kb_lines.append(line)
+        else:
+            if kb_lines:
+                processed_lines.append(" | ".join(kb_lines))
+                kb_lines = []
+            processed_lines.append(line)
+    
+    if kb_lines:
+        processed_lines.append(" | ".join(kb_lines))
+    
+    return processed_lines
 
-        # If results have more than 5 lines, replace with "TBD"
-        if len(results) > 5:
-            return ["TBD"]
-        
-        # If a line starts with "KB" and ends with "is not installed", merge with pipe delimiter
-        if any(line.startswith("KB") and line.endswith("is not installed") for line in results):
-            return [" | ".join(results)]
-        
-        # Return the split lines otherwise
-        return results
+def process_chunk(chunk):
+    new_rows = []
 
-    # Apply the processing to each row and explode the DataFrame
-    df['results'] = df.apply(process_row, axis=1)
-    df = df.explode('results').reset_index(drop=True)
+    for _, row in chunk.iterrows():
+        processed_lines = process_results_column(row['results'])
+        for line in processed_lines:
+            new_row = row.copy()
+            new_row['results'] = line
+            new_rows.append(new_row)
 
-    # Save the processed DataFrame to a new CSV file
-    df.to_csv(output_file, index=False)
+    return pd.DataFrame(new_rows)
 
-# Usage
-input_file = 'input.csv'
-output_file = 'output.csv'
-process_csv(input_file, output_file)
+# Reading and processing the CSV in chunks
+chunk_size = 10000  # Adjust chunk size based on available memory
+csv_file = "input.csv"
+output_file = "output.csv"
+
+reader = pd.read_csv(csv_file, chunksize=chunk_size)
+first_chunk = True
+
+for chunk in reader:
+    processed_chunk = process_chunk(chunk)
+    
+    if first_chunk:
+        processed_chunk.to_csv(output_file, index=False, mode='w')
+        first_chunk = False
+    else:
+        processed_chunk.to_csv(output_file, index=False, mode='a', header=False)
+
+print("Processing complete. Output saved to", output_file)
