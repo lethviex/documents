@@ -1,61 +1,45 @@
-import pandas as pd
+Shaheen
 
-def process_results_column(results):
-    lines = results.split('\n')
-    
-    # Condition 1: Replace value with "TBD" if more than 5 lines
-    if len(lines) > 5:
-        return ["TBD"]
-    
-    processed_lines = []
-    kb_lines = []
-    
-    for line in lines:
-        # Condition 2: Ignore specific line
-        if line.strip() == "Service Name     Image Path":
-            continue
-        
-        # Condition 3: Merge lines starting with "KB" and ending with "is not installed"
-        if line.startswith("KB") and line.endswith("is not installed"):
-            kb_lines.append(line)
-        else:
-            if kb_lines:
-                processed_lines.append(" | ".join(kb_lines))
-                kb_lines = []
-            processed_lines.append(line)
-    
-    if kb_lines:
-        processed_lines.append(" | ".join(kb_lines))
-    
-    return processed_lines
+Shaheen has showcased a high level of expertise and dedication in her role. She has effectively managed Private Cloud governance and made significant contributions to vulnerability fixes, Cloakware upgrades, and clodply password resets. Her meticulous approach to webserver upgrades, including planning, testing, and post-upgrade checks, is commendable. Shaheen has also excelled in Knowledge Base management for Cloud, ensuring accurate verification, validation, and publishing of support articles. Additionally, her efforts in maintaining the platform's Reliability Score and driving the Automation initiative for 2024, particularly in creating Grafana dashboards, have been outstanding. Her proactive involvement in the HCL Transition and Go-Live for Cloud support further highlights her commitment and reliability.
 
-def process_chunk(chunk):
-    new_rows = []
 
-    for _, row in chunk.iterrows():
-        processed_lines = process_results_column(row['results'])
-        for line in processed_lines:
-            new_row = row.copy()
-            new_row['results'] = line
-            new_rows.append(new_row)
+Sridhar
 
-    return pd.DataFrame(new_rows)
+Sridhar has consistently demonstrated a strong ability to manage critical aspects of Private Cloud operations. He has excelled in handling escalations, MC events, major incidents, RCA findings, and problem management. His role in the first cycle patching for Private Cloud VMs across Dev, UAT, and Prod environments has been pivotal. Sridhar has successfully coordinated with Engineering to obtain images and technical plans, and his contributions to web server upgrades, including draft profile creation and approval processes, are noteworthy. His meticulous approach to taking backups for WS critical configurations and performing post-validation and testing has ensured smooth operations. Additionally, Sridhar's efforts in KVM OS upgrades and his governance and coordination skills have significantly contributed to the team's success.
 
-# Reading and processing the CSV in chunks
-chunk_size = 10000  # Adjust chunk size based on available memory
-csv_file = "input.csv"
-output_file = "output.csv"
 
-reader = pd.read_csv(csv_file, chunksize=chunk_size)
-first_chunk = True
+Lavanya
 
-for chunk in reader:
-    processed_chunk = process_chunk(chunk)
-    
-    if first_chunk:
-        processed_chunk.to_csv(output_file, index=False, mode='w')
-        first_chunk = False
-    else:
-        processed_chunk.to_csv(output_file, index=False, mode='a', header=False)
+Lavanya has shown remarkable dedication and technical proficiency in her role. She has effectively managed webserver upgrades for UAT5 BAU and TDE PROD, demonstrating excellent project management skills. Lavanya has also updated contact details for over 350 Private Cloud KVMs with the help of the CHDB team, ensuring accurate and up-to-date information. Her proactive approach in upgrading memory for critical RHEL8.8.1 applications without disrupting services is commendable. Lavanya has been diligent in monitoring and reviewing cloud support tickets, ensuring proper updates and closure comments. She has also validated Private Cloud Notification alerts and ensured that the correct KB articles are updated in incidents. Her efforts in reviewing and refining change categories in ServiceNow (SNOW) have improved operational efficiency. Additionally, Lavanya's active participation in vulnerability management, particularly the Cloakware upgrade from 4.5.3 to 4.12.3, has significantly contributed to enhancing security.
 
-print("Processing complete. Output saved to", output_file)
+
+### Feedback for Purushothaman, Hariharasudhan
+
+Purushothaman, Hariharasudhan has exhibited excellent technical skills and a collaborative spirit in his role. He has been instrumental in assisting the storage team with the APAC NAS migration from HZ2 to HZ4 DC in Brownfield. Hariharasudhan conducted a valuable webinar for the IRO India team on VMC on ANS and HCX Migration, sharing his expertise and knowledge effectively. He developed an SOP for the HCX Decommission Process, showcasing his ability to create clear and useful documentation. His participation in multiple VMC migration waves alongside the HCL team, resolving VMC/HCX issues, and performing 4-eye checks for migration waves demonstrates his thoroughness and reliability. Additionally, his efforts in decommissioning HCX Service Mesh in APAC & EMEA DCs post-migration, executing and testing Microsoft Azure VMs using CICD pipelines, and closely working with the CCOE team to fix Azure VM build process issues have significantly contributed to the team's success.
+
+### Feedback for Pattekhan, Md Saleem
+
+Pattekhan, Md Saleem has shown impressive adaptability and technical expertise in his role. He has thoroughly understood the process of Microsoft Azure VM builds and configurations using CICD pipelines, and has efficiently handled post-configuration steps through Ansible jobs. His active participation in Microsoft Azure MVO discussions and daily Azure standup calls with HCL reflects his commitment to staying updated and engaged. Saleem has been meticulous in verifying inventory sheets prior to replication tasks for all VMC migrations, ensuring accuracy and reliability. His involvement in pre-planning for potential migration complications and guiding the HCL team with solutions has been invaluable. During the HCX replication and switchover process, Saleem has successfully resolved various errors, warnings, and failures by collaborating with internal engineering and vendor teams. He has conducted knowledge transfer sessions on VMC on AWS migration for new team members, demonstrating his willingness to share knowledge and support others. Additionally, his role in the Trueview App Microsoft Cluster configuration and fine-tuning on Azure, as well as his participation in daily greenfield EMEA and NA shift handover calls with the HCL team, underscores his dedication and reliability.
+
+### Feedback for B Devaraja
+
+B Devaraja has shown potential but needs to focus on improving his initiative and technical proficiency. While he has received knowledge transfer from team members and referred to SOP/MOP documents, it is crucial for him to actively apply this knowledge and seek further learning opportunities. His involvement in weekend migration activities for the APAC/EMEA scale wave is a positive start, but he needs to take a more proactive role in these processes. Devaraja's assistance to the HCL team during migrations and monitoring of VMC migrations has been noted, yet more engagement and problem-solving initiative are required. Additionally, while he has kept track of the Azure CICD builds, he must work on enhancing his understanding and execution of these tasks to meet the team's expectations fully. Improvements in these areas will help Devaraja contribute more effectively and grow in his role.
+
+
+### Feedback for Bisai, Yogeswara
+
+Bisai, Yogeswara has made significant contributions to the team, particularly in knowledge transfer and technical support. He has effectively provided training to new team members on AWS CI/CD Pipelines and the Central AWS environment, ensuring a smooth onboarding process. Yogeswara's proactive work with the Backstage team to address Sonarqube code analysis and pom.xml file issues is commendable. His collaboration with CICD Support to understand AMI management processes in our Central ANS environment has been valuable. Additionally, his successful deployment of Spring Boot applications on ECS Stack/Standalone EC2 instances using Backstage and preparation of documentation highlights his technical skills. Yogeswara has also executed AWS Compute, RDS, and Container MVOs, supported VMC on AWS migrations, and provided Unix support for EMEA and APAC waves. His assistance in resolving MVO execution issues related to EFS and RDS further demonstrates his problem-solving abilities and dedication.
+
+
+### Feedback for Hemanth, Kotha
+
+Hemanth, Kotha has contributed to several key areas but needs to focus on enhancing his impact and efficiency. His work on MVOs related to EFS, ECS, and Lambda is appreciated, and he has addressed some issues with mounting EFS file systems in collaboration with the CICD team. However, there is room for improvement in the depth and breadth of his problem-solving, especially concerning mounting issues with Access Points. While he has tested RDS and ECS using the Backstage Portal and attended Backstage demos, his engagement with documentation and process improvement could be more thorough. Hemanth's involvement in FSX POC test case execution and participation in the EMEA DC to VMC on ANS Migration at Scale Wave 18 (Prod & UAT Apps) are positive contributions, but he should work on providing more detailed inputs and taking a more proactive role in these activities. Enhanced focus on these areas will help him better support the team and improve his overall performance.
+
+### Feedback for Ravuri, Srinivasa Reddy
+
+Ravuri, Srinivasa Reddy has made valuable contributions through his work with Power BI reports and related tasks. He has successfully created and published various Power BI reports for IRO, including setting up the Power BI Workspace and managing user permissions. His work with the CSI team to develop specific reports such as the Vulnerability Dashboard and the High Vulnerability Dashboard, as well as the Windows Server Classification Report, has been instrumental in addressing critical data needs. Ravuri has effectively used these reports to prioritize remediation efforts and track vulnerability statuses. Additionally, his efforts in setting up gateways and scheduling refreshes, along with collaborating with the MSSQL team for reporting automation, demonstrate his commitment to improving reporting processes. Continued focus on expanding report capabilities and ensuring data accuracy will further enhance his contributions to the team.
+
+
+### Feedback for L, Dheeraj
+
+L, Dheeraj has made significant strides in his role, particularly with his work on Power BI dashboards. His development of the Power BI Dashboard for Jira Reporting and the Automation24 Reporting Dashboard is commendable, providing valuable insights into overall automation task statuses and individual sub-task details. His ability to connect Jira data through Power Query and offer features such as drill-down analysis is a notable achievement. Dheeraj's work on the Change Request for Cobalt Iron Instances and CMDB reporting for Greenfield migrated servers has also been impactful. Moving forward, focusing on refining these dashboards and ensuring data accuracy and relevancy will further enhance his contributions and support management in making informed decisions.
