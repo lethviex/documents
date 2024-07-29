@@ -14,21 +14,25 @@ def adjust_column_width(xhtml_content):
         header_row = table.find('.//tr')
         if header_row is not None:
             headers = header_row.findall('.//th')
+            no_column_idx = -1
             for idx, th in enumerate(headers):
-                if th.text.strip() == "No":  # Strip whitespace to match header text
-                    # Found the "No" column, now find the maximum width of the values in this column
-                    max_length = len("No")
-                    for row in table.findall('.//tr')[1:]:  # Skip the header row
-                        td = row.findall('.//td')[idx]
-                        if td.text is not None:
-                            max_length = max(max_length, len(td.text.strip()))
-                    
-                    # Set the width of the column header
-                    th.set('style', f'width: {max_length}ch')
-                    # Set the width for each cell in the "No" column
-                    for row in table.findall('.//tr')[1:]:  # Skip the header row
-                        td = row.findall('.//td')[idx]
-                        td.set('style', f'width: {max_length}ch')
+                if th.text and th.text.strip() == "No":  # Strip whitespace to match header text
+                    no_column_idx = idx
+                    break
+            if no_column_idx != -1:
+                # Found the "No" column, now find the maximum width of the values in this column
+                max_length = len("No")
+                for row in table.findall('.//tr')[1:]:  # Skip the header row
+                    td = row.findall('.//td')[no_column_idx]
+                    if td.text is not None:
+                        max_length = max(max_length, len(td.text.strip()))
+                
+                # Set the width of the column header
+                headers[no_column_idx].set('style', f'width: {max_length}ch')
+                # Set the width for each cell in the "No" column
+                for row in table.findall('.//tr')[1:]:  # Skip the header row
+                    td = row.findall('.//td')[no_column_idx]
+                    td.set('style', f'width: {max_length}ch')
 
     # Convert the modified XHTML back to a string
     modified_xhtml_content = etree.tostring(root, pretty_print=True, method='html', encoding='unicode')
@@ -61,7 +65,7 @@ xhtml_content = """
     <p>Some more text between tables.</p>
     <table>
       <tr>
-        <th>No</th>
+        <th>Id</th>
         <th>Age</th>
       </tr>
       <tr>
