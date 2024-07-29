@@ -1,93 +1,9 @@
-from lxml import etree
+import re
 
-# Function to adjust column width
-def adjust_column_width(xhtml_content):
-    parser = etree.HTMLParser()
-    tree = etree.fromstring(xhtml_content, parser)
-    root = tree.getroottree()
+# Example string variable
+html_string = '<table><tr><th>No<th>Other<th>Another</tr></table>'
 
-    # Find all tables
-    tables = root.findall('.//table')
-    
-    for table in tables:
-        # Find the header row
-        header_row = table.find('.//tr')
-        if header_row is not None:
-            headers = header_row.findall('.//th')
-            no_column_idx = -1
-            for idx, th in enumerate(headers):
-                if th.text and th.text.strip() == "No":  # Strip whitespace to match header text
-                    no_column_idx = idx
-                    break
-            if no_column_idx != -1:
-                # Found the "No" column, now find the maximum width of the values in this column
-                max_length = len("No")
-                for row in table.findall('.//tr')[1:]:  # Skip the header row
-                    td = row.findall('.//td')[no_column_idx]
-                    if td.text is not None:
-                        max_length = max(max_length, len(td.text.strip()))
-                
-                # Set the width of the column header
-                headers[no_column_idx].set('style', f'width: {max_length}ch')
-                # Set the width for each cell in the "No" column
-                for row in table.findall('.//tr')[1:]:  # Skip the header row
-                    td = row.findall('.//td')[no_column_idx]
-                    td.set('style', f'width: {max_length}ch')
+# Replace '<th>No<th>' with '<th style="width: 4ch">No</th>'
+updated_html_string = re.sub(r'<th>No<th>', r'<th style="width: 4ch">No</th>', html_string)
 
-    # Convert the modified XHTML back to a string
-    modified_xhtml_content = etree.tostring(root, pretty_print=True, method='html', encoding='unicode')
-    return modified_xhtml_content
-
-# Example XHTML content with other data and multiple tables
-xhtml_content = """
-<html>
-  <body>
-    <h1>Title</h1>
-    <p>Some introductory text.</p>
-    <table>
-      <tr>
-        <th>No</th>
-        <th>Name</th>
-      </tr>
-      <tr>
-        <td>1</td>
-        <td>John</td>
-      </tr>
-      <tr>
-        <td>12</td>
-        <td>Jane</td>
-      </tr>
-      <tr>
-        <td>123</td>
-        <td>Smith</td>
-      </tr>
-    </table>
-    <p>Some more text between tables.</p>
-    <table>
-      <tr>
-        <th>Id</th>
-        <th>Age</th>
-      </tr>
-      <tr>
-        <td>5</td>
-        <td>25</td>
-      </tr>
-      <tr>
-        <td>50</td>
-        <td>30</td>
-      </tr>
-      <tr>
-        <td>500</td>
-        <td>35</td>
-      </tr>
-    </table>
-    <p>Some concluding text.</p>
-  </body>
-</html>
-"""
-
-# Adjust column width
-modified_xhtml_content = adjust_column_width(xhtml_content)
-
-# Output the modified XHTML content
-print(modified_xhtml_content)
+print(updated_html_string)
