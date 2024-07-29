@@ -1,5 +1,3 @@
-# Define the new table of contents
-toc_macro = """
 <ac:structured-macro ac:name="toc">
     <ac:parameter ac:name="printable">true</ac:parameter>
     <ac:parameter ac:name="style">disc</ac:parameter>
@@ -10,7 +8,26 @@ toc_macro = """
     <ac:parameter ac:name="type">list</ac:parameter>
     <ac:parameter ac:name="outline">clear</ac:parameter>
 </ac:structured-macro>
-"""
 
-# Replace the placeholder with the TOC macro
-updated_body_storage = body_storage.replace('<p>TOC_PLACEHOLDER</p>', toc_macro)
+<ac:structured-macro ac:name="html">
+    <ac:plain-text-body><![CDATA[
+        <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr>
+                    <th style="border: 1px solid #ccc; padding: 8px; background-color: #f2f2f2;">Header 1</th>
+                    <th style="border: 1px solid #ccc; padding: 8px; background-color: #f2f2f2;">Header 2</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="border: 1px solid #ccc; padding: 8px;">Cell 1</td>
+                    <td style="border: 1px solid #ccc; padding: 8px;">Cell 2</td>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid #ccc; padding: 8px;">Cell 3</td>
+                    <td style="border: 1px solid #ccc; padding: 8px;">Cell 4</td>
+                </tr>
+            </tbody>
+        </table>
+    ]]></ac:plain-text-body>
+</ac:structured-macro>
