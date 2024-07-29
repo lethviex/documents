@@ -1,11 +1,10 @@
 from lxml import etree
-import os
 
 # Function to adjust column width
-def adjust_column_width(xhtml_path, output_path):
+def adjust_column_width(xhtml_content):
     parser = etree.HTMLParser()
-    tree = etree.parse(xhtml_path, parser)
-    root = tree.getroot()
+    tree = etree.fromstring(xhtml_content, parser)
+    root = tree.getroottree()
 
     # Find all tables
     tables = root.findall('.//table')
@@ -16,13 +15,13 @@ def adjust_column_width(xhtml_path, output_path):
         if header_row is not None:
             headers = header_row.findall('.//th')
             for idx, th in enumerate(headers):
-                if th.text == "No":
+                if th.text.strip() == "No":  # Strip whitespace to match header text
                     # Found the "No" column, now find the maximum width of the values in this column
                     max_length = len("No")
                     for row in table.findall('.//tr')[1:]:  # Skip the header row
                         td = row.findall('.//td')[idx]
                         if td.text is not None:
-                            max_length = max(max_length, len(td.text))
+                            max_length = max(max_length, len(td.text.strip()))
                     
                     # Set the width of the column header
                     th.set('style', f'width: {max_length}ch')
@@ -31,15 +30,60 @@ def adjust_column_width(xhtml_path, output_path):
                         td = row.findall('.//td')[idx]
                         td.set('style', f'width: {max_length}ch')
 
-    # Write the modified XHTML to a new file
-    tree.write(output_path, pretty_print=True, method='html', encoding='UTF-8')
+    # Convert the modified XHTML back to a string
+    modified_xhtml_content = etree.tostring(root, pretty_print=True, method='html', encoding='unicode')
+    return modified_xhtml_content
 
-# Path to your input XHTML file
-xhtml_path = 'input.xhtml'
-# Path to your output XHTML file
-output_path = 'output.xhtml'
+# Example XHTML content with other data and multiple tables
+xhtml_content = """
+<html>
+  <body>
+    <h1>Title</h1>
+    <p>Some introductory text.</p>
+    <table>
+      <tr>
+        <th>No</th>
+        <th>Name</th>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td>John</td>
+      </tr>
+      <tr>
+        <td>12</td>
+        <td>Jane</td>
+      </tr>
+      <tr>
+        <td>123</td>
+        <td>Smith</td>
+      </tr>
+    </table>
+    <p>Some more text between tables.</p>
+    <table>
+      <tr>
+        <th>No</th>
+        <th>Age</th>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td>25</td>
+      </tr>
+      <tr>
+        <td>50</td>
+        <td>30</td>
+      </tr>
+      <tr>
+        <td>500</td>
+        <td>35</td>
+      </tr>
+    </table>
+    <p>Some concluding text.</p>
+  </body>
+</html>
+"""
 
 # Adjust column width
-adjust_column_width(xhtml_path, output_path)
+modified_xhtml_content = adjust_column_width(xhtml_content)
 
-print(f"Processed file saved to {output_path}")
+# Output the modified XHTML content
+print(modified_xhtml_content)
