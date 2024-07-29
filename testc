@@ -1,3 +1,32 @@
-### Feedback for Hemanth, Kotha
+from bs4 import BeautifulSoup
 
-Hemanth, Kotha has made significant contributions to our team, especially with his work on MVOs related to EFS, ECS, and Lambda. His effective collaboration with the CICD team to address and resolve issues with mounting Restored EFS file systems is highly valued. Hemanth has also demonstrated his technical proficiency through his testing of RDS and ECS using the Backstage Portal and his participation in Backstage demos. His involvement in the FSX POC test case execution, where he provided valuable inputs from a storage standpoint, and his role in the EMEA DC to VMC on ANS Migration at Scale Wave 18 have been instrumental. His dedication and expertise continue to make a positive impact on our projects and team goals.
+def remove_styles(html_content):
+    soup = BeautifulSoup(html_content, 'html.parser')
+
+    # Remove <style> tags
+    for style_tag in soup.find_all('style'):
+        style_tag.decompose()
+
+    # Remove style attributes
+    for tag in soup.find_all(True):
+        del tag['style']
+
+    return str(soup)
+
+def main():
+    input_file = 'input.html'
+    output_file = 'output.html'
+
+    # Read the HTML file
+    with open(input_file, 'r', encoding='utf-8') as file:
+        html_content = file.read()
+
+    # Remove styles from the HTML content
+    clean_html = remove_styles(html_content)
+
+    # Write the cleaned HTML content to a new file
+    with open(output_file, 'w', encoding='utf-8') as file:
+        file.write(clean_html)
+
+if __name__ == "__main__":
+    main()
