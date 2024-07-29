@@ -1,9 +1,16 @@
-import re
+# Define the new table of contents
+toc_macro = """
+<ac:structured-macro ac:name="toc">
+    <ac:parameter ac:name="printable">true</ac:parameter>
+    <ac:parameter ac:name="style">disc</ac:parameter>
+    <ac:parameter ac:name="maxLevel">2</ac:parameter>
+    <ac:parameter ac:name="minLevel">1</ac:parameter>
+    <ac:parameter ac:name="class">rm-contents</ac:parameter>
+    <ac:parameter ac:name="exclude">Excluded Heading</ac:parameter>
+    <ac:parameter ac:name="type">list</ac:parameter>
+    <ac:parameter ac:name="outline">clear</ac:parameter>
+</ac:structured-macro>
+"""
 
-# Example string variable
-html_string = '<table><tr><th>No<th>Other<th>Another</tr></table>'
-
-# Replace '<th>No<th>' with '<th style="width: 4ch">No</th>'
-updated_html_string = re.sub(r'<th>No<th>', r'<th style="width: 4ch">No</th>', html_string)
-
-print(updated_html_string)
+# Replace the placeholder with the TOC macro
+updated_body_storage = body_storage.replace('<p>TOC_PLACEHOLDER</p>', toc_macro)
