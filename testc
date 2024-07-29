@@ -1,32 +1,45 @@
-from bs4 import BeautifulSoup
+from lxml import etree
+import os
 
-def remove_styles(html_content):
-    soup = BeautifulSoup(html_content, 'html.parser')
+# Function to adjust column width
+def adjust_column_width(xhtml_path, output_path):
+    parser = etree.HTMLParser()
+    tree = etree.parse(xhtml_path, parser)
+    root = tree.getroot()
 
-    # Remove <style> tags
-    for style_tag in soup.find_all('style'):
-        style_tag.decompose()
+    # Find all tables
+    tables = root.findall('.//table')
+    
+    for table in tables:
+        # Find the header row
+        header_row = table.find('.//tr')
+        if header_row is not None:
+            headers = header_row.findall('.//th')
+            for idx, th in enumerate(headers):
+                if th.text == "No":
+                    # Found the "No" column, now find the maximum width of the values in this column
+                    max_length = len("No")
+                    for row in table.findall('.//tr')[1:]:  # Skip the header row
+                        td = row.findall('.//td')[idx]
+                        if td.text is not None:
+                            max_length = max(max_length, len(td.text))
+                    
+                    # Set the width of the column header
+                    th.set('style', f'width: {max_length}ch')
+                    # Set the width for each cell in the "No" column
+                    for row in table.findall('.//tr')[1:]:  # Skip the header row
+                        td = row.findall('.//td')[idx]
+                        td.set('style', f'width: {max_length}ch')
 
-    # Remove style attributes
-    for tag in soup.find_all(True):
-        del tag['style']
+    # Write the modified XHTML to a new file
+    tree.write(output_path, pretty_print=True, method='html', encoding='UTF-8')
 
-    return str(soup)
+# Path to your input XHTML file
+xhtml_path = 'input.xhtml'
+# Path to your output XHTML file
+output_path = 'output.xhtml'
 
-def main():
-    input_file = 'input.html'
-    output_file = 'output.html'
+# Adjust column width
+adjust_column_width(xhtml_path, output_path)
 
-    # Read the HTML file
-    with open(input_file, 'r', encoding='utf-8') as file:
-        html_content = file.read()
-
-    # Remove styles from the HTML content
-    clean_html = remove_styles(html_content)
-
-    # Write the cleaned HTML content to a new file
-    with open(output_file, 'w', encoding='utf-8') as file:
-        file.write(clean_html)
-
-if __name__ == "__main__":
-    main()
+print(f"Processed file saved to {output_path}")
