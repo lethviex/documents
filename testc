@@ -1,33 +1,81 @@
-<ac:structured-macro ac:name="toc">
-    <ac:parameter ac:name="printable">true</ac:parameter>
-    <ac:parameter ac:name="style">disc</ac:parameter>
-    <ac:parameter ac:name="maxLevel">2</ac:parameter>
-    <ac:parameter ac:name="minLevel">1</ac:parameter>
-    <ac:parameter ac:name="class">rm-contents</ac:parameter>
-    <ac:parameter ac:name="exclude">Excluded Heading</ac:parameter>
-    <ac:parameter ac:name="type">list</ac:parameter>
-    <ac:parameter ac:name="outline">clear</ac:parameter>
-</ac:structured-macro>
+import requests
+import pandas as pd
+import os
 
-<ac:structured-macro ac:name="html">
-    <ac:plain-text-body><![CDATA[
-        <table style="width: 100%; border-collapse: collapse;">
-            <thead>
-                <tr>
-                    <th style="border: 1px solid #ccc; padding: 8px; background-color: #f2f2f2;">Header 1</th>
-                    <th style="border: 1px solid #ccc; padding: 8px; background-color: #f2f2f2;">Header 2</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td style="border: 1px solid #ccc; padding: 8px;">Cell 1</td>
-                    <td style="border: 1px solid #ccc; padding: 8px;">Cell 2</td>
-                </tr>
-                <tr>
-                    <td style="border: 1px solid #ccc; padding: 8px;">Cell 3</td>
-                    <td style="border: 1px solid #ccc; padding: 8px;">Cell 4</td>
-                </tr>
-            </tbody>
-        </table>
-    ]]></ac:plain-text-body>
-</ac:structured-macro>
+# ServiceNow credentials and instance details
+instance = "your_instance_name"
+user = "your_username"
+password = "your_password"
+
+# API endpoint
+url = f"https://{instance}.service-now.com/api/now/table/"
+
+# Headers
+headers = {
+    "Accept": "application/json",
+    "Content-Type": "application/json"
+}
+
+def get_tables_from_csv(csv_file_path):
+    """
+    Read the list of table names from a CSV file.
+    """
+    df = pd.read_csv(csv_file_path)
+    return df['table_name'].tolist()
+
+def export_table_to_csv(table_name, output_dir):
+    """
+    Export a single CMDB table to a CSV file.
+    """
+    print(f"Exporting {table_name}...")
+
+    # Paginate through all records if necessary
+    offset = 0
+    limit = 10000  # Adjust as needed
+    all_records = []
+
+    while True:
+        response = requests.get(
+            f"{url}{table_name}?sysparm_offset={offset}&sysparm_limit={limit}",
+            auth=(user, password),
+            headers=headers
+        )
+
+        if response.status_code != 200:
+            print(f"Failed to retrieve records for {table_name}: {response.text}")
+            break
+
+        records = response.json().get('result', [])
+        if not records:
+            break
+
+        all_records.extend(records)
+        offset += limit
+
+    # Convert to DataFrame and write to CSV
+    if all_records:
+        df = pd.DataFrame(all_records)
+        output_path = os.path.join(output_dir, f"{table_name}.csv")
+        df.to_csv(output_path, index=False)
+    else:
+        print(f"No records found for {table_name}")
+
+def main():
+    # Path to the CSV file containing the list of tables
+    csv_file_path = "table_list.csv"
+
+    # Directory to save the CSV files
+    output_dir = "cmdb_exports"
+    os.makedirs(output_dir, exist_ok=True)
+
+    # Get the list of tables from the CSV file
+    tables = get_tables_from_csv(csv_file_path)
+
+    # Export each table to a CSV file
+    for table in tables:
+        export_table_to_csv(table, output_dir)
+
+    print("Export completed.")
+
+if __name__ == "__main__":
+    main()
