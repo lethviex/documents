@@ -1,81 +1,28 @@
-import requests
-import pandas as pd
-import os
+### Incoming New Project Request Process - Documentation
 
-# ServiceNow credentials and instance details
-instance = "your_instance_name"
-user = "your_username"
-password = "your_password"
+**Introduction**
 
-# API endpoint
-url = f"https://{instance}.service-now.com/api/now/table/"
+The initiation of all incoming new project requests will be governed by the **Intake Request Process**. This process is specifically designed to engage the appropriate stakeholders within Production Management, ensuring that all necessary steps are taken to evaluate, approve, and execute the request effectively.
 
-# Headers
-headers = {
-    "Accept": "application/json",
-    "Content-Type": "application/json"
-}
+**Process Overview**
 
-def get_tables_from_csv(csv_file_path):
-    """
-    Read the list of table names from a CSV file.
-    """
-    df = pd.read_csv(csv_file_path)
-    return df['table_name'].tolist()
+1. **Engagement of IRO Tower Leads:**
+   - IRO Tower leads must ensure that the **Intake Form** is accurately completed and submitted at the onset of each new project request. This form is critical as it captures essential details needed to evaluate the request.
 
-def export_table_to_csv(table_name, output_dir):
-    """
-    Export a single CMDB table to a CSV file.
-    """
-    print(f"Exporting {table_name}...")
+2. **Review and Approval:**
+   - Once the Intake Form is submitted, **Manish** will be responsible for reviewing and approving the project request. This approval is a crucial step before the request can move forward in the process.
 
-    # Paginate through all records if necessary
-    offset = 0
-    limit = 10000  # Adjust as needed
-    all_records = []
+3. **Assignment of Requests:**
+   - **Build Requests**: Upon approval, build requests will be assigned to the process owner, **Richard Ribeiro**. Richard will take charge of the process and handle all subsequent updates on **Jira**, ensuring that the progress of the build is transparent and well-documented.
+   - **Migration Requests**: Migration requests, on the other hand, will be assigned to the **IRO Project Manager (PM)**. The IRO PM will oversee the migration process from start to finish.
 
-    while True:
-        response = requests.get(
-            f"{url}{table_name}?sysparm_offset={offset}&sysparm_limit={limit}",
-            auth=(user, password),
-            headers=headers
-        )
+4. **Scope Definition and Resource Allocation:**
+   - The **iCTO** team will initially provide the scope definition for the migration requests. The IRO Project Manager will then assess the resource requirements necessary to handle the migration effectively.
+   - If necessary, the **iCTO** team will redefine the scope of the project, considering the availability of IRO resources to ensure that the project can be executed within the given constraints.
 
-        if response.status_code != 200:
-            print(f"Failed to retrieve records for {table_name}: {response.text}")
-            break
+5. **Governance and Delivery:**
+   - The IRO Project Manager is responsible for governing the delivery of the project. This includes managing timelines, coordinating with the necessary teams, and ensuring that the project is delivered according to the defined scope and within the allocated resources.
 
-        records = response.json().get('result', [])
-        if not records:
-            break
+**Conclusion**
 
-        all_records.extend(records)
-        offset += limit
-
-    # Convert to DataFrame and write to CSV
-    if all_records:
-        df = pd.DataFrame(all_records)
-        output_path = os.path.join(output_dir, f"{table_name}.csv")
-        df.to_csv(output_path, index=False)
-    else:
-        print(f"No records found for {table_name}")
-
-def main():
-    # Path to the CSV file containing the list of tables
-    csv_file_path = "table_list.csv"
-
-    # Directory to save the CSV files
-    output_dir = "cmdb_exports"
-    os.makedirs(output_dir, exist_ok=True)
-
-    # Get the list of tables from the CSV file
-    tables = get_tables_from_csv(csv_file_path)
-
-    # Export each table to a CSV file
-    for table in tables:
-        export_table_to_csv(table, output_dir)
-
-    print("Export completed.")
-
-if __name__ == "__main__":
-    main()
+The Intake Request Process is a structured approach that ensures all incoming new project requests are handled efficiently and effectively. By clearly defining roles and responsibilities, and ensuring a systematic flow of activities, the process aims to deliver high-quality results while maintaining transparency and accountability at each stage.
