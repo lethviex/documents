@@ -1,45 +1,38 @@
-This document provides a comprehensive overview of the end-to-end service operations processes that are integral to supporting VMware Cloud (VMC) on AWS infrastructure. It outlines the procedures, protocols, and best practices necessary for ensuring the efficient and effective management of service operations within this cloud environment.
+Here are the ITIL service processes:
 
+1. Service Strategy
+   - Service Portfolio Management
+   - Financial Management for IT Services
+   - Demand Management
+   - Business Relationship Management
 
-This document outlines the operating model for supporting VMware Cloud (VMC) on AWS infrastructure. It serves as a comprehensive guide to understanding the structure, roles, responsibilities, and processes required to ensure the seamless operation and management of VMC on AWS. The document covers key aspects such as service delivery, incident management, change management, and continuous improvement practices. By establishing clear guidelines and protocols, this operating model aims to optimize support operations, enhance service quality, and align with organizational objectives.
+2. Service Design
+   - Service Catalog Management
+   - Service Level Management
+   - Capacity Management
+   - Availability Management
+   - IT Service Continuity Management
+   - Information Security Management
+   - Supplier Management
 
-### VMC on AWS Shared Support Model Details
+3. Service Transition
+   - Transition Planning and Support
+   - Change Management
+   - Service Asset and Configuration Management
+   - Release and Deployment Management
+   - Service Validation and Testing
+   - Change Evaluation
+   - Knowledge Management
 
-The VMware Cloud (VMC) on AWS shared support model is designed to deliver robust and reliable support by leveraging the strengths of both VMware and AWS. This model clearly delineates the responsibilities between the two service providers and the customer, ensuring efficient management and resolution of issues.
+4. Service Operation
+   - Event Management
+   - Incident Management
+   - Request Fulfillment
+   - Problem Management
+   - Access Management
 
-#### 1. **Responsibility Allocation**
-
-- **VMware Responsibilities:**
-  - **VMware SDDC Stack**: VMware is responsible for the entire Software-Defined Data Center (SDDC) stack, which includes vSphere, vSAN, NSX, and vCenter. This encompasses the deployment, configuration, and ongoing maintenance of these components.
-  - **Service Uptime and Availability**: VMware ensures the operational health and availability of the SDDC stack. This includes proactive monitoring, patching, and upgrading of the VMware software components.
-  - **Technical Support**: VMware provides 24/7 technical support for the VMware components of the solution, addressing issues related to the SDDC stack and working closely with AWS to resolve any underlying infrastructure issues.
-
-- **AWS Responsibilities:**
-  - **Physical Infrastructure**: AWS is responsible for the physical infrastructure, including compute, storage, networking, and security at the hardware and data center levels.
-  - **Global Infrastructure**: AWS ensures the global availability, scalability, and security of the physical infrastructure hosting the VMC on AWS environment.
-  - **AWS Support**: AWS provides support for its infrastructure components, addressing issues related to the underlying hardware, networking, and data center operations.
-
-- **Customer Responsibilities:**
-  - **VM Management**: The customer is responsible for managing the virtual machines (VMs) running on the VMC on AWS infrastructure. This includes VM deployment, configuration, application management, and patching.
-  - **User Access and Security**: Customers manage access controls, identity management, and security policies within their SDDC environment.
-  - **Custom Applications**: Any custom applications or workloads deployed on the VMC on AWS platform are managed and supported by the customer.
-
-#### 2. **Collaborative Support Process**
-
-- **Incident Management**: In the event of an incident, VMware provides the first point of contact for issues related to the SDDC stack. If the issue is identified as being related to the AWS infrastructure, VMware will escalate the issue to AWS support while maintaining communication with the customer.
-
-- **Service Requests**: Customers can submit service requests through the VMware support portal for issues related to the SDDC stack, while requests related to AWS infrastructure are handled directly by AWS.
-
-- **Escalation Paths**: Clear escalation paths are established between VMware and AWS to ensure rapid resolution of critical issues, minimizing downtime and service disruption.
-
-#### 3. **Proactive Monitoring and Maintenance**
-
-- **Monitoring Tools**: VMware and AWS both utilize advanced monitoring tools to proactively identify and address potential issues within their respective areas of responsibility.
-- **Regular Updates and Patching**: VMware and AWS coordinate regular updates and patches to the SDDC stack and underlying infrastructure, ensuring security and performance are maintained at optimal levels.
-
-#### 4. **Service Level Agreements (SLAs)**
-
-- **Uptime Commitments**: Both VMware and AWS commit to specific uptime percentages for their respective components, detailed in the SLAs provided to the customer.
-- **Response Times**: SLAs also outline the expected response times for different severity levels of incidents, ensuring timely support and resolution.
-
-This shared support model is designed to provide a seamless and integrated support experience, ensuring that customers can rely on both VMware and AWS to maintain a robust and secure cloud environment.
+5. Continual Service Improvement (CSI)
+   - Service Review
+   - Process Evaluation
+   - CSI Initiatives
+   - Monitoring of CSI Activities
