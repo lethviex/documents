@@ -1,26 +1,16 @@
 
-import csv
+import pandas as pd
 
 def csv_to_html_table(csv_file, html_file):
-    with open(csv_file, 'r') as csvfile:
-        reader = csv.reader(csvfile)
-        
-        # Start the HTML table
-        html_output = "<table>\n"
-        
-        # Read the CSV file row by row
-        for row in reader:
-            html_output += "  <tr>\n"
-            for column in row:
-                html_output += f"    <td>{column}</td>\n"
-            html_output += "  </tr>\n"
-        
-        # End the HTML table
-        html_output += "</table>"
-        
+    # Read the CSV file into a DataFrame
+    df = pd.read_csv(csv_file)
+    
+    # Convert the DataFrame to an HTML table
+    html_output = df.to_html(index=False)
+    
     # Write the HTML output to a file
-    with open(html_file, 'w') as htmlfile:
-        htmlfile.write(html_output)
+    with open(html_file, 'w') as file:
+        file.write(html_output)
 
 # Example usage
 csv_to_html_table('input.csv', 'output.html')
