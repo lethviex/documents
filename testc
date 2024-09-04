@@ -1,38 +1,25 @@
-Here are the ITIL service processes:
+#!/bin/bash
 
-1. Service Strategy
-   - Service Portfolio Management
-   - Financial Management for IT Services
-   - Demand Management
-   - Business Relationship Management
+# Check if a file is provided as an argument
+if [ "$#" -ne 1 ]; then
+    echo "Usage: $0 filename.csv"
+    exit 1
+fi
 
-2. Service Design
-   - Service Catalog Management
-   - Service Level Management
-   - Capacity Management
-   - Availability Management
-   - IT Service Continuity Management
-   - Information Security Management
-   - Supplier Management
+# Read the CSV file and convert it to an HTML table
+input_file="$1"
 
-3. Service Transition
-   - Transition Planning and Support
-   - Change Management
-   - Service Asset and Configuration Management
-   - Release and Deployment Management
-   - Service Validation and Testing
-   - Change Evaluation
-   - Knowledge Management
+# Start the HTML table
+echo "<table>"
 
-4. Service Operation
-   - Event Management
-   - Incident Management
-   - Request Fulfillment
-   - Problem Management
-   - Access Management
+# Read the CSV file line by line
+while IFS=',' read -r -a columns; do
+    echo "  <tr>"
+    for column in "${columns[@]}"; do
+        echo "    <td>${column}</td>"
+    done
+    echo "  </tr>"
+done < "$input_file"
 
-5. Continual Service Improvement (CSI)
-   - Service Review
-   - Process Evaluation
-   - CSI Initiatives
-   - Monitoring of CSI Activities
+# End the HTML table
+echo "</table>"
