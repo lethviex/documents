@@ -1,25 +1,26 @@
-#!/bin/bash
 
-# Check if a file is provided as an argument
-if [ "$#" -ne 1 ]; then
-    echo "Usage: $0 filename.csv"
-    exit 1
-fi
+import csv
 
-# Read the CSV file and convert it to an HTML table
-input_file="$1"
+def csv_to_html_table(csv_file, html_file):
+    with open(csv_file, 'r') as csvfile:
+        reader = csv.reader(csvfile)
+        
+        # Start the HTML table
+        html_output = "<table>\n"
+        
+        # Read the CSV file row by row
+        for row in reader:
+            html_output += "  <tr>\n"
+            for column in row:
+                html_output += f"    <td>{column}</td>\n"
+            html_output += "  </tr>\n"
+        
+        # End the HTML table
+        html_output += "</table>"
+        
+    # Write the HTML output to a file
+    with open(html_file, 'w') as htmlfile:
+        htmlfile.write(html_output)
 
-# Start the HTML table
-echo "<table>"
-
-# Read the CSV file line by line
-while IFS=',' read -r -a columns; do
-    echo "  <tr>"
-    for column in "${columns[@]}"; do
-        echo "    <td>${column}</td>"
-    done
-    echo "  </tr>"
-done < "$input_file"
-
-# End the HTML table
-echo "</table>"
+# Example usage
+csv_to_html_table('input.csv', 'output.html')
