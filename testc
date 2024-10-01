@@ -1,16 +1,3 @@
+At present, the application and mission control teams depend on cloud support personnel to obtain critical information, such as impacted virtual machines (VMs), application statuses, and contact details during MC Connect/MI calls. The process of gathering this data is manual and requires accessing multiple portals and running database queries. As a result, there is a significant delay in obtaining the necessary information, which prolongs the time taken to initiate troubleshooting efforts.
 
-import pandas as pd
-
-def csv_to_html_table(csv_file, html_file):
-    # Read the CSV file into a DataFrame
-    df = pd.read_csv(csv_file)
-    
-    # Convert the DataFrame to an HTML table
-    html_output = df.to_html(index=False)
-    
-    # Write the HTML output to a file
-    with open(html_file, 'w') as file:
-        file.write(html_output)
-
-# Example usage
-csv_to_html_table('input.csv', 'output.html')
+Create multiple Grafana dashboards that provide real-time data on applications, VMs, and KVMs hosted in the private cloud. Additionally, develop a dashboard that integrates data from various cloud resources and links it to relevant contact details, offering a unified view for quick access to critical information.
