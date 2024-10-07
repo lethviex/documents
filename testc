@@ -1,3 +1,68 @@
-At present, the application and mission control teams depend on cloud support personnel to obtain critical information, such as impacted virtual machines (VMs), application statuses, and contact details during MC Connect/MI calls. The process of gathering this data is manual and requires accessing multiple portals and running database queries. As a result, there is a significant delay in obtaining the necessary information, which prolongs the time taken to initiate troubleshooting efforts.
+from pyVim.connect import SmartConnect, Disconnect
+from pyVmomi import vim
+import ssl
+import requests
+import json
+import csv
 
-Create multiple Grafana dashboards that provide real-time data on applications, VMs, and KVMs hosted in the private cloud. Additionally, develop a dashboard that integrates data from various cloud resources and links it to relevant contact details, offering a unified view for quick access to critical information.
+# Disable SSL warnings (if self-signed certificates are used)
+requests.packages.urllib3.disable_warnings()
+
+# Function to retrieve VMs
+def get_vms(content):
+    container = content.viewManager.CreateContainerView(
+        content.rootFolder, [vim.VirtualMachine], True
+    )
+    return container.view
+
+# Function to retrieve tags for a given VM
+def get_vm_tags(vm, session, vcenter_url):
+    tags_url = f'{vcenter_url}/rest/com/vmware/cis/tagging/tag-association/id:{vm._moId}'
+    response = session.get(tags_url, verify=False)
+    if response.status_code == 200:
+        tags_data = response.json().get('value', [])
+        return tags_data
+    return []
+
+# Main function
+def main():
+    # Define vCenter connection details
+    vcenter_host = 'vcenter_host'
+    vcenter_user = 'vcenter_user'
+    vcenter_password = 'vcenter_password'
+    
+    # Ignore SSL certificate verification (optional)
+    ssl_context = ssl._create_unverified_context()
+
+    # Connect to vCenter
+    service_instance = SmartConnect(host=vcenter_host, user=vcenter_user, pwd=vcenter_password, sslContext=ssl_context)
+    content = service_instance.RetrieveContent()
+
+    # REST API session for tag retrieval
+    vcenter_url = f'https://{vcenter_host}'
+    session = requests.Session()
+    session.post(f'{vcenter_url}/rest/com/vmware/cis/session', auth=(vcenter_user, vcenter_password), verify=False)
+
+    # Get all VMs
+    vms = get_vms(content)
+
+    # CSV file to export data
+    with open('vcenter_vms_with_tags.csv', mode='w', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow(['VM Name', 'VM UUID', 'Tags'])
+
+        # Iterate over VMs and retrieve their tags
+        for vm in vms:
+            vm_name = vm.name
+            vm_uuid = vm.config.uuid
+            vm_tags = get_vm_tags(vm, session, vcenter_url)
+
+            # Write VM details to CSV
+            writer.writerow([vm_name, vm_uuid, ', '.join(vm_tags)])
+
+    # Disconnect from vCenter
+    Disconnect(service_instance)
+    print('VMs and tags have been exported to vcenter_vms_with_tags.csv.')
+
+if __name__ == '__main__':
+    main()
