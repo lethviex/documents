@@ -1,15 +1,29 @@
-# Replace 'username' with the AD username for which you want to export the group membership.
+# Replace 'username' with the AD username for which you want to export the group membership
 $UserName = "username"
+$Domain = "yourdomain.com"
 
-# Get the user's group membership
-$Groups = Get-ADUser -Identity $UserName -Properties MemberOf | Select-Object -ExpandProperty MemberOf
+# Create a directory searcher object to find the user in AD
+$Searcher = New-Object DirectoryServices.DirectorySearcher
+$Searcher.Filter = "(&(objectCategory=person)(objectClass=user)(sAMAccountName=$UserName))"
+$Searcher.PropertiesToLoad.Add("memberOf") | Out-Null
 
-# Convert Distinguished Names (DNs) of groups to Group Names
-$GroupNames = foreach ($Group in $Groups) {
-    (Get-ADGroup -Identity $Group).Name
+# Find the user
+$User = $Searcher.FindOne()
+
+# Check if user is found
+if ($User -ne $null) {
+    # Extract the groups' Distinguished Names (DNs)
+    $Groups = $User.Properties["memberOf"]
+
+    # Parse each group's DN to get just the group name
+    $GroupNames = foreach ($GroupDN in $Groups) {
+        $GroupDN -replace '^CN=([^,]+).+$', '$1'
+    }
+
+    # Export the group names to a CSV file
+    $GroupNames | Export-Csv -Path "C:\Path\To\Output\ADUserGroups.csv" -NoTypeInformation
+
+    Write-Host "Group membership of $UserName has been exported to C:\Path\To\Output\ADUserGroups.csv"
+} else {
+    Write-Host "User $UserName not found in Active Directory."
 }
-
-# Export group names to a CSV file
-$GroupNames | Export-Csv -Path "C:\Path\To\Output\ADUserGroups.csv" -NoTypeInformation
-
-Write-Host "Group membership of $UserName has been exported to C:\Path\To\Output\ADUserGroups.csv"
