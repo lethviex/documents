@@ -1,33 +1,42 @@
-# Replace 'username' with the AD username for which you want to export the group membership
-$UserName = "username"
-$Domain = "yourdomain.com"
+import csv
+from ldap3 import Server, Connection, ALL, NTLM
 
-# Create a directory searcher object to find the user in AD
-$Searcher = New-Object DirectoryServices.DirectorySearcher
-$Searcher.Filter = "(&(objectCategory=person)(objectClass=user)(sAMAccountName=$UserName))"
-$Searcher.PropertiesToLoad.Add("memberOf") | Out-Null
+# Set your Active Directory details
+AD_SERVER = 'ldap://your-ad-server.com'  # Example: 'ldap://your-ad-server.com'
+USERNAME = 'your-username@domain.com'    # Your AD username
+PASSWORD = 'your-password'               # Your AD password
 
-# Find the user
-$User = $Searcher.FindOne()
+# List of users whose group memberships you want to export
+user_list = ['user1', 'user2', 'user3']  # Replace with your list of users
 
-# Check if user is found
-if ($User -ne $null) {
-    # Extract the groups' Distinguished Names (DNs)
-    $Groups = $User.Properties["memberOf"]
+# Create an LDAP connection
+server = Server(AD_SERVER, get_info=ALL)
+conn = Connection(server, user=USERNAME, password=PASSWORD, authentication=NTLM, auto_bind=True)
 
-    # Parse each group's DN to get just the group name
-    $GroupNames = foreach ($GroupDN in $Groups) {
-        $GroupDN -replace '^CN=([^,]+).+$', '$1'
-    }
+# Open the CSV file for writing
+with open('ADUsersGroups.csv', mode='w', newline='') as file:
+    writer = csv.writer(file)
+    writer.writerow(['UserName', 'GroupName'])  # CSV header
 
-    # Ensure GroupNames are output as objects, not as their length
-    $GroupNames | ForEach-Object {
-        [PSCustomObject]@{
-            GroupName = $_
-        }
-    } | Export-Csv -Path "C:\Path\To\Output\ADUserGroups.csv" -NoTypeInformation
+    # Loop through each user in the list
+    for AD_USER in user_list:
+        # Search for the user in Active Directory
+        conn.search(f'cn={AD_USER},dc=domain,dc=com',  # Adjust the search base (dc=domain,dc=com) to your domain
+                    '(objectClass=user)', 
+                    attributes=['memberOf'])
 
-    Write-Host "Group membership of $UserName has been exported to C:\Path\To\Output\ADUserGroups.csv"
-} else {
-    Write-Host "User $UserName not found in Active Directory."
-}
+        # Check if the user was found
+        if conn.entries:
+            user_entry = conn.entries[0]
+            groups = user_entry.memberOf
+
+            # Parse group names (distinguished names)
+            group_names = [group.split(',')[0].replace('CN=', '') for group in groups]
+
+            # Write each group membership to the CSV file
+            for group in group_names:
+                writer.writerow([AD_USER, group])
+            
+            print(f"Exported groups for {AD_USER}")
+        else:
+            print(f"User {AD_USER} not found in Active Directory.")
