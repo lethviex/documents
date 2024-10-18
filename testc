@@ -20,8 +20,12 @@ if ($User -ne $null) {
         $GroupDN -replace '^CN=([^,]+).+$', '$1'
     }
 
-    # Export the group names to a CSV file
-    $GroupNames | Export-Csv -Path "C:\Path\To\Output\ADUserGroups.csv" -NoTypeInformation
+    # Ensure GroupNames are output as objects, not as their length
+    $GroupNames | ForEach-Object {
+        [PSCustomObject]@{
+            GroupName = $_
+        }
+    } | Export-Csv -Path "C:\Path\To\Output\ADUserGroups.csv" -NoTypeInformation
 
     Write-Host "Group membership of $UserName has been exported to C:\Path\To\Output\ADUserGroups.csv"
 } else {
