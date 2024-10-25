@@ -1,42 +1,51 @@
-import csv
-from ldap3 import Server, Connection, ALL, NTLM
+import requests
+import pandas as pd
+from bs4 import BeautifulSoup
+from requests.auth import HTTPBasicAuth
 
-# Set your Active Directory details
-AD_SERVER = 'ldap://your-ad-server.com'  # Example: 'ldap://your-ad-server.com'
-USERNAME = 'your-username@domain.com'    # Your AD username
-PASSWORD = 'your-password'               # Your AD password
+# Configuration
+CONFLUENCE_URL = "https://your-domain.atlassian.net/wiki/rest/api/content"
+PAGE_ID = "123456"  # Replace with your page ID
+USERNAME = "your-email@example.com"
+API_TOKEN = "your-api-token"
 
-# List of users whose group memberships you want to export
-user_list = ['user1', 'user2', 'user3']  # Replace with your list of users
+def get_confluence_page_content(page_id):
+    url = f"{CONFLUENCE_URL}/{page_id}?expand=body.storage"
+    response = requests.get(url, auth=HTTPBasicAuth(USERNAME, API_TOKEN))
+    
+    if response.status_code == 200:
+        page_content = response.json()
+        html_content = page_content['body']['storage']['value']
+        return html_content
+    else:
+        print(f"Failed to retrieve page content. Status code: {response.status_code}")
+        return None
 
-# Create an LDAP connection
-server = Server(AD_SERVER, get_info=ALL)
-conn = Connection(server, user=USERNAME, password=PASSWORD, authentication=NTLM, auto_bind=True)
+def extract_tables_from_html(html_content):
+    soup = BeautifulSoup(html_content, 'html.parser')
+    tables = soup.find_all('table')
+    
+    extracted_tables = []
+    for table in tables:
+        rows = []
+        for row in table.find_all('tr'):
+            cols = [col.get_text(strip=True) for col in row.find_all(['td', 'th'])]
+            rows.append(cols)
+        df = pd.DataFrame(rows)
+        extracted_tables.append(df)
+    return extracted_tables
 
-# Open the CSV file for writing
-with open('ADUsersGroups.csv', mode='w', newline='') as file:
-    writer = csv.writer(file)
-    writer.writerow(['UserName', 'GroupName'])  # CSV header
+def main():
+    html_content = get_confluence_page_content(PAGE_ID)
+    if html_content:
+        tables = extract_tables_from_html(html_content)
+        
+        # Save each table to a different sheet in an Excel file
+        with pd.ExcelWriter("confluence_tables.xlsx", engine="openpyxl") as writer:
+            for i, table in enumerate(tables, start=1):
+                sheet_name = f"Table_{i}"
+                table.to_excel(writer, sheet_name=sheet_name, index=False, header=False)
+                print(f"Table {i} saved in sheet '{sheet_name}'")
 
-    # Loop through each user in the list
-    for AD_USER in user_list:
-        # Search for the user in Active Directory
-        conn.search(f'cn={AD_USER},dc=domain,dc=com',  # Adjust the search base (dc=domain,dc=com) to your domain
-                    '(objectClass=user)', 
-                    attributes=['memberOf'])
-
-        # Check if the user was found
-        if conn.entries:
-            user_entry = conn.entries[0]
-            groups = user_entry.memberOf
-
-            # Parse group names (distinguished names)
-            group_names = [group.split(',')[0].replace('CN=', '') for group in groups]
-
-            # Write each group membership to the CSV file
-            for group in group_names:
-                writer.writerow([AD_USER, group])
-            
-            print(f"Exported groups for {AD_USER}")
-        else:
-            print(f"User {AD_USER} not found in Active Directory.")
+if __name__ == "__main__":
+    main()
