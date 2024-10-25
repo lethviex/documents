@@ -21,6 +21,14 @@ def get_confluence_page_content(page_id):
         print(f"Failed to retrieve page content. Status code: {response.status_code}")
         return None
 
+def parse_cell(cell):
+    # Check for checkboxes in the cell
+    checkbox = cell.find("input", {"type": "checkbox"})
+    if checkbox:
+        return "Checked" if checkbox.has_attr("checked") else "Unchecked"
+    else:
+        return cell.get_text(strip=True)
+
 def extract_tables_from_html(html_content):
     soup = BeautifulSoup(html_content, 'html.parser')
     tables = soup.find_all('table')
@@ -29,7 +37,7 @@ def extract_tables_from_html(html_content):
     for table in tables:
         rows = []
         for row in table.find_all('tr'):
-            cols = [col.get_text(strip=True) for col in row.find_all(['td', 'th'])]
+            cols = [parse_cell(cell) for cell in row.find_all(['td', 'th'])]
             rows.append(cols)
         df = pd.DataFrame(rows)
         extracted_tables.append(df)
@@ -41,7 +49,7 @@ def main():
         tables = extract_tables_from_html(html_content)
         
         # Save each table to a different sheet in an Excel file
-        with pd.ExcelWriter("confluence_tables.xlsx", engine="openpyxl") as writer:
+        with pd.ExcelWriter("confluence_tables_with_checkboxes.xlsx", engine="openpyxl") as writer:
             for i, table in enumerate(tables, start=1):
                 sheet_name = f"Table_{i}"
                 table.to_excel(writer, sheet_name=sheet_name, index=False, header=False)
