@@ -1,59 +1,35 @@
-import requests
-import pandas as pd
-from bs4 import BeautifulSoup
-from requests.auth import HTTPBasicAuth
+ For a Harness CI/CD overview slide, here’s a concise structure that you can use to convey the key components of Harness CI/CD in a single slide:
 
-# Configuration
-CONFLUENCE_URL = "https://your-domain.atlassian.net/wiki/rest/api/content"
-PAGE_ID = "123456"  # Replace with your page ID
-USERNAME = "your-email@example.com"
-API_TOKEN = "your-api-token"
+---
 
-def get_confluence_page_content(page_id):
-    url = f"{CONFLUENCE_URL}/{page_id}?expand=body.storage"
-    response = requests.get(url, auth=HTTPBasicAuth(USERNAME, API_TOKEN))
-    
-    if response.status_code == 200:
-        page_content = response.json()
-        html_content = page_content['body']['storage']['value']
-        return html_content
-    else:
-        print(f"Failed to retrieve page content. Status code: {response.status_code}")
-        return None
+### **Harness CI/CD Overview**
 
-def parse_cell(cell):
-    # Check for checkboxes in the cell
-    checkbox = cell.find("input", {"type": "checkbox"})
-    if checkbox:
-        return "Checked" if checkbox.has_attr("checked") else "Unchecked"
-    else:
-        return cell.get_text(strip=True)
+1. **Introduction to Harness CI/CD**
+   - **Harness CI/CD** is a modern DevOps platform that automates software delivery and infrastructure changes across cloud and on-premises environments.
+   - **Objective**: Enable faster, more reliable releases with automated processes, improving developer productivity and deployment quality.
 
-def extract_tables_from_html(html_content):
-    soup = BeautifulSoup(html_content, 'html.parser')
-    tables = soup.find_all('table')
-    
-    extracted_tables = []
-    for table in tables:
-        rows = []
-        for row in table.find_all('tr'):
-            cols = [parse_cell(cell) for cell in row.find_all(['td', 'th'])]
-            rows.append(cols)
-        df = pd.DataFrame(rows)
-        extracted_tables.append(df)
-    return extracted_tables
+2. **Key Components**
+   - **Continuous Integration (CI)**: Automates the process of building, testing, and verifying code to ensure each change is production-ready.
+   - **Continuous Delivery (CD)**: Automates the deployment of applications to production and non-production environments.
 
-def main():
-    html_content = get_confluence_page_content(PAGE_ID)
-    if html_content:
-        tables = extract_tables_from_html(html_content)
-        
-        # Save each table to a different sheet in an Excel file
-        with pd.ExcelWriter("confluence_tables_with_checkboxes.xlsx", engine="openpyxl") as writer:
-            for i, table in enumerate(tables, start=1):
-                sheet_name = f"Table_{i}"
-                table.to_excel(writer, sheet_name=sheet_name, index=False, header=False)
-                print(f"Table {i} saved in sheet '{sheet_name}'")
+3. **Main Features**
+   - **Automated Builds**: Efficiently trigger builds, run tests, and generate artifacts.
+   - **Pipeline Orchestration**: Flexible pipeline setup with prebuilt steps and approval gates.
+   - **Approval Gates and Rollbacks**: Enforce approvals, automate rollback strategies to handle failures.
+   - **Environment Management**: Seamlessly manage multi-cloud and hybrid infrastructure.
+   - **Built-in Security**: Integrate security checks throughout the CI/CD pipeline.
+   - **Cost Optimization**: Monitor and manage costs, especially in cloud environments.
 
-if __name__ == "__main__":
-    main()
+4. **Benefits**
+   - **Speed**: Faster development and release cycles.
+   - **Reliability**: Consistent and secure delivery processes.
+   - **Scalability**: Easily supports scaling across various cloud providers.
+   - **Cost Efficiency**: Optimized resource usage with built-in insights.
+
+---
+
+For visual representation:
+- Use icons to represent CI, CD, cloud integration, approval gates, and security.
+- Use a flow diagram to illustrate the CI/CD pipeline, highlighting stages like Build, Test, Deploy, and Monitor.
+  
+Let me know if you’d like help creating visuals or specific details on any of these areas!
