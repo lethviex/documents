@@ -1,44 +1,76 @@
-import pandas as pd
 import ipaddress
-import socket
+import csv
 
-def get_fqdn(ip):
-    """Perform a DNS lookup to get the FQDN for an IP."""
+def generate_ips_from_cidr(cidr):
+    """
+    Generate a list of IP addresses from a given CIDR range.
+
+    Args:
+        cidr (str): The CIDR range (e.g., '192.168.1.0/24').
+
+    Returns:
+        list: A list of IP addresses in the range.
+    """
     try:
-        return socket.getfqdn(ip)
-    except socket.error:
-        return "DNS Lookup Failed"
+        network = ipaddress.ip_network(cidr, strict=False)
+        return [str(ip) for ip in network]
+    except ValueError as e:
+        print(f"Error: {e} for CIDR: {cidr}")
+        return []
 
-def process_cidr_ranges(input_csv, output_excel):
-    # Read the input CSV file
-    data = pd.read_csv(input_csv)
-    
-    # Validate required column
-    if 'CIDR' not in data.columns:
-        raise ValueError("CSV must contain a 'CIDR' column.")
-    
-    results = []
-    for _, row in data.iterrows():
-        cidr = row['CIDR']
-        try:
-            # Generate all IPs within the CIDR range
-            network = ipaddress.ip_network(cidr, strict=False)
-            for ip in network.hosts():  # Skip network and broadcast addresses
-                fqdn = get_fqdn(str(ip))
-                # Append results
-                results.append({'CIDR': cidr, 'IP': str(ip), 'FQDN': fqdn})
-        except ValueError as e:
-            # Handle invalid CIDR entries
-            results.append({'CIDR': cidr, 'IP': 'Invalid CIDR', 'FQDN': str(e)})
-    
-    # Write results to an Excel file
-    result_df = pd.DataFrame(results)
-    result_df.to_excel(output_excel, index=False)
-    print(f"Results written to {output_excel}")
+def process_cidr_from_csv(csv_file):
+    """
+    Read CIDR ranges from a CSV file and generate IP addresses.
 
-# Specify input and output files
-input_csv_file = "cidr_ranges.csv"  # Input CSV with a 'CIDR' column
-output_excel_file = "dns_lookup_results.xlsx"  # Output Excel file
+    Args:
+        csv_file (str): Path to the CSV file.
 
-# Process the CIDR ranges
-process_cidr_ranges(input_csv_file, output_excel_file)
+    Returns:
+        dict: A dictionary with CIDR ranges as keys and lists of IPs as values.
+    """
+    cidr_ips = {}
+    try:
+        with open(csv_file, newline='', encoding='utf-8') as file:
+            reader = csv.DictReader(file)
+            if 'CIDR' not in reader.fieldnames:
+                print("CSV file must contain a 'CIDR' column.")
+                return {}
+
+            for row in reader:
+                cidr = row['CIDR'].strip()
+                ips = generate_ips_from_cidr(cidr)
+                cidr_ips[cidr] = ips
+
+    except FileNotFoundError:
+        print(f"File not found: {csv_file}")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+    return cidr_ips
+
+def write_ips_to_csv(output_file, cidr_ips):
+    """
+    Write CIDR ranges and their corresponding IPs to a CSV file.
+
+    Args:
+        output_file (str): Path to the output CSV file.
+        cidr_ips (dict): A dictionary with CIDR ranges as keys and lists of IPs as values.
+    """
+    try:
+        with open(output_file, mode='w', newline='', encoding='utf-8') as file:
+            writer = csv.writer(file)
+            writer.writerow(['CIDR', 'IPs'])
+            for cidr, ips in cidr_ips.items():
+                writer.writerow([cidr, ", ".join(ips)])
+        print(f"IP addresses have been written to {output_file}.")
+    except Exception as e:
+        print(f"An error occurred while writing to file: {e}")
+
+# Example usage
+if __name__ == "__main__":
+    input_csv = "cidr_list.csv"  # Input CSV file containing CIDR ranges
+    output_csv = "cidr_ips_output.csv"  # Output CSV file to save IP addresses
+
+    cidr_ips_dict = process_cidr_from_csv(input_csv)
+    if cidr_ips_dict:
+        write_ips_to_csv(output_csv, cidr_ips_dict)
