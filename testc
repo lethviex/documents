@@ -1,76 +1,34 @@
-import ipaddress
-import csv
+### Promotion Justification:  
 
-def generate_ips_from_cidr(cidr):
-    """
-    Generate a list of IP addresses from a given CIDR range.
+**Candidate:** [Name of Team Member]  
+**Proposed Role/Designation:** [New Role/Designation]  
+**Manager:** [Your Name]  
 
-    Args:
-        cidr (str): The CIDR range (e.g., '192.168.1.0/24').
+**Justification Summary:**  
+[Team Member] has consistently demonstrated exceptional technical proficiency, innovative problem-solving, and collaborative teamwork. Over the past [specific timeframe], [he/she/they] has successfully completed critical projects, streamlined processes, and contributed to the team's overall success, exceeding the expectations of [his/her/their] current role.
 
-    Returns:
-        list: A list of IP addresses in the range.
-    """
-    try:
-        network = ipaddress.ip_network(cidr, strict=False)
-        return [str(ip) for ip in network]
-    except ValueError as e:
-        print(f"Error: {e} for CIDR: {cidr}")
-        return []
+**Key Accomplishments:**  
 
-def process_cidr_from_csv(csv_file):
-    """
-    Read CIDR ranges from a CSV file and generate IP addresses.
+1. **Power BI Dashboard Development:**  
+   - Designed and implemented multiple Power BI dashboards for Jira reporting, including the Automation 24 Dashboard, which tracks automation tasks effectively.  
+   - Connected Jira to Power BI using Power Query, enhancing data analysis and reporting capabilities for various projects.  
 
-    Args:
-        csv_file (str): Path to the CSV file.
+2. **Automation and Operational Readiness Dashboards:**  
+   - Built dashboards for PostgresQL, RDS, and OCI operational readiness, leveraging Jira-to-Power BI automation to improve tracking and decision-making.  
+   - Developed the IRO resource utilization real-time dashboard, providing detailed insights into resource allocation and ticket resolution trends under Jira project TO4510.  
 
-    Returns:
-        dict: A dictionary with CIDR ranges as keys and lists of IPs as values.
-    """
-    cidr_ips = {}
-    try:
-        with open(csv_file, newline='', encoding='utf-8') as file:
-            reader = csv.DictReader(file)
-            if 'CIDR' not in reader.fieldnames:
-                print("CSV file must contain a 'CIDR' column.")
-                return {}
+3. **Cross-Team Collaboration and Knowledge Sharing:**  
+   - Provided cross-team training on Power BI for EUC team members, enhancing the team's overall analytical skills.  
+   - Assisted in the BUR vendor transition status dashboard, ensuring seamless Jira-to-Power BI integration.  
 
-            for row in reader:
-                cidr = row['CIDR'].strip()
-                ips = generate_ips_from_cidr(cidr)
-                cidr_ips[cidr] = ips
+4. **Strategic Initiatives and Knowledge Management:**  
+   - Migrated the VMC on AWS knowledge base to the Confluence platform, ensuring better documentation and accessibility for the team.  
+   - Completed critical tasks, such as creating change requests for Cobalt Iron instance and CMDB reporting for Greenfield migrated servers.  
 
-    except FileNotFoundError:
-        print(f"File not found: {csv_file}")
-    except Exception as e:
-        print(f"An error occurred: {e}")
+5. **Professional Development:**  
+   - Successfully earned the **Azure Administrator Associate** certification, demonstrating a commitment to continuous learning and staying current with cloud technologies.  
 
-    return cidr_ips
+**Recommendation:**  
+Based on the above accomplishments and [his/her/their] ability to deliver impactful results consistently, I strongly recommend promoting [Team Member] to [New Role/Designation]. This promotion not only acknowledges [his/her/their] contributions but also positions [him/her/them] to take on greater responsibilities and drive further success for the team and organization.  
 
-def write_ips_to_csv(output_file, cidr_ips):
-    """
-    Write CIDR ranges and their corresponding IPs to a CSV file.
-
-    Args:
-        output_file (str): Path to the output CSV file.
-        cidr_ips (dict): A dictionary with CIDR ranges as keys and lists of IPs as values.
-    """
-    try:
-        with open(output_file, mode='w', newline='', encoding='utf-8') as file:
-            writer = csv.writer(file)
-            writer.writerow(['CIDR', 'IPs'])
-            for cidr, ips in cidr_ips.items():
-                writer.writerow([cidr, ", ".join(ips)])
-        print(f"IP addresses have been written to {output_file}.")
-    except Exception as e:
-        print(f"An error occurred while writing to file: {e}")
-
-# Example usage
-if __name__ == "__main__":
-    input_csv = "cidr_list.csv"  # Input CSV file containing CIDR ranges
-    output_csv = "cidr_ips_output.csv"  # Output CSV file to save IP addresses
-
-    cidr_ips_dict = process_cidr_from_csv(input_csv)
-    if cidr_ips_dict:
-        write_ips_to_csv(output_csv, cidr_ips_dict)
+Let me know if you’d like any adjustments to the justification!
