@@ -1,34 +1,62 @@
-### Promotion Justification:  
+Here's the updated table, including tools for **vulnerability scanning** and **build automation**, along with other categories:
 
-**Candidate:** [Name of Team Member]  
-**Proposed Role/Designation:** [New Role/Designation]  
-**Manager:** [Your Name]  
+| **Category**               | **Tool**              | **Ecosystem**              | **Licensing Type**       |  
+|-----------------------------|-----------------------|----------------------------|--------------------------|  
+| **Version Control**         | Git                  | Independent                | Open Source (GPL)        |  
+|                             | GitHub               | GitHub Ecosystem           | Proprietary (SaaS)       |  
+|                             | GitLab               | GitLab Ecosystem           | Open Source (MIT, EE is proprietary) |  
+|                             | Bitbucket            | Atlassian Ecosystem        | Proprietary              |  
+|                             | Subversion (SVN)     | Independent                | Open Source (Apache 2.0) |  
+| **CI/CD**                  | Jenkins              | Jenkins Plugins            | Open Source (MIT)        |  
+|                             | GitLab CI/CD         | GitLab Ecosystem           | Open Source (MIT, EE is proprietary) |  
+|                             | CircleCI             | CircleCI                   | Proprietary (SaaS)       |  
+|                             | Travis CI            | GitHub/Git Integration     | Open Source (limited), Proprietary (paid) |  
+|                             | Azure DevOps         | Azure Ecosystem            | Proprietary (SaaS)       |  
+|                             | Bamboo               | Atlassian Ecosystem        | Proprietary              |  
+|                             | TeamCity             | JetBrains Ecosystem        | Proprietary              |  
+|                             | GitHub Actions       | GitHub Ecosystem           | Proprietary (SaaS)       |  
+|                             | GoCD                 | Independent                | Open Source (Apache 2.0) |  
+|                             | Spinnaker            | Cloud-Native               | Open Source (Apache 2.0) |  
+|                             | Argo CD              | Kubernetes Ecosystem       | Open Source (Apache 2.0) |  
+|                             | Tekton               | Kubernetes Ecosystem       | Open Source (Apache 2.0) |  
+|                             | Drone CI             | Docker & GitHub            | Open Source (Apache 2.0) |  
+|                             | Buddy                | Buddy Ecosystem            | Proprietary (SaaS)       |  
+|                             | Bitbucket Pipelines  | Atlassian Ecosystem        | Proprietary              |  
+| **Configuration Management**| Ansible             | Red Hat Ecosystem          | Open Source (GPL)        |  
+|                             | Puppet               | Puppet Labs                | Open Source (Apache 2.0) |  
+|                             | Chef                 | Progress Ecosystem         | Open Source (Apache 2.0) |  
+|                             | SaltStack            | VMware Ecosystem           | Open Source (Apache 2.0) |  
+| **Containerization**       | Docker               | Docker Ecosystem           | Open Source (Apache 2.0) |  
+|                             | Podman               | Red Hat Ecosystem          | Open Source (Apache 2.0) |  
+|                             | Kubernetes           | Cloud-Native               | Open Source (Apache 2.0) |  
+|                             | OpenShift            | Red Hat Ecosystem          | Open Source (Apache 2.0) |  
+| **Infrastructure as Code** | Terraform            | HashiCorp Ecosystem        | Open Source (MPL 2.0)    |  
+|                             | Pulumi               | Pulumi Ecosystem           | Open Source (Apache 2.0) |  
+|                             | AWS CloudFormation   | AWS Ecosystem              | Proprietary              |  
+| **Monitoring & Logging**   | Prometheus           | Cloud-Native               | Open Source (Apache 2.0) |  
+|                             | Grafana              | Grafana Ecosystem          | Open Source (AGPL 3.0)   |  
+|                             | ELK Stack (ElasticSearch, Logstash, Kibana) | Independent | Open Source (Elastic License, SSPL) |  
+|                             | Splunk               | Splunk Ecosystem           | Proprietary              |  
+|                             | Datadog              | Datadog Ecosystem          | Proprietary (SaaS)       |  
+| **Testing**                | Selenium             | Independent                | Open Source (Apache 2.0) |  
+|                             | JUnit                | Java Ecosystem             | Open Source (EPL)        |  
+|                             | TestNG               | Java Ecosystem             | Open Source (Apache 2.0) |  
+| **Artifact Management**    | JFrog Artifactory    | JFrog Ecosystem            | Open Source (CE), Proprietary (paid) |  
+|                             | Nexus Repository Manager | Sonatype Ecosystem    | Open Source (CE), Proprietary (paid) |  
+|                             | Harbor               | CNCF Ecosystem             | Open Source (Apache 2.0) |  
+| **Collaboration**          | Slack                | Independent                | Proprietary (SaaS)       |  
+|                             | Microsoft Teams      | Microsoft Ecosystem        | Proprietary (SaaS)       |  
+|                             | Confluence           | Atlassian Ecosystem        | Proprietary              |  
+| **Vulnerability Scanning** | SonarQube            | Independent                | Open Source (Community Edition), Proprietary (paid) |  
+|                             | Snyk                 | Independent                | Proprietary (SaaS)       |  
+|                             | OWASP ZAP            | OWASP Ecosystem            | Open Source (Apache 2.0) |  
+|                             | Clair                | Docker Ecosystem           | Open Source (Apache 2.0) |  
+|                             | Anchore              | Kubernetes Ecosystem       | Open Source (Apache 2.0) |  
+|                             | Trivy                | Aqua Security Ecosystem    | Open Source (Apache 2.0) |  
+|                             | Checkmarx           | Independent                | Proprietary              |  
+| **Build Tools**            | Maven                | Java Ecosystem             | Open Source (Apache 2.0) |  
+|                             | Gradle               | Java Ecosystem             | Open Source (Apache 2.0) |  
+|                             | Bazel                | Google Ecosystem           | Open Source (Apache 2.0) |  
+|                             | Ant                  | Java Ecosystem             | Open Source (Apache 2.0) |  
 
-**Justification Summary:**  
-[Team Member] has consistently demonstrated exceptional technical proficiency, innovative problem-solving, and collaborative teamwork. Over the past [specific timeframe], [he/she/they] has successfully completed critical projects, streamlined processes, and contributed to the team's overall success, exceeding the expectations of [his/her/their] current role.
-
-**Key Accomplishments:**  
-
-1. **Power BI Dashboard Development:**  
-   - Designed and implemented multiple Power BI dashboards for Jira reporting, including the Automation 24 Dashboard, which tracks automation tasks effectively.  
-   - Connected Jira to Power BI using Power Query, enhancing data analysis and reporting capabilities for various projects.  
-
-2. **Automation and Operational Readiness Dashboards:**  
-   - Built dashboards for PostgresQL, RDS, and OCI operational readiness, leveraging Jira-to-Power BI automation to improve tracking and decision-making.  
-   - Developed the IRO resource utilization real-time dashboard, providing detailed insights into resource allocation and ticket resolution trends under Jira project TO4510.  
-
-3. **Cross-Team Collaboration and Knowledge Sharing:**  
-   - Provided cross-team training on Power BI for EUC team members, enhancing the team's overall analytical skills.  
-   - Assisted in the BUR vendor transition status dashboard, ensuring seamless Jira-to-Power BI integration.  
-
-4. **Strategic Initiatives and Knowledge Management:**  
-   - Migrated the VMC on AWS knowledge base to the Confluence platform, ensuring better documentation and accessibility for the team.  
-   - Completed critical tasks, such as creating change requests for Cobalt Iron instance and CMDB reporting for Greenfield migrated servers.  
-
-5. **Professional Development:**  
-   - Successfully earned the **Azure Administrator Associate** certification, demonstrating a commitment to continuous learning and staying current with cloud technologies.  
-
-**Recommendation:**  
-Based on the above accomplishments and [his/her/their] ability to deliver impactful results consistently, I strongly recommend promoting [Team Member] to [New Role/Designation]. This promotion not only acknowledges [his/her/their] contributions but also positions [him/her/them] to take on greater responsibilities and drive further success for the team and organization.  
-
-Let me know if you’d like any adjustments to the justification!
+This table now includes tools for **vulnerability scanning** and **build automation** alongside other essential DevOps tools. Let me know if you'd like further refinement or additions!
