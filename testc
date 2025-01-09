@@ -1,4 +1,5 @@
-Here's the updated table, including tools for **vulnerability scanning** and **build automation**, along with other categories:
+
+Here is an updated table that includes Python-based build tools and their ecosystems, as well as enhancements to other categories:
 
 | **Category**               | **Tool**              | **Ecosystem**              | **Licensing Type**       |  
 |-----------------------------|-----------------------|----------------------------|--------------------------|  
@@ -41,6 +42,8 @@ Here's the updated table, including tools for **vulnerability scanning** and **b
 | **Testing**                | Selenium             | Independent                | Open Source (Apache 2.0) |  
 |                             | JUnit                | Java Ecosystem             | Open Source (EPL)        |  
 |                             | TestNG               | Java Ecosystem             | Open Source (Apache 2.0) |  
+|                             | Pytest               | Python Ecosystem           | Open Source (MIT)        |  
+|                             | Unittest             | Python Standard Library    | Open Source (PSF)        |  
 | **Artifact Management**    | JFrog Artifactory    | JFrog Ecosystem            | Open Source (CE), Proprietary (paid) |  
 |                             | Nexus Repository Manager | Sonatype Ecosystem    | Open Source (CE), Proprietary (paid) |  
 |                             | Harbor               | CNCF Ecosystem             | Open Source (Apache 2.0) |  
@@ -53,10 +56,14 @@ Here's the updated table, including tools for **vulnerability scanning** and **b
 |                             | Clair                | Docker Ecosystem           | Open Source (Apache 2.0) |  
 |                             | Anchore              | Kubernetes Ecosystem       | Open Source (Apache 2.0) |  
 |                             | Trivy                | Aqua Security Ecosystem    | Open Source (Apache 2.0) |  
-|                             | Checkmarx           | Independent                | Proprietary              |  
+|                             | Bandit               | Python Ecosystem           | Open Source (Apache 2.0) |  
+|                             | Checkmarx            | Independent                | Proprietary              |  
 | **Build Tools**            | Maven                | Java Ecosystem             | Open Source (Apache 2.0) |  
 |                             | Gradle               | Java Ecosystem             | Open Source (Apache 2.0) |  
 |                             | Bazel                | Google Ecosystem           | Open Source (Apache 2.0) |  
 |                             | Ant                  | Java Ecosystem             | Open Source (Apache 2.0) |  
+|                             | Poetry               | Python Ecosystem           | Open Source (MIT)        |  
+|                             | PyBuilder            | Python Ecosystem           | Open Source (Apache 2.0) |  
+|                             | Tox                  | Python Ecosystem           | Open Source (MIT)        |  
 
-This table now includes tools for **vulnerability scanning** and **build automation** alongside other essential DevOps tools. Let me know if you'd like further refinement or additions!
+This updated table now includes **Python-based tools** in the relevant categories, particularly in build tools, testing, and vulnerability scanning. Let me know if you’d like additional details!
