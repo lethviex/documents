@@ -1,61 +1,47 @@
-Here’s an enhanced version of the **Operations Tasks** with integrated **DevOps CI/CD** responsibilities under each ITIL process category:  
-
----
-
-### **Incident Management**  
-- Monitor CI/CD pipeline failures using AWS CloudWatch and third-party tools (e.g., Datadog, Prometheus).  
-- Automate incident notifications through AWS SNS integrated with Slack/Teams.  
-- Quickly identify and remediate build/deployment failures in CI/CD workflows.  
-- Roll back failed deployments using automated rollback strategies in CI/CD pipelines.  
-- Perform post-incident reviews and update CI/CD processes to prevent recurrence.  
-- Implement self-healing mechanisms using AWS Lambda and CloudWatch alarms.  
-
----
-
-### **Service Request Management**  
-- Automate environment provisioning (Dev, QA, Prod) using Infrastructure as Code (IaC) tools like Terraform or AWS CloudFormation.  
-- Implement self-service deployment pipelines through AWS Service Catalog.  
-- Manage access requests for CI/CD tools and repositories using AWS IAM roles and permissions boundaries.  
-- Facilitate service requests for new CI/CD pipeline creation and updates.  
-- Automate software delivery workflows using AWS CodePipeline and CodeBuild.  
-
----
-
-### **Change Management**  
-- Automate code deployment approvals through gated CI/CD pipeline stages.  
-- Implement blue/green or canary deployments in AWS to minimize risk.  
-- Enforce change policies using Git workflows (e.g., pull requests, branch protection rules).  
-- Utilize feature flags to deploy code changes safely without impacting production.  
-- Maintain audit trails of code changes via version control (e.g., Git) and AWS Config.  
-- Integrate automated testing in CI/CD pipelines to validate changes before deployment.  
-
----
-
-### **Problem Management**  
-- Analyze recurring pipeline failures to identify systemic problems.  
-- Implement automated testing and static code analysis (e.g., SonarQube) to detect code-level issues early.  
-- Use AWS CloudWatch Logs and X-Ray for debugging complex deployment issues.  
-- Document known pipeline issues and resolutions in the knowledge base.  
-- Implement proactive monitoring of CI/CD systems to prevent downtime.  
-
----
-
-### **Capacity Management**  
-- Monitor build server and runner capacity (e.g., AWS CodeBuild, Jenkins agents) to optimize resource allocation.  
-- Scale CI/CD infrastructure dynamically using AWS Auto Scaling Groups or Kubernetes.  
-- Optimize pipeline execution times by parallelizing tasks and caching dependencies.  
-- Forecast resource requirements for large-scale deployments.  
-- Review and adjust build environments for cost efficiency using spot instances.  
-
----
-
-### **Patch Management**  
-- Automate patching of build servers and CI/CD infrastructure using AWS Systems Manager Patch Manager.  
-- Integrate vulnerability scanning (e.g., AWS Inspector, Snyk) into CI/CD pipelines.  
-- Regularly update CI/CD tools (e.g., Jenkins, GitLab) to the latest secure versions.  
-- Deploy patches to container images using automated pipeline steps.  
-- Enforce automated security checks for dependencies and libraries during builds.  
-
----
-
-This integration ensures streamlined operations with DevOps practices, improving agility, reliability, and security. Let me know if you'd like to expand any of these tasks further!
+Service Name	Metric Name	Description	Criticality
+AWS IAM	ConsoleLoginFailures	Number of failed IAM console login attempts	High
+AWS IAM	RootAccountUsage	Usage of the root account	High
+AWS IAM	AccessDenied	Access denied errors for IAM operations	High
+Security Hub	SecurityHubFindings	Count of critical security findings	High
+Security Hub	IntegrationFailures	Failures in third-party integrations	Medium
+AWS Config	ConfigRuleCompliance	Compliance status of AWS Config rules	High
+AWS Config	DeliveryChannelStatus	Failures in configuration data delivery	High
+GuardDuty	ThreatDetected	Detection of security threats	High
+GuardDuty	DetectorHealth	Health status of GuardDuty detectors	High
+AWS CloudTrail	ManagementEvents	High-volume API calls or unauthorized access	High
+AWS CloudTrail	TrailLoggingDisabled	CloudTrail logging disabled	High
+IAM Identity Center	AccessDenied	Failed login or access attempts	High
+Route 53	HealthCheckStatus	Health status of DNS records	High
+Route 53	DNSQueryVolume	Unusual spike in DNS query volume	Medium
+Organizations	ServiceQuotaUsage	Near service quota limits	Medium
+VPC	SubnetIPUsage	Subnet approaching IP exhaustion	High
+VPC	NatGatewayErrorCount	NAT Gateway error count	High
+Control Tower	ControlTowerDriftDetection	Detection of resource drift	Medium
+Amazon CloudWatch	AlarmStateChange	Critical alarms transitioning to ALARM state	High
+Transit Gateway	PacketDropCount	Dropped packets due to routing issues	High
+Transit Gateway	AttachmentState	Failed attachments	High
+Private Certificate Authority	CertificateExpiration	Certificates nearing expiration	High
+Private Certificate Authority	CertificateIssuanceFailures	Failed certificate issuances	Medium
+EC2 Image Builder	ImageBuildFailure	Failed image build processes	Medium
+Cloud WAN	AttachmentStatus	WAN attachments failing or degraded	High
+AWS Firewall Manager	NonCompliantResources	Non-compliant security policies	High
+IAM Access Analyzer	PolicyFindings	Public or cross-account access findings	High
+AWS Direct Connect	ConnectionState	Connection down or degraded	High
+AWS Direct Connect	VirtualInterfaceBGPState	BGP state of virtual interfaces	High
+AWS Audit Manager	AssessmentProgress	Stalled or failed audit assessments	Medium
+Amazon Managed Prometheus	RuleEvaluationFailures	Failed Prometheus rule evaluations	High
+Amazon Managed Grafana	DashboardLoadErrors	Errors in loading dashboards	Medium
+Amazon Kinesis Firehose	DeliveryToS3.Failures	Failed data delivery to S3	High
+Amazon Kinesis Data Streams	ReadProvisionedThroughputExceeded	Read capacity exceeded	High
+AWS Detective	InvestigationStarted	New security investigations triggered	Medium
+Amazon FSx for NetApp ONTAP	VolumeUsage	High volume utilization	High
+Amazon Inspector	FindingSeverity	Critical vulnerability findings	High
+AWS Network Manager	LinkHealth	Degraded network link health	High
+Amazon Macie	SensitiveDataFindings	Detection of sensitive data exposure	High
+Amazon SQS	ApproximateNumberOfMessagesDelayed	Delayed messages indicating queue buildup	High
+AWS RAM	ResourceShareFailures	Failures in resource sharing	Medium
+AWS CodeCommit	RepositorySizeExceeded	Repository size limits exceeded	Medium
+AWS CodePipeline	PipelineFailedExecutions	Failed pipeline executions	High
+AWS CodeDeploy	DeploymentFailure	Failed deployments	High
+AWS PrivateLink	EndpointConnectionState	VPC endpoint connection failures	High
+AWS Security Lake	DataIngestionFailure	Failures in data ingestion pipelines	High
