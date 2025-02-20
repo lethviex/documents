@@ -1,89 +1,27 @@
-Here’s a comprehensive **Go-Live Checklist** for taking over operations support for the AWS Federated Landing Zone:  
+# Define the folder containing CSV files
+$csvFolder = "C:\Path\To\CSV\Files"
+$outputFile = "C:\Path\To\CSV\MergedFile.csv"
 
----
+# Get all CSV files in the folder
+$csvFiles = Get-ChildItem -Path $csvFolder -Filter "*.csv"
 
-## **1. Pre-Go-Live Preparation**  
-- [ ] **Go-Live Date Confirmation:** Confirm the go-live date and time with all stakeholders.  
-- [ ] **Change Management Approval:** Ensure all change requests are approved and documented.  
-- [ ] **Stakeholder Communication:** Notify relevant stakeholders, including leadership, security, and application teams, about the go-live schedule.  
-- [ ] **Rollback Plan:** Have a documented and tested rollback plan in case of go-live issues.  
+# Initialize an empty array to store merged data
+$mergedData = @()
 
----
+foreach ($file in $csvFiles) {
+    # Get the file creation date
+    $creationDate = $file.CreationTime.ToString("yyyy-MM-dd")
 
-## **2. Access and Permissions**  
-- [ ] **Access Validation:** Confirm that all operations team members have appropriate access to the AWS Management Console, CLI, and necessary tools.  
-- [ ] **IAM Role Mappings:** Verify that federated IAM roles and policies are configured and tested for least privilege access.  
-- [ ] **Break-Glass Account:** Ensure a break-glass account is available with emergency access permissions.  
+    # Import the CSV and add a new column for file creation date
+    $csvContent = Import-Csv -Path $file.FullName | ForEach-Object {
+        $_ | Add-Member -MemberType NoteProperty -Name "CreateDate" -Value $creationDate -PassThru
+    }
 
----
+    # Append data to the merged list
+    $mergedData += $csvContent
+}
 
-## **3. Monitoring and Alerting**  
-- [ ] **CloudWatch Dashboards:** Confirm that CloudWatch dashboards are set up for monitoring infrastructure and application health.  
-- [ ] **Alarms and Notifications:** Verify that CloudWatch alarms and SNS notifications are configured for critical events.  
-- [ ] **Security Monitoring:** Ensure AWS Security Hub, GuardDuty, and CloudTrail are enabled and monitored for security events.  
+# Export the merged data to a new CSV file
+$mergedData | Export-Csv -Path $outputFile -NoTypeInformation
 
----
-
-## **4. Backup and Disaster Recovery**  
-- [ ] **Backup Verification:** Confirm that backup policies are configured for critical resources (e.g., RDS, EBS, EC2).  
-- [ ] **DR Plan Testing:** Test the Disaster Recovery (DR) procedures, including failover and data restoration.  
-- [ ] **Data Integrity Checks:** Perform data integrity checks to ensure data consistency after go-live.  
-
----
-
-## **5. Security and Compliance**  
-- [ ] **SCPs and Guardrails:** Validate that Service Control Policies (SCPs) and Control Tower guardrails are enforced.  
-- [ ] **MFA and Access Audits:** Confirm MFA is enforced for all privileged accounts and perform an access audit.  
-- [ ] **Compliance Checks:** Ensure compliance checks (e.g., CIS benchmarks) are running and remediations are in place.  
-
----
-
-## **6. Automation and CI/CD Pipelines**  
-- [ ] **CI/CD Validation:** Verify that CI/CD pipelines are integrated for infrastructure as code and application deployments.  
-- [ ] **IaC Testing:** Confirm that Infrastructure as Code (IaC) templates (e.g., CloudFormation/Terraform) are tested and version-controlled.  
-- [ ] **Automated Remediation:** Ensure automated remediation scripts are configured for security and operational incidents.  
-
----
-
-## **7. Documentation and Knowledge Transfer**  
-- [ ] **Handover Documentation:** Confirm receipt of comprehensive documentation, including:  
-  - Architecture diagrams and deployment designs.  
-  - Operational runbooks and incident response procedures.  
-  - Access control and IAM role mappings.  
-- [ ] **Knowledge Transfer Sessions:** Attend knowledge transfer sessions from the professional services team.  
-- [ ] **Runbooks Review:** Review and update operational runbooks for incident management and standard operating procedures.  
-
----
-
-## **8. Operational Readiness**  
-- [ ] **Incident Response Playbooks:** Verify incident response playbooks are documented and accessible.  
-- [ ] **Escalation Matrix:** Confirm the escalation matrix is defined and shared with all team members.  
-- [ ] **On-Call Rotation:** Establish and communicate on-call schedules for post-go-live support.  
-
----
-
-## **9. Testing and Validation**  
-- [ ] **UAT Completion:** Ensure User Acceptance Testing (UAT) is completed, and sign-off is obtained from stakeholders.  
-- [ ] **Security Testing:** Perform final security testing, including vulnerability scans and penetration tests.  
-- [ ] **Performance Testing:** Validate system performance under expected load conditions.  
-- [ ] **Failover Testing:** Confirm failover and high availability configurations are tested and functional.  
-
----
-
-## **10. Go-Live Execution**  
-- [ ] **Go-Live Command Center:** Set up a virtual or physical command center for real-time monitoring and incident handling.  
-- [ ] **Stakeholder Communication:** Provide real-time updates to stakeholders during the go-live event.  
-- [ ] **Health Checks:** Perform system health checks post-go-live to confirm all services are operational.  
-- [ ] **Issue Tracking:** Document and track all issues encountered during go-live with a clear action plan.  
-
----
-
-## **11. Post-Go-Live Support and Hypercare**  
-- [ ] **Hypercare Support:** Arrange a hypercare period with enhanced support and monitoring.  
-- [ ] **Post-Go-Live Review:** Conduct a post-go-live review to identify lessons learned and improvement areas.  
-- [ ] **Incident Review:** Analyze and document any incidents or issues encountered during go-live.  
-- [ ] **Sign-Off:** Obtain formal sign-off from stakeholders confirming successful go-live and operational readiness.  
-
----
-
-Would you like help creating detailed runbooks or incident response playbooks for post-go-live support?
+Write-Output "Merged CSV file created at: $outputFile"
