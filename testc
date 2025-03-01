@@ -1,110 +1,42 @@
-**Disaster Recovery (DR) Runbook for AWS Federated Landing Zone and CI/CD Tools**
+# Stage 1: Install NFS tools
+FROM amazonlinux:latest AS nfs-setup
 
-## **1. Objective**
-This runbook provides a detailed plan for the recovery and continuity of AWS Federated Landing Zone, Control Tower, Account Factory, and CI/CD infrastructure using Harness in the event of a disaster. It ensures minimal downtime, data integrity, and service availability.
+# Install NFS client utilities
+RUN yum update -y && \
+    yum install -y nfs-utils && \
+    yum clean all
 
-## **2. Scope**
-- AWS Federated Landing Zone (Control Tower, Account Factory, Identity Federation, Networking, Security Controls)
-- CI/CD infrastructure using Harness
-- AWS Account Recovery
-- Cross-Region and Cross-Account Failover
-- Incident Response and Business Continuity Planning
-- Security and Compliance Considerations
+# Stage 2: Create the final image
+FROM amazonlinux:latest
 
-## **3. Disaster Scenarios**
-- **Primary AWS Region Failure** (e.g., widespread AWS outage, regional disaster)
-- **Control Tower Service Disruption** (e.g., AWS Control Tower unavailability, misconfigurations)
-- **CI/CD Infrastructure Outage** (e.g., Harness platform downtime, pipeline execution failures)
-- **Landing Zone IAM Federation Failure** (e.g., identity provider failures, access control misconfigurations)
-- **Data Loss or Corruption** (e.g., accidental deletion, ransomware attacks, unauthorized changes)
-- **Networking and Connectivity Issues** (e.g., VPC peering failures, Transit Gateway issues, Route 53 failures)
+# Copy NFS tools from the first stage
+COPY --from=nfs-setup /usr/sbin/showmount /usr/sbin/showmount
+COPY --from=nfs-setup /sbin/mount.nfs /sbin/mount.nfs
+COPY --from=nfs-setup /usr/lib64/libnfsidmap.so.0 /usr/lib64/libnfsidmap.so.0
 
-## **4. Recovery Strategy**
+# Set up the mount point
+RUN mkdir -p /mnt/nfs
 
-### **4.1 AWS Federated Landing Zone**
-1. **Control Tower Availability**
-   - Ensure AWS Control Tower is deployed in at least two AWS regions.
-   - Validate AWS Organizations, AWS IAM Identity Center, and SCP configurations.
-   - Utilize AWS Backup for AWS Config, SCPs, and Guardrails.
-   - Maintain Infrastructure-as-Code (IaC) templates for quick recovery.
+# Add a script to mount the NFS volume at runtime
+COPY mount-nfs.sh /usr/local/bin/mount-nfs.sh
+RUN chmod +x /usr/local/bin/mount-nfs.sh
 
-2. **Account Factory Recovery**
-   - Ensure backups of AWS Service Catalog configurations.
-   - Maintain version-controlled Account Factory pipeline definitions.
-   - Validate account provisioning workflows and automation scripts.
+# Default command to mount NFS and run the application
+CMD ["/usr/local/bin/mount-nfs.sh"]
 
-3. **IAM Federation Recovery**
-   - Validate AWS IAM Identity Center (SSO) and Identity Federation settings.
-   - Ensure IAM roles, policies, and permission sets are backed up.
-   - Restore IAM federation configurations using Terraform or AWS CloudFormation.
 
-4. **Networking & Security Recovery**
-   - Ensure VPC, Transit Gateway, and Direct Connect configurations are backed up.
-   - Use AWS Firewall Manager and Security Hub to validate compliance.
-   - Restore AWS Config rules and security controls from backup.
-   
-### **4.2 CI/CD Infrastructure using Harness**
-1. **Harness Platform Recovery**
-   - Deploy Harness in a multi-region active-passive setup.
-   - Ensure Harness database backups are stored securely in S3 with versioning.
-   - Validate connectivity with AWS accounts and ensure OAuth integrations are functional.
+#!/bin/bash
 
-2. **Pipeline and Deployment Recovery**
-   - Maintain version-controlled pipeline definitions in Git repositories.
-   - Ensure application artifacts are stored in AWS S3, ECR, or Nexus with cross-region replication.
-   - Restore pipeline configurations using Helm charts, Terraform, or CloudFormation.
+# Mount the NFS volume
+mount -t nfs <NFS_SERVER_IP>:/path/to/nfs/export /mnt/nfs
 
-3. **Artifact & Environment Availability**
-   - Validate backup copies of application artifacts and Helm charts.
-   - Ensure EKS, ECS, or EC2 instances are redeployed in the DR region.
-   - Restore Terraform or CloudFormation stacks for infrastructure as code (IaC).
+# Check if the mount was successful
+if mountpoint -q /mnt/nfs; then
+    echo "NFS volume mounted successfully at /mnt/nfs"
+else
+    echo "Failed to mount NFS volume"
+    exit 1
+fi
 
-### **4.3 Cross-Region and Cross-Account Failover**
-1. **AWS Route 53 for DNS Failover**
-   - Configure Route 53 health checks and failover routing policies.
-   - Ensure domain failover strategies are tested regularly.
-
-2. **AWS Transit Gateway for Inter-Region Connectivity**
-   - Establish automated failover for inter-region networking.
-   - Validate AWS Direct Connect resilience and VPC peering failover.
-
-3. **Multi-Region Replication for Critical Resources**
-   - Enable cross-region replication for S3, RDS, DynamoDB, and ECR.
-   - Implement AWS Backup and AWS DataSync for automated backups.
-   - Ensure AWS Lambda, Step Functions, and event-driven workflows are resilient.
-
-4. **Failover Testing and DR Drills**
-   - Conduct regular failover tests and document recovery metrics.
-   - Automate failover testing using AWS Fault Injection Simulator (FIS).
-
-## **5. Incident Response Plan**
-1. **Detection and Identification**
-   - Use AWS CloudWatch, GuardDuty, and Security Hub to detect failures.
-   - Automate alerting via AWS SNS and PagerDuty.
-
-2. **Containment and Mitigation**
-   - Follow AWS Security Incident Response playbooks.
-   - Implement WAF rules and IAM policy changes to mitigate threats.
-
-3. **Recovery and Restoration**
-   - Follow predefined recovery procedures for Landing Zone and CI/CD tools.
-   - Validate infrastructure, applications, and security controls post-recovery.
-
-4. **Post-Incident Review and Improvements**
-   - Conduct RCA (Root Cause Analysis) and update documentation.
-   - Improve automation and monitoring based on incident learnings.
-
-## **6. Communication and Escalation Plan**
-- **Primary Contacts:** AWS Support, CloudOps, DevOps, Security teams.
-- **Escalation Process:** Internal escalation matrix for critical failures.
-- **Stakeholder Notification:** Regular updates via Slack, email, or ITSM tools.
-- **AWS Support Engagement:** Engage AWS TAM and Enterprise Support when required.
-
-## **7. Compliance and Governance Considerations**
-- Ensure DR plans align with regulatory requirements (SOC 2, ISO 27001, HIPAA, etc.).
-- Maintain audit logs and evidence for DR drills.
-- Validate IAM roles and SCPs for security and compliance adherence.
-
-## **8. Conclusion**
-This DR runbook ensures resilience, high availability, and business continuity for AWS Federated Landing Zone and CI/CD infrastructure using Harness. Regular testing, automation, and documentation updates will maintain an effective DR strategy.
-
+# Execute any additional commands passed to the container
+exec "$@"
