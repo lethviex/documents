@@ -1,42 +1,29 @@
-# Stage 1: Install NFS tools
-FROM amazonlinux:latest AS nfs-setup
+variable "aws_region" {
+  description = "AWS region where the CloudWatch dashboard will be created"
+  type        = string
+  default     = "us-east-1"
+}
 
-# Install NFS client utilities
-RUN yum update -y && \
-    yum install -y nfs-utils && \
-    yum clean all
+variable "dashboard_name" {
+  description = "Name of the CloudWatch dashboard"
+  type        = string
+  default     = "Platform-Health-Dashboard-Development"
+}
 
-# Stage 2: Create the final image
-FROM amazonlinux:latest
+resource "aws_cloudwatch_dashboard" "platform_health_dashboard" {
+  dashboard_name = var.dashboard_name
 
-# Copy NFS tools from the first stage
-COPY --from=nfs-setup /usr/sbin/showmount /usr/sbin/showmount
-COPY --from=nfs-setup /sbin/mount.nfs /sbin/mount.nfs
-COPY --from=nfs-setup /usr/lib64/libnfsidmap.so.0 /usr/lib64/libnfsidmap.so.0
-
-# Set up the mount point
-RUN mkdir -p /mnt/nfs
-
-# Add a script to mount the NFS volume at runtime
-COPY mount-nfs.sh /usr/local/bin/mount-nfs.sh
-RUN chmod +x /usr/local/bin/mount-nfs.sh
-
-# Default command to mount NFS and run the application
-CMD ["/usr/local/bin/mount-nfs.sh"]
+  dashboard_body = jsonencode({
+    widgets = []
+  })
+}
 
 
-#!/bin/bash
+output "dashboard_name" {
+  description = "The name of the created CloudWatch dashboard"
+  value       = aws_cloudwatch_dashboard.platform_health_dashboard.dashboard_name
+}
 
-# Mount the NFS volume
-mount -t nfs <NFS_SERVER_IP>:/path/to/nfs/export /mnt/nfs
 
-# Check if the mount was successful
-if mountpoint -q /mnt/nfs; then
-    echo "NFS volume mounted successfully at /mnt/nfs"
-else
-    echo "Failed to mount NFS volume"
-    exit 1
-fi
-
-# Execute any additional commands passed to the container
-exec "$@"
+aws_region      = "us-east-1"
+dashboard_name  = "Platform-Health-Dashboard-Development"
