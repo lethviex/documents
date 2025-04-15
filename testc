@@ -1,12 +1,13 @@
 SELECT 
-    u.username,
     t.template_name,
-    uta.access_level
+    u.username,
+    tp.privilege_type,
+    tp.is_granted
 FROM 
-    users u
+    template_privileges tp
 JOIN 
-    user_template_access uta ON u.user_id = uta.user_id
+    templates t ON tp.template_id = t.template_id
 JOIN 
-    templates t ON uta.template_id = t.template_id
-ORDER BY 
-    u.username, t.template_name;
+    users u ON tp.user_id = u.user_id
+WHERE 
+    t.template_name = 'Sales Report Template';  -- Replace with your template name
