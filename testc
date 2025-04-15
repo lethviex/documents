@@ -1,29 +1,12 @@
-variable "aws_region" {
-  description = "AWS region where the CloudWatch dashboard will be created"
-  type        = string
-  default     = "us-east-1"
-}
-
-variable "dashboard_name" {
-  description = "Name of the CloudWatch dashboard"
-  type        = string
-  default     = "Platform-Health-Dashboard-Development"
-}
-
-resource "aws_cloudwatch_dashboard" "platform_health_dashboard" {
-  dashboard_name = var.dashboard_name
-
-  dashboard_body = jsonencode({
-    widgets = []
-  })
-}
-
-
-output "dashboard_name" {
-  description = "The name of the created CloudWatch dashboard"
-  value       = aws_cloudwatch_dashboard.platform_health_dashboard.dashboard_name
-}
-
-
-aws_region      = "us-east-1"
-dashboard_name  = "Platform-Health-Dashboard-Development"
+SELECT 
+    u.username,
+    t.template_name,
+    uta.access_level
+FROM 
+    users u
+JOIN 
+    user_template_access uta ON u.user_id = uta.user_id
+JOIN 
+    templates t ON uta.template_id = t.template_id
+ORDER BY 
+    u.username, t.template_name;
