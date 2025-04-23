@@ -1,13 +1,2 @@
-SELECT 
-    t.template_name,
-    u.username,
-    tp.privilege_type,
-    tp.is_granted
-FROM 
-    template_privileges tp
-JOIN 
-    templates t ON tp.template_id = t.template_id
-JOIN 
-    users u ON tp.user_id = u.user_id
-WHERE 
-    t.template_name = 'Sales Report Template';  -- Replace with your template name
+mvn archetype:generate -DgroupId=com.myapp -DartifactId=aws-java-app -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
+cd aws-java-app
